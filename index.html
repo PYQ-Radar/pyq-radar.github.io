@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PYQ Radar - Explore previous year questions for UPSC, SSC, OPSC and other competitive examinations.">
+<meta name="theme-color" content="#101c35">
+<title>PYQ Radar | Every Question Has a Direction</title>
+
+<style>
+:root {
+  --navy:#101c35;
+  --blue:#315efb;
+  --light:#f4f7fc;
+  --text:#1c2940;
+  --muted:#718096;
+  --white:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:var(--text);
+  line-height:1.6;
+}
+header{
+  background:var(--navy);
+  color:white;
+  padding:17px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+.logo{font-size:23px;font-weight:800;letter-spacing:-1px}
+.logo span{color:#72a0ff}
+nav{display:flex;gap:22px}
+nav a{color:#dce5f8;text-decoration:none;font-size:14px}
+nav a:hover{color:#72a0ff}
+.hero{
+  background:linear-gradient(120deg,#101c35,#1d3970);
+  color:white;
+  text-align:center;
+  padding:75px 20px 85px;
+}
+.tag{
+  display:inline-block;
+  border:1px solid #718fc9;
+  color:#c6d7ff;
+  border-radius:30px;
+  padding:5px 14px;
+  font-size:12px;
+  margin-bottom:18px;
+}
+.hero h1{font-size:clamp(34px,6vw,55px);line-height:1.15}
+.hero h1 span{color:#80aaff}
+.hero p{color:#d0dbef;margin:16px auto 25px;max-width:600px}
+.search{
+  background:white;
+  padding:7px;
+  border-radius:12px;
+  max-width:620px;
+  margin:auto;
+  display:flex;
+  gap:8px;
+}
+.search input{
+  flex:1;min-width:0;border:0;outline:0;
+  padding:12px;font-size:15px;color:#222;
+}
+.search button,.primary{
+  background:var(--blue);color:white;border:0;
+  border-radius:8px;padding:12px 20px;
+  cursor:pointer;font-weight:bold;
+}
+.stats{
+  max-width:950px;margin:-35px auto 35px;
+  padding:0 15px;display:grid;
+  grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.stat{
+  background:white;padding:20px 10px;text-align:center;
+  border-radius:12px;box-shadow:0 5px 20px #14213b0c;
+}
+.stat strong{display:block;font-size:24px;color:var(--blue)}
+.stat small{color:var(--muted)}
+main{max-width:1100px;margin:45px auto;padding:0 20px}
+.section-title{font-size:25px;margin-bottom:7px}
+.subtitle{color:var(--muted);margin-bottom:22px}
+.categories{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  margin-bottom:45px;
+}
+.category{
+  background:white;border:1px solid #e6ebf3;
+  border-radius:12px;padding:20px 14px;
+  cursor:pointer;text-align:center;transition:.2s;
+}
+.category:hover,.category.active{
+  border-color:var(--blue);transform:translateY(-3px);
+  box-shadow:0 6px 20px #315efb18;
+}
+.category .emoji{font-size:28px}
+.category h3{font-size:15px;margin:8px 0 2px}
+.category p{font-size:12px;color:var(--muted)}
+.filters{
+  background:white;border:1px solid #e6ebf3;
+  border-radius:12px;padding:18px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin-bottom:20px;
+}
+.filters select{
+  width:100%;padding:12px;border:1px solid #dce3ee;
+  border-radius:8px;background:white;font-size:14px;
+}
+.results-head{
+  display:flex;justify-content:space-between;
+  align-items:center;margin:24px 0 15px;gap:10px;
+}
+.count{font-size:13px;color:var(--muted)}
+.question{
+  background:white;border:1px solid #e7ebf2;
+  border-radius:12px;padding:20px;margin-bottom:14px;
+}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pill{
+  background:#edf2ff;color:#3153c7;
+  padding:4px 9px;border-radius:20px;font-size:11px;
+}
+.pill.gray{background:#f0f2f5;color:#596579}
+.question h3{font-size:16px;margin-bottom:15px}
+.options{display:grid;gap:8px}
+.option{
+  border:1px solid #e2e7ef;border-radius:8px;
+  padding:10px 12px;font-size:14px;
+}
+.answer-btn{
+  background:white;color:var(--blue);
+  border:1px solid #cbd7ff;padding:9px 14px;
+  border-radius:7px;margin-top:15px;cursor:pointer;
+}
+.explanation{
+  display:none;background:#f0f6ff;padding:14px;
+  border-radius:8px;margin-top:12px;font-size:14px;
+}
+.explanation.show{display:block}
+.empty{
+  text-align:center;background:white;padding:40px;
+  border-radius:12px;color:var(--muted);
+}
+footer{
+  background:var(--navy);color:white;
+  padding:35px 20px;text-align:center;margin-top:65px;
+}
+footer p{color:#b8c7df;font-size:13px;margin-top:8px}
+@media(max-width:650px){
+  header{padding:15px 5%;flex-wrap:wrap}
+  nav{gap:13px;flex-wrap:wrap}
+  nav a{font-size:12px}
+  .hero{padding:60px 17px 70px}
+  .stats{gap:7px}
+  .stat{padding:15px 5px}
+  .stat strong{font-size:19px}
+  .stat small{font-size:10px}
+  .categories{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr}
+  .results-head{align-items:flex-start;flex-direction:column}
+  main{padding:0 14px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">PYQ <span>RADAR.</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#exams">Exams</a>
+    <a href="#questions">PYQs</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="tag">YOUR SMART EXAM PREPARATION PARTNER</div>
+  <h1>Every Question Has<br><span>A Direction.</span></h1>
+  <p>Explore previous year questions, discover important topics and prepare smarter for your competitive examinations.</p>
+  <div class="search">
+    <input id="searchInput" type="search"
+      placeholder="Search exam, subject or question..."
+      aria-label="Search questions">
+    <button onclick="renderQuestions()">Search</button>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><strong>Multiple</strong><small>Competitive Exams</small></div>
+  <div class="stat"><strong>All Subjects</strong><small>Topic-wise Learning</small></div>
+  <div class="stat"><strong>24/7</strong><small>Learning Access</small></div>
+</div>
+
+<main>
+  <section id="exams">
+    <h2 class="section-title">Explore Examinations</h2>
+    <p class="subtitle">Choose your examination and start practising.</p>
+    <div class="categories">
+      <div class="category" onclick="chooseExam('UPSC')">
+        <div class="emoji">🏛️</div><h3>UPSC CSE</h3><p>Civil Services</p>
+      </div>
+      <div class="category" onclick="chooseExam('SSC')">
+        <div class="emoji">📚</div><h3>SSC</h3><p>CGL, CHSL & Others</p>
+      </div>
+      <div class="category" onclick="chooseExam('OPSC')">
+        <div class="emoji">🌏</div><h3>OPSC</h3><p>Odisha Civil Services</p>
+      </div>
+      <div class="category" onclick="chooseExam('Other')">
+        <div class="emoji">🎯</div><h3>Other Exams</h3><p>More Opportunities</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2 class="section-title">Find Your Questions</h2>
+    <p class="subtitle">Filter questions by examination and subject.</p>
+
+    <div class="filters">
+      <select id="examFilter" onchange="renderQuestions()">
+        <option value="">All Examinations</option>
+        <option value="UPSC">UPSC CSE</option>
+        <option value="SSC">SSC</option>
+        <option value="OPSC">OPSC</option>
+        <option value="Other">Other Exams</option>
+      </select>
+      <select id="subjectFilter" onchange="renderQuestions()">
+        <option value="">All Subjects</option>
+        <option value="Polity">Polity</option>
+        <option value="History">History</option>
+        <option value="Economy">Economy</option>
+        <option value="Geography">Geography</option>
+        <option value="Science">Science</option>
+      </select>
+      <select id="yearFilter" onchange="renderQuestions()">
+        <option value="">All Years</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+      </select>
+    </div>
+
+    <div class="results-head">
+      <h3>Question Bank</h3>
+      <span class="count" id="resultCount"></span>
+    </div>
+    <div id="questionList"></div>
+  </section>
+
+  <section id="about" style="margin-top:55px">
+    <h2 class="section-title">About PYQ Radar</h2>
+    <p class="subtitle">A learning platform designed to make competitive exam preparation more organised. Explore questions by exam, subject and topic, and learn through explanations.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="logo">PYQ <span>RADAR.</span></div>
+  <p>Every Question Has a Direction.</p>
+  <p>© 2026 PYQ Radar. Built for learners.</p>
+</footer>
+
+<script>
+const questions = [
+ {
+  exam:"UPSC",subject:"Polity",year:"2024",
+  topic:"Constitution",
+  question:"Which of the following statements best describes the Constitution of India?",
+  options:[
+   "It is entirely rigid.",
+   "It is entirely flexible.",
+   "It combines rigid and flexible features.",
+   "It cannot be amended."
+  ],
+  answer:2,
+  explanation:"The Indian Constitution combines rigid and flexible amendment procedures."
+ },
+ {
+  exam:"UPSC",subject:"History",year:"2023",
+  topic:"Ancient History",
+  question:"Which of the following is associated with the Harappan civilisation?",
+  options:[
+   "Iron ploughshares",
+   "Well-planned urban settlements",
+   "Large stone temples",
+   "Persian inscriptions"
+  ],
+  answer:1,
+  explanation:"Planned cities, drainage systems and organised streets are important features of Harappan urban centres."
+ },
+ {
+  exam:"SSC",subject:"Geography",year:"2024",
+  topic:"Physical Geography",
+  question:"Which is the largest continent by area?",
+  options:["Africa","Asia","Europe","Australia"],
+  answer:1,
+  explanation:"Asia is the largest continent by geographical area."
+ },
+ {
+  exam:"OPSC",subject:"History",year:"2022",
+  topic:"Odisha History",
+  question:"Which ancient kingdom is historically associated with present-day Odisha?",
+  options:["Kalinga","Magadha","Avanti","Gandhara"],
+  answer:0,
+  explanation:"Kalinga was an important ancient political and cultural region associated with present-day Odisha."
+ },
+ {
+  exam:"UPSC",subject:"Economy",year:"2024",
+  topic:"Basic Economics",
+  question:"Which institution is responsible for monetary policy in India?",
+  options:[
+   "Finance Commission",
+   "NITI Aayog",
+   "Reserve Bank of India",
+   "SEBI"
+  ],
+  answer:2,
+  explanation:"The Reserve Bank of India is India's central bank and conducts monetary policy."
+ }
+];
+
+function chooseExam(exam){
+ document.getElementById("examFilter").value=exam;
+ document.getElementById("questions").scrollIntoView({behavior:"smooth"});
+ renderQuestions();
+}
+
+function renderQuestions(){
+ const exam=document.getElementById("examFilter").value;
+ const subject=document.getElementById("subjectFilter").value;
+ const year=document.getElementById("yearFilter").value;
+ const search=document.getElementById("searchInput").value.toLowerCase();
+
+ const filtered=questions.filter(q=>
+  (!exam||q.exam===exam)&&
+  (!subject||q.subject===subject)&&
+  (!year||q.year===year)&&
+  (q.question+" "+q.topic+" "+q.exam+" "+q.subject)
+   .toLowerCase().includes(search)
+ );
+
+ document.getElementById("resultCount").textContent=
+  filtered.length+" questions found";
+
+ const list=document.getElementById("questionList");
+
+ if(!filtered.length){
+  list.innerHTML='<div class="empty">No questions found. Try another search or filter.</div>';
+  return;
+ }
+
+ list.innerHTML=filtered.map((q,i)=>`
+  <article class="question">
+   <div class="meta">
+    <span class="pill">${q.exam}</span>
+    <span class="pill gray">${q.subject}</span>
+    <span class="pill gray">${q.year}</span>
+    <span class="pill gray">${q.topic}</span>
+   </div>
+   <h3>${i+1}. ${q.question}</h3>
+   <div class="options">
+    ${q.options.map((o,j)=>`
+     <div class="option">${String.fromCharCode(65+j)}. ${o}</div>
+    `).join("")}
+   </div>
+   <button class="answer-btn" onclick="toggleAnswer(this)">
+    Show Answer & Explanation
+   </button>
+   <div class="explanation">
+    <strong>Correct Answer: ${String.fromCharCode(65+q.answer)}. ${q.options[q.answer]}</strong>
+    <p>${q.explanation}</p>
+   </div>
+  </article>
+ `).join("");
+}
+
+function toggleAnswer(button){
+ const explanation=button.nextElementSibling;
+ explanation.classList.toggle("show");
+ button.textContent=explanation.classList.contains("show")
+  ?"Hide Explanation":"Show Answer & Explanation";
+}
+
+renderQuestions();
+</script>
+</body>
+</html>
