@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,53 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PYQ Radar | Every Question Has a Direction</title>
 <style>
-:root{
- --navy:#102044;--blue:#2456d8;--cyan:#eaf4ff;
- --bg:#f4f7fc;--white:#fff;--text:#18243d;
- --muted:#71809a;--border:#e4eaf3;
-}
+:root{--navy:#102044;--blue:#2456d8;--cyan:#eaf4ff;--bg:#f4f7fc;--white:#fff;--text:#18243d;--muted:#71809a;--border:#e4eaf3}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
- font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.sidebar{
- width:245px;position:fixed;inset:0 auto 0 0;
- background:var(--navy);color:white;padding:20px 14px;
- overflow-y:auto;z-index:10
-}
+.sidebar{width:245px;position:fixed;inset:0 auto 0 0;background:var(--navy);color:white;padding:20px 14px;overflow-y:auto;z-index:10}
 .brand{display:flex;align-items:center;gap:10px;padding:5px 8px 24px}
-.logo{width:40px;height:40px;border-radius:12px;
- background:linear-gradient(135deg,#3975f6,#20b8dc);
- display:grid;place-items:center;font-weight:900;font-size:20px}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#3975f6,#20b8dc);display:grid;place-items:center;font-weight:900;font-size:20px}
 .brand small{display:block;color:#9eb4e2;font-size:10px;margin-top:4px}
-.nav-label{font-size:10px;color:#879bc1;
- letter-spacing:1.5px;margin:18px 10px 7px}
-.nav-btn{width:100%;display:flex;gap:12px;align-items:center;
- padding:11px;border:0;border-radius:9px;background:transparent;
- color:#c9d5eb;text-align:left;margin:2px 0;font-size:13px}
+.nav-label{font-size:10px;color:#879bc1;letter-spacing:1.5px;margin:18px 10px 7px}
+.nav-btn{width:100%;display:flex;gap:12px;align-items:center;padding:11px;border:0;border-radius:9px;background:transparent;color:#c9d5eb;text-align:left;margin:2px 0;font-size:13px}
 .nav-btn:hover,.nav-btn.active{background:#294b91;color:white}
 .main{margin-left:245px}
-.topbar{height:68px;background:white;border-bottom:1px solid var(--border);
- display:flex;align-items:center;justify-content:space-between;
- padding:0 25px;position:sticky;top:0;z-index:5}
+.topbar{height:68px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:5}
 .page-title{font-size:19px;font-weight:bold}
 .user{background:#edf3ff;padding:9px 14px;border-radius:25px;font-size:12px}
 .content{padding:25px;max-width:1450px;margin:auto}
-.page{display:none}
-.page.active{display:block}
-.card{background:white;border:1px solid var(--border);
- border-radius:14px;padding:18px;margin-bottom:15px}
-.hero{background:linear-gradient(115deg,#102044,#2456d8);
- color:white;padding:27px;border-radius:16px}
+.page{display:none}.page.active{display:block}
+.card{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:15px}
+.hero{background:linear-gradient(115deg,#102044,#2456d8);color:white;padding:27px;border-radius:16px}
 .hero p{color:#dce7ff;font-size:13px;line-height:1.7}
 .hero h2{font-size:25px;margin:10px 0}
 .grid{display:grid;gap:14px}
 .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.btn{background:var(--blue);color:white;padding:10px 14px;
- border:0;border-radius:8px;font-size:12px;font-weight:bold}
+.btn{background:var(--blue);color:white;padding:10px 14px;border:0;border-radius:8px;font-size:12px;font-weight:bold}
 .btn.light{background:white;color:#1745a9}
 .btn.soft{background:#edf3ff;color:#2456d8}
 .btn.line{background:white;color:#34415c;border:1px solid var(--border)}
@@ -60,15 +39,11 @@ button{cursor:pointer}
 .btn.small{padding:7px 10px;font-size:11px}
 .stat{font-size:12px;color:var(--muted)}
 .stat strong{display:block;font-size:27px;color:var(--text);margin-top:8px}
-.shortcut{display:flex;align-items:center;gap:12px;
- background:white;border:1px solid var(--border);padding:14px;
- border-radius:12px;text-align:left;color:var(--text)}
+.shortcut{display:flex;align-items:center;gap:12px;background:white;border:1px solid var(--border);padding:14px;border-radius:12px;text-align:left;color:var(--text)}
 .shortcut:hover{border-color:#8eafff}
 .shortcut b{font-size:12px;display:block}
 .shortcut small{font-size:10px;color:var(--muted)}
-input,select,textarea{width:100%;padding:10px;
- border:1px solid #dce4f0;border-radius:8px;background:white;
- color:var(--text);font-size:12px}
+input,select,textarea{width:100%;padding:10px;border:1px solid #dce4f0;border-radius:8px;background:white;color:var(--text);font-size:12px}
 label{font-size:11px;font-weight:bold;display:block;margin-bottom:6px}
 .field{margin-bottom:13px}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -78,81 +53,61 @@ label{font-size:11px;font-weight:bold;display:block;margin-bottom:6px}
 .quote blockquote{font:18px Georgia;line-height:1.5}
 .progress{height:8px;background:#edf1f7;border-radius:20px;overflow:hidden}
 .progress span{display:block;height:100%;background:#2862df}
-.question{background:white;border:1px solid var(--border);
- border-radius:12px;padding:15px;margin:12px 0}
-.option{display:block;padding:9px;border:1px solid var(--border);
- border-radius:8px;margin:7px 0;font-size:12px}
+.question{background:white;border:1px solid var(--border);border-radius:12px;padding:15px;margin:12px 0}
+.option{display:block;padding:9px;border:1px solid var(--border);border-radius:8px;margin:7px 0;font-size:12px}
 .answer{background:#eaf8f1;padding:12px;border-radius:8px;margin-top:10px;font-size:12px}
-.badge{background:#edf3ff;color:#2456c2;padding:5px 8px;
- border-radius:20px;font-size:10px}
+.badge{background:#edf3ff;color:#2456c2;padding:5px 8px;border-radius:20px;font-size:10px}
 .hidden{display:none!important}
 .between{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .paper-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.paper{background:white;border:1px solid var(--border);
- border-radius:12px;padding:15px;text-align:left}
+.paper{background:white;border:1px solid var(--border);border-radius:12px;padding:15px;text-align:left}
 .paper.selected{border:2px solid #2456d8;background:#f0f5ff}
 .paper b{display:block;margin:8px 0}
-.reader{background:#fffdf7;border:1px solid #eadfc9;
- border-radius:12px;padding:20px}
+.reader{background:#fffdf7;border:1px solid #eadfc9;border-radius:12px;padding:20px}
 .reader h2{text-align:center;font:30px Georgia;border-bottom:1px solid #eadfc9;padding-bottom:15px}
 .reader p{font-size:13px;line-height:1.8}
 .timer{font-size:55px;text-align:center;font-weight:bold;color:#2456d8;margin:20px}
 .footer{text-align:center;color:#9aa6b8;font-size:10px;padding:25px}
-.mobile-toggle{display:none}
-.bottom-nav{display:none}
-@media(max-width:1000px){
- .g4{grid-template-columns:repeat(2,1fr)}
-}
+.mobile-toggle{display:none}.bottom-nav{display:none}
+@media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){
- .sidebar{transform:translateX(-100%);width:260px;transition:.2s}
- .sidebar.open{transform:translateX(0)}
- .main{margin-left:0}
- .topbar{padding:0 12px;height:60px}
- .mobile-toggle{display:block;background:#edf3ff;border:0;padding:8px;border-radius:8px}
- .content{padding:15px 12px 85px}
- .g2,.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .paper-grid{grid-template-columns:1fr}
- .form-grid{grid-template-columns:1fr}
- .bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;
- background:white;border-top:1px solid var(--border);
- justify-content:space-around;padding:8px 2px;z-index:20}
- .bottom-nav button{border:0;background:white;font-size:10px;color:#60708d}
- .bottom-nav button.active{color:#2456d8;font-weight:bold}
- .hero{padding:19px}
- .hero h2{font-size:21px}
+.sidebar{transform:translateX(-100%);width:260px;transition:.2s}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0}
+.topbar{padding:0 12px;height:60px}
+.mobile-toggle{display:block;background:#edf3ff;border:0;padding:8px;border-radius:8px}
+.content{padding:15px 12px 85px}
+.g2,.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.paper-grid{grid-template-columns:1fr}
+.form-grid{grid-template-columns:1fr}
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);justify-content:space-around;padding:8px 2px;z-index:20}
+.bottom-nav button{border:0;background:white;font-size:10px;color:#60708d}
+.bottom-nav button.active{color:#2456d8;font-weight:bold}
+.hero{padding:19px}.hero h2{font-size:21px}
 }
 </style>
 </head>
-
 <body>
 <aside class="sidebar" id="sidebar">
- <div class="brand">
-  <div class="logo">P</div>
-  <div><b>PYQ RADAR</b><small>Every Question Has a Direction.</small></div>
- </div>
-
+ <div class="brand"><div class="logo">P</div><div><b>PYQ RADAR</b><small>Every Question Has a Direction.</small></div></div>
  <div class="nav-label">WORKSPACE</div>
  <button class="nav-btn active" data-page="dashboard">⌂ Dashboard</button>
  <button class="nav-btn" data-page="pyqs">▤ Explore PYQs</button>
  <button class="nav-btn" data-page="practice">◎ Practice Zone</button>
  <button class="nav-btn" data-page="performance">▥ Performance</button>
-
  <div class="nav-label">STUDY SPACE</div>
  <button class="nav-btn" data-page="study">▧ My Study Space</button>
  <button class="nav-btn" data-page="revision">↻ Revision Planner</button>
  <button class="nav-btn" data-page="goals">✓ Daily Goals</button>
  <button class="nav-btn" data-page="bookmarks">☆ Bookmarks</button>
  <button class="nav-btn" data-page="mistakes">✎ Mistake Notebook</button>
-
  <div class="nav-label">QUICK TOOLS</div>
  <button class="nav-btn" data-page="timer">◷ Focus Timer</button>
  <button class="nav-btn" data-page="trends">⌁ PYQ Trend Analysis</button>
  <button class="nav-btn" data-page="newsroom">▣ Newsroom</button>
-
  <div class="nav-label">PERSONAL</div>
  <button class="nav-btn" data-page="account">♙ My Account</button>
  <button class="nav-btn" data-page="settings">⚙ Settings</button>
-
  <div class="footer">Designed & Developed by<br><b style="color:white">Satya Jigyansu</b></div>
 </aside>
 
@@ -160,15 +115,12 @@ label{font-size:11px;font-weight:bold;display:block;margin-bottom:6px}
 <header class="topbar">
  <div style="display:flex;align-items:center;gap:12px">
   <button class="mobile-toggle" id="menu">☰</button>
-  <div><small class="muted">PYQ Radar / <span id="crumb">Dashboard</span></small>
-   <div class="page-title" id="title">Dashboard</div></div>
+  <div><small class="muted">PYQ Radar / <span id="crumb">Dashboard</span></small><div class="page-title" id="title">Dashboard</div></div>
  </div>
  <div class="user" id="topName">Satya Jigyansu</div>
 </header>
-
 <div class="content">
 
-<!-- DASHBOARD -->
 <section class="page active" id="page-dashboard">
  <div class="hero">
   <small>YOUR PREPARATION COMMAND CENTRE</small>
@@ -177,28 +129,16 @@ label{font-size:11px;font-weight:bold;display:block;margin-bottom:6px}
   <button class="btn light" data-go="pyqs">Explore PYQs →</button>
   <button class="btn" data-go="goals">Update Daily Goals</button>
  </div>
-
  <div class="grid g4" style="margin-top:15px">
   <div class="card stat">Questions Attempted<strong id="dashAttempt">0</strong></div>
   <div class="card stat">Accuracy<strong id="dashAccuracy">0%</strong></div>
   <div class="card stat">Bookmarks<strong id="dashBookmarks">0</strong></div>
   <div class="card stat">Pending Revision<strong id="dashRevision">0</strong></div>
  </div>
-
  <div class="grid g2" style="margin-top:15px">
-  <div class="card quote" id="quoteCard">
-   <small>DAILY THOUGHT</small>
-   <blockquote id="quoteText">Small progress every day adds up to big results.</blockquote>
-   <small>— PYQ Radar</small>
-  </div>
-  <div class="card">
-   <div class="between"><b>Today's Study Goals</b>
-    <button class="btn soft small" data-go="goals">Manage</button></div>
-   <p class="muted" id="goalSummary">No goals added yet.</p>
-   <div class="progress"><span id="goalBar" style="width:0%"></span></div>
-  </div>
+  <div class="card quote" id="quoteCard"><small>DAILY THOUGHT</small><blockquote id="quoteText">Small progress every day adds up to big results.</blockquote><small>— PYQ Radar</small></div>
+  <div class="card"><div class="between"><b>Today's Study Goals</b><button class="btn soft small" data-go="goals">Manage</button></div><p class="muted" id="goalSummary">No goals added yet.</p><div class="progress"><span id="goalBar" style="width:0%"></span></div></div>
  </div>
-
  <h3 class="section-title">Quick Access</h3>
  <div class="grid g3">
   <button class="shortcut" data-go="pyqs">▤ <span><b>Explore PYQs</b><small>Find questions by topic</small></span></button>
@@ -210,729 +150,456 @@ label{font-size:11px;font-weight:bold;display:block;margin-bottom:6px}
  </div>
 </section>
 
-<!-- PYQ SEARCH -->
 <section class="page" id="page-pyqs">
- <h2>Explore Previous Year Questions</h2>
- <p class="muted">Search using exam, state, subject, topic and year.</p>
+ <h2>Explore Previous Year Questions</h2><p class="muted">Search using exam, state, subject, topic and year.</p>
  <div class="card">
   <div class="form-grid">
-   <div class="field"><label>SELECT EXAM</label>
-    <select id="exam"><option>UPSC</option><option>All Examinations</option><option>State PCS</option><option>SSC</option><option>Banking</option><option>Railway</option><option>Teaching</option><option>Other</option></select>
-   </div>
-   <div class="field hidden" id="stateBox"><label>SELECT STATE</label>
-    <select id="state"><option value="">All States</option><option>Odisha</option><option>Rajasthan</option><option>Bihar</option><option>Uttar Pradesh</option><option>Madhya Pradesh</option></select>
-   </div>
-   <div class="field"><label>SUBJECT</label>
-    <select id="subject"><option value="">All Subjects</option><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option><option>Environment</option></select>
-   </div>
-   <div class="field"><label>TOPIC</label>
-    <select id="topic"><option value="">All Topics</option></select>
-   </div>
-   <div class="field"><label>YEAR</label>
-    <select id="year">
-     <option>All Years</option>
-     <option>2026</option><option>2025</option><option>2024</option>
-     <option>2023</option><option>2022</option><option>2021</option>
-     <option>2020</option><option>2019</option><option>2018</option>
-     <option>2017</option><option>2016</option><option>2015</option>
-     <option>Older</option>
-    </select>
-   </div>
-   <div class="field"><label>SEARCH KEYWORD</label>
-    <input id="keyword" placeholder="Search question...">
-   </div>
+   <div class="field"><label>SELECT EXAM</label><select id="exam"><option>UPSC</option><option>All Examinations</option><option>State PCS</option><option>SSC</option><option>Banking</option><option>Railway</option><option>Teaching</option><option>Other</option></select></div>
+   <div class="field hidden" id="stateBox"><label>SELECT STATE</label><select id="state"><option value="">All States</option><option>Odisha</option><option>Rajasthan</option><option>Bihar</option><option>Uttar Pradesh</option><option>Madhya Pradesh</option></select></div>
+   <div class="field"><label>SUBJECT</label><select id="subject"><option value="">All Subjects</option><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option><option>Environment</option></select></div>
+   <div class="field"><label>TOPIC</label><select id="topic"><option value="">All Topics</option></select></div>
+   <div class="field"><label>YEAR</label><select id="year"><option>All Years</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option><option>2018</option><option>2017</option><option>2016</option><option>2015</option><option>Older</option></select></div>
+   <div class="field"><label>SEARCH KEYWORD</label><input id="keyword" placeholder="Search question..."></div>
   </div>
-  <button class="btn" id="search">Search Questions</button>
-  <button class="btn line" id="reset">Reset</button>
+  <button class="btn" id="search">Search Questions</button><button class="btn line" id="reset">Reset</button>
  </div>
- <div class="between"><h3>Question Results</h3><span class="muted" id="resultCount"></span></div>
- <div id="results"></div>
+ <div class="between"><h3>Question Results</h3><span class="muted" id="resultCount"></span></div><div id="results"></div>
 </section>
 
-<!-- PRACTICE -->
 <section class="page" id="page-practice">
- <h2>Practice Zone</h2>
- <p class="muted">Practise sample questions and analyse your answers.</p>
- <div class="card">
-  <div class="form-grid">
-   <div class="field"><label>SUBJECT</label>
-    <select id="practiceSubject"><option>All Subjects</option><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option><option>Environment</option></select>
-   </div>
-   <div class="field"><label>QUESTIONS</label>
-    <select id="practiceCount"><option>5</option><option>10</option></select>
-   </div>
-  </div>
-  <button class="btn" id="startPractice">Start Practice</button>
- </div>
- <div class="card hidden" id="practiceArea">
-  <b id="practiceProgress"></b>
-  <div id="practiceQuestion"></div>
-  <button class="btn line" id="prev">Previous</button>
-  <button class="btn" id="next">Next</button>
-  <button class="btn hidden" id="submit">Submit Test</button>
- </div>
+ <h2>Practice Zone</h2><p class="muted">Practise sample questions and analyse your answers.</p>
+ <div class="card"><div class="form-grid">
+  <div class="field"><label>SUBJECT</label><select id="practiceSubject"><option>All Subjects</option><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option><option>Environment</option></select></div>
+  <div class="field"><label>QUESTIONS</label><select id="practiceCount"><option>5</option><option>10</option></select></div>
+ </div><button class="btn" id="startPractice">Start Practice</button></div>
+ <div class="card hidden" id="practiceArea"><b id="practiceProgress"></b><div id="practiceQuestion"></div><button class="btn line" id="prev">Previous</button><button class="btn" id="next">Next</button><button class="btn hidden" id="submit">Submit Test</button></div>
  <div class="card hidden" id="practiceResult"></div>
 </section>
 
-<!-- PERFORMANCE -->
 <section class="page" id="page-performance">
- <h2>Performance Analysis</h2>
- <p class="muted">Your practice results and accuracy.</p>
+ <h2>Performance Analysis</h2><p class="muted">Your practice results and accuracy.</p>
  <div class="grid g4">
-  <div class="card stat">Attempted<strong id="pAttempt">0</strong></div>
-  <div class="card stat">Correct<strong id="pCorrect">0</strong></div>
-  <div class="card stat">Incorrect<strong id="pWrong">0</strong></div>
-  <div class="card stat">Accuracy<strong id="pAccuracy">0%</strong></div>
+  <div class="card stat">Attempted<strong id="pAttempt">0</strong></div><div class="card stat">Correct<strong id="pCorrect">0</strong></div><div class="card stat">Incorrect<strong id="pWrong">0</strong></div><div class="card stat">Accuracy<strong id="pAccuracy">0%</strong></div>
  </div>
  <div class="card"><h3>Recent Sessions</h3><div id="sessions" class="muted">No sessions recorded yet.</div></div>
 </section>
 
-<!-- NOTES -->
 <section class="page" id="page-study">
- <h2>My Study Space</h2>
- <div class="grid g2">
-  <div class="card">
-   <h3>Create Notes</h3>
+ <h2>My Study Space</h2><div class="grid g2">
+  <div class="card"><h3>Create Notes</h3>
    <div class="field"><label>NOTE TITLE</label><input id="noteTitle" placeholder="Fundamental Rights"></div>
-   <div class="field"><label>SUBJECT</label>
-    <select id="noteSubject"><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option><option>Other</option></select>
-   </div>
-   <div class="field"><label>YOUR NOTES</label><textarea id="noteBody" rows="5" placeholder="Write your notes..."></textarea></div>
-   <button class="btn" id="saveNote">Save Note</button>
+   <div class="field"><label>SUBJECT</label><select id="noteSubject"><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option><option>Other</option></select></div>
+   <div class="field"><label>YOUR NOTES</label><textarea id="noteBody" rows="5" placeholder="Write your notes..."></textarea></div><button class="btn" id="saveNote">Save Note</button>
   </div>
   <div class="card"><h3>Saved Notes</h3><div id="notesList" class="muted"></div></div>
  </div>
 </section>
 
-<!-- REVISION -->
 <section class="page" id="page-revision">
- <h2>Smart Revision Planner</h2>
- <p class="muted">Add topics and schedule revision after 1, 3, 7, 15 or 30 days.</p>
- <div class="card">
-  <div class="field"><label>TOPIC</label><input id="revTopic" placeholder="e.g. Parliament"></div>
+ <h2>Smart Revision Planner</h2><p class="muted">Add topics and schedule revision after 1, 3, 7, 15 or 30 days.</p>
+ <div class="card"><div class="field"><label>TOPIC</label><input id="revTopic" placeholder="e.g. Parliament"></div>
   <div class="form-grid">
-   <div class="field"><label>SUBJECT</label>
-    <select id="revSubject"><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option></select>
-   </div>
-   <div class="field"><label>REVISION INTERVAL</label>
-    <select id="revDays"><option value="1">1 Day</option><option value="3">3 Days</option><option value="7">7 Days</option><option value="15">15 Days</option><option value="30">30 Days</option></select>
-   </div>
-  </div>
-  <button class="btn" id="addRevision">Add Topic</button>
+   <div class="field"><label>SUBJECT</label><select id="revSubject"><option>Polity</option><option>History</option><option>Geography</option><option>Economy</option></select></div>
+   <div class="field"><label>REVISION INTERVAL</label><select id="revDays"><option value="1">1 Day</option><option value="3">3 Days</option><option value="7">7 Days</option><option value="15">15 Days</option><option value="30">30 Days</option></select></div>
+  </div><button class="btn" id="addRevision">Add Topic</button>
  </div>
  <div class="card"><h3>Revision Schedule</h3><div id="revisionList"></div></div>
 </section>
 
-<!-- GOALS -->
 <section class="page" id="page-goals">
- <h2>Daily Goals</h2>
- <div class="card">
+ <h2>Daily Goals</h2><div class="card">
   <div class="field"><label>YOUR DAILY TARGET</label><input id="goalInput" placeholder="Complete one Polity chapter"></div>
-  <div class="field"><label>TARGET TYPE</label><select id="goalType"><option>Study</option><option>Practice</option><option>Revision</option><option>Reading</option></select></div>
-  <button class="btn" id="addGoal">Add Goal</button>
+  <div class="field"><label>TARGET TYPE</label><select id="goalType"><option>Study</option><option>Practice</option><option>Revision</option><option>Reading</option></select></div><button class="btn" id="addGoal">Add Goal</button>
  </div>
  <div class="card"><div class="between"><h3>Today's Checklist</h3><b id="goalCount">0 / 0</b></div><div id="goalList"></div></div>
 </section>
 
-<!-- BOOKMARKS -->
-<section class="page" id="page-bookmarks">
- <h2>Bookmarks</h2>
- <p class="muted">Your saved questions.</p>
- <div class="card" id="bookmarkList">No bookmarks yet.</div>
-</section>
+<section class="page" id="page-bookmarks"><h2>Bookmarks</h2><p class="muted">Your saved questions.</p><div class="card" id="bookmarkList">No bookmarks yet.</div></section>
 
-<!-- MISTAKES -->
 <section class="page" id="page-mistakes">
- <h2>Mistake Notebook</h2>
- <div class="grid g2">
+ <h2>Mistake Notebook</h2><div class="grid g2">
   <div class="card">
    <div class="field"><label>QUESTION / TOPIC</label><input id="mistakeTopic" placeholder="What did you get wrong?"></div>
-   <div class="field"><label>REASON</label>
-    <select id="mistakeReason"><option>Concept not clear</option><option>Forgot a fact</option><option>Wrong elimination</option><option>Misread question</option><option>Guesswork</option></select>
-   </div>
-   <div class="field"><label>LESSON / CORRECTION</label><textarea id="mistakeLesson" rows="4"></textarea></div>
-   <button class="btn" id="saveMistake">Save Mistake</button>
-  </div>
-  <div class="card"><h3>My Mistakes</h3><div id="mistakeList"></div></div>
+   <div class="field"><label>REASON</label><select id="mistakeReason"><option>Concept not clear</option><option>Forgot a fact</option><option>Wrong elimination</option><option>Misread question</option><option>Guesswork</option></select></div>
+   <div class="field"><label>LESSON / CORRECTION</label><textarea id="mistakeLesson" rows="4"></textarea></div><button class="btn" id="saveMistake">Save Mistake</button>
+  </div><div class="card"><h3>My Mistakes</h3><div id="mistakeList"></div></div>
  </div>
 </section>
 
-<!-- TIMER -->
 <section class="page" id="page-timer">
- <h2>Focus Timer</h2>
- <p class="muted">Set study and break durations in Settings.</p>
+ <h2>Focus Timer</h2><p class="muted">Set study and break durations in Settings.</p>
  <div class="card" style="max-width:600px;margin:20px auto;text-align:center">
-  <span class="badge" id="timerMode">Focus Session</span>
-  <div class="timer" id="timerDisplay">25:00</div>
-  <p class="muted" id="timerStatus">Ready when you are.</p>
-  <button class="btn" id="timerStart">Start</button>
-  <button class="btn soft" id="timerPause">Pause</button>
-  <button class="btn line" id="timerReset">Reset</button>
-  <button class="btn line" id="timerSwitch">Switch to Break</button>
+  <span class="badge" id="timerMode">Focus Session</span><div class="timer" id="timerDisplay">25:00</div><p class="muted" id="timerStatus">Ready when you are.</p>
+  <button class="btn" id="timerStart">Start</button><button class="btn soft" id="timerPause">Pause</button><button class="btn line" id="timerReset">Reset</button><button class="btn line" id="timerSwitch">Switch to Break</button>
  </div>
 </section>
 
-<!-- TRENDS -->
 <section class="page" id="page-trends">
- <h2>PYQ Trend Analysis</h2>
- <p class="muted">Illustrative distribution only — not actual exam statistics.</p>
- <div class="card" id="trendList"></div>
+ <h2>PYQ Trend Analysis</h2><p class="muted">Illustrative distribution only — not actual exam statistics.</p><div class="card" id="trendList"></div>
 </section>
 
-<!-- NEWSROOM -->
 <section class="page" id="page-newsroom">
  <div id="newsHome">
-  <div class="hero">
-   <small>CURRENT AFFAIRS WORKSPACE</small>
-   <h2>Read the news. Understand the issue.</h2>
-   <p>Select your newspaper and read independently. You do not need to use any other Newsroom feature.</p>
-   <button class="btn light" id="readerButton">Open Newspaper Reader →</button>
-  </div>
-
+  <div class="hero"><small>CURRENT AFFAIRS WORKSPACE</small><h2>Read the news. Understand the issue.</h2><p>Select your newspaper and read independently. You do not need to use any other Newsroom feature.</p><button class="btn light" id="readerButton">Open Newspaper Reader →</button></div>
   <h3 class="section-title">Choose Your Newspaper</h3>
   <div class="paper-grid">
-   <button class="paper selected" data-paper="The Hindu">
-    <div style="font:bold 25px Georgia">TH</div><b>The Hindu</b>
-    <small class="muted">News and editorials</small>
-   </button>
-   <button class="paper" data-paper="The Indian Express">
-    <div style="font-weight:900;font-size:25px">IE</div><b>The Indian Express</b>
-    <small class="muted">Explained and policy</small>
-   </button>
-   <button class="paper" data-paper="Business Standard">
-    <div style="font-weight:900;font-size:25px">BS</div><b>Business Standard</b>
-    <small class="muted">Economy and finance</small>
-   </button>
+   <button class="paper selected" data-paper="The Hindu"><div style="font:bold 25px Georgia">TH</div><b>The Hindu</b><small class="muted">News and editorials</small></button>
+   <button class="paper" data-paper="The Indian Express"><div style="font-weight:900;font-size:25px">IE</div><b>The Indian Express</b><small class="muted">Explained and policy</small></button>
+   <button class="paper" data-paper="Business Standard"><div style="font-weight:900;font-size:25px">BS</div><b>Business Standard</b><small class="muted">Economy and finance</small></button>
   </div>
-  <div class="card between" style="margin-top:12px">
-   <div><b id="selectedPaper">The Hindu</b><p class="muted">Selected newspaper</p></div>
-   <button class="btn" id="openPaper">Read Newspaper ↗</button>
-  </div>
-
+  <div class="card between" style="margin-top:12px"><div><b id="selectedPaper">The Hindu</b><p class="muted">Selected newspaper</p></div><button class="btn" id="openPaper">Read Newspaper ↗</button></div>
   <h3 class="section-title">Optional Newsroom Features</h3>
   <div class="grid g3" id="newsFeatures">
-   <button class="shortcut" data-feature="Daily News Feed">📰 Daily News Feed</button>
-   <button class="shortcut" data-feature="Editorial Analysis">✍️ Editorial Analysis</button>
-   <button class="shortcut" data-feature="Syllabus Mapping">🎯 Syllabus Mapping</button>
-   <button class="shortcut" data-feature="Prelims Facts">📌 Prelims Facts</button>
-   <button class="shortcut" data-feature="Vocabulary">📖 Vocabulary</button>
-   <button class="shortcut" data-feature="Daily Quiz">🧠 Daily Quiz</button>
-   <button class="shortcut" data-feature="Read Later">🔖 Read Later</button>
-   <button class="shortcut" data-feature="Reading Tracker">📊 Reading Tracker</button>
-   <button class="shortcut" data-feature="Radar Daily Brief">⚡ Radar Daily Brief</button>
+   <button class="shortcut" data-feature="Daily News Feed">📰 Daily News Feed</button><button class="shortcut" data-feature="Editorial Analysis">✍️ Editorial Analysis</button><button class="shortcut" data-feature="Syllabus Mapping">🎯 Syllabus Mapping</button><button class="shortcut" data-feature="Prelims Facts">📌 Prelims Facts</button><button class="shortcut" data-feature="Vocabulary">📖 Vocabulary</button><button class="shortcut" data-feature="Daily Quiz">🧠 Daily Quiz</button><button class="shortcut" data-feature="Read Later">🔖 Read Later</button><button class="shortcut" data-feature="Reading Tracker">📊 Reading Tracker</button><button class="shortcut" data-feature="Radar Daily Brief">⚡ Radar Daily Brief</button>
   </div>
   <div class="card hidden" id="newsFeaturePanel">
    <div class="between"><h3 id="newsFeatureTitle"></h3><button class="btn line small" id="closeNewsFeature">Close</button></div>
-   <div id="newsFeatureContent" class="grid g2"></div>
-   <p class="muted">These are sample feature sections. Live news content is not connected yet.</p>
+   <div id="newsFeatureContent" class="grid g2"></div><p class="muted">These are sample feature sections. Live news content is not connected yet.</p>
   </div>
  </div>
-
  <div id="readerPanel" class="hidden">
   <div class="between"><div><span class="badge">INDEPENDENT READING MODE</span><h2>Newspaper Reader</h2><p class="muted">No extra features are required.</p></div><button class="btn line" id="backNews">← Back</button></div>
-  <div class="card">
-   <div class="field"><label>SELECT NEWSPAPER</label>
-    <select id="readerSelect"><option>The Hindu</option><option>The Indian Express</option><option>Business Standard</option></select>
-   </div>
-   <button class="btn" id="readerOpen">Open Official Newspaper ↗</button>
-  </div>
-  <div class="reader">
-   <small class="muted">PYQ RADAR · READER MODE</small>
-   <h2 id="readerHeading">The Hindu</h2>
-   <p><b>Distraction-free newspaper reading</b></p>
-   <p>Continue to the publisher's official website. PYQ Radar does not reproduce or host copyrighted newspaper articles. Publisher subscription and access policies apply.</p>
-   <div style="text-align:center"><button class="btn" id="readerContinue">Continue to Newspaper ↗</button></div>
-  </div>
+  <div class="card"><div class="field"><label>SELECT NEWSPAPER</label><select id="readerSelect"><option>The Hindu</option><option>The Indian Express</option><option>Business Standard</option></select></div><button class="btn" id="readerOpen">Open Official Newspaper ↗</button></div>
+  <div class="reader"><small class="muted">PYQ RADAR · READER MODE</small><h2 id="readerHeading">The Hindu</h2><p><b>Distraction-free newspaper reading</b></p><p>Continue to the publisher's official website. PYQ Radar does not reproduce or host copyrighted newspaper articles. Publisher subscription and access policies apply.</p><div style="text-align:center"><button class="btn" id="readerContinue">Continue to Newspaper ↗</button></div></div>
  </div>
 </section>
 
-<!-- ACCOUNT -->
 <section class="page" id="page-account">
- <h2>My Account</h2>
- <div class="card" style="max-width:550px">
-  <div class="field"><label>YOUR DISPLAY NAME</label><input id="accountName"></div>
-  <button class="btn" id="saveAccount">Save Profile</button>
-  <p class="muted">This demo stores your display name in this browser. It is not a secure online login system.</p>
- </div>
+ <h2>My Account</h2><div class="card" style="max-width:550px"><div class="field"><label>YOUR DISPLAY NAME</label><input id="accountName"></div><button class="btn" id="saveAccount">Save Profile</button><p class="muted">This demo stores your display name in this browser. It is not a secure online login system.</p></div>
 </section>
 
-<!-- SETTINGS -->
 <section class="page" id="page-settings">
- <h2>Settings</h2>
- <div class="grid g2">
-  <div class="card">
-   <h3>Focus Timer Settings</h3>
-   <div class="field"><label>FOCUS DURATION (MINUTES)</label><input id="focusSetting" type="number" min="1" max="180" value="25"></div>
-   <div class="field"><label>BREAK DURATION (MINUTES)</label><input id="breakSetting" type="number" min="1" max="60" value="5"></div>
-   <button class="btn" id="saveTimerSettings">Save Timer Settings</button>
-  </div>
-  <div class="card">
-   <h3>Daily Thought Settings</h3>
-   <div class="field"><label>NUMBER OF QUOTES</label><select id="quoteCount"><option>3</option><option selected>5</option><option>8</option><option>10</option></select></div>
-   <div class="field"><label>ROTATION INTERVAL</label><select id="quoteInterval"><option value="15">15 seconds</option><option value="30">30 seconds</option><option value="60">1 minute</option><option value="300">5 minutes</option></select></div>
-   <div class="field"><label>COLOUR THEME</label><select id="quoteTheme"><option value="auto">Auto change</option><option value="blue">Blue</option><option value="purple">Purple</option><option value="green">Green</option></select></div>
-   <label><input id="showQuote" type="checkbox" checked style="width:auto"> Show Daily Thought</label>
-   <button class="btn" id="saveQuoteSettings">Save Thought Settings</button>
-  </div>
+ <h2>Settings</h2><div class="grid g2">
+  <div class="card"><h3>Focus Timer Settings</h3><div class="field"><label>FOCUS DURATION (MINUTES)</label><input id="focusSetting" type="number" min="1" max="180" value="25"></div><div class="field"><label>BREAK DURATION (MINUTES)</label><input id="breakSetting" type="number" min="1" max="60" value="5"></div><button class="btn" id="saveTimerSettings">Save Timer Settings</button></div>
+  <div class="card"><h3>Daily Thought Settings</h3><div class="field"><label>NUMBER OF QUOTES</label><select id="quoteCount"><option>3</option><option selected>5</option><option>8</option><option>10</option></select></div><div class="field"><label>ROTATION INTERVAL</label><select id="quoteInterval"><option value="15">15 seconds</option><option value="30">30 seconds</option><option value="60">1 minute</option><option value="300">5 minutes</option></select></div><div class="field"><label>COLOUR THEME</label><select id="quoteTheme"><option value="auto">Auto change</option><option value="blue">Blue</option><option value="purple">Purple</option><option value="green">Green</option></select></div><label><input id="showQuote" type="checkbox" checked style="width:auto"> Show Daily Thought</label><button class="btn" id="saveQuoteSettings">Save Thought Settings</button></div>
  </div>
- <div class="card">
-  <h3>Data Backup</h3>
-  <p class="muted">Your browser stores notes, goals, bookmarks and practice results locally.</p>
-  <button class="btn soft" id="exportData">Export Backup</button>
-  <button class="btn danger" id="resetData">Reset Local Data</button>
- </div>
+ <div class="card"><h3>Data Backup</h3><p class="muted">Your browser stores notes, goals, bookmarks and practice results locally.</p><button class="btn soft" id="exportData">Export Backup</button><button class="btn danger" id="resetData">Reset Local Data</button></div>
 </section>
 
-<div class="footer">© 2026 All Rights Reserved.<br>
-Designed & Developed by <b>Satya Jigyansu</b><br>
-Built for Aspirants, Driven by Knowledge.</div>
+<div class="footer">© 2026 All Rights Reserved.<br>Designed & Developed by <b>Satya Jigyansu</b><br>Built for Aspirants, Driven by Knowledge.</div>
 </div>
-
 <nav class="bottom-nav">
- <button data-page="dashboard" class="active">⌂<br>Home</button>
- <button data-page="pyqs">▤<br>PYQs</button>
- <button data-page="practice">◎<br>Practice</button>
- <button data-page="newsroom">▣<br>News</button>
- <button data-page="performance">▥<br>Score</button>
+ <button data-page="dashboard" class="active">⌂<br>Home</button><button data-page="pyqs">▤<br>PYQs</button><button data-page="practice">◎<br>Practice</button><button data-page="newsroom">▣<br>News</button><button data-page="performance">▥<br>Score</button>
 </nav>
 </main>
 
 <script>
 const KEY="pyqRadarData";
-const defaults={
- name:"Satya Jigyansu",bookmarks:[],notes:[],revisions:[],
- goals:[],mistakes:[],attempts:[],sessions:[],
- settings:{focus:25,break:5,quoteCount:5,quoteInterval:30,
- quoteTheme:"auto",showQuote:true}
-};
+const defaults={name:"Satya Jigyansu",bookmarks:[],notes:[],revisions:[],goals:[],mistakes:[],attempts:[],sessions:[],settings:{focus:25,break:5,quoteCount:5,quoteInterval:30,quoteTheme:"auto",showQuote:true}};
 let data;
-try{
- data={...defaults,...JSON.parse(localStorage.getItem(KEY)||"{}")};
- data.settings={...defaults.settings,...data.settings};
-}catch(e){data={...defaults}}
+try{data={...defaults,...JSON.parse(localStorage.getItem(KEY)||"{}")};data.settings={...defaults.settings,...data.settings};}catch(e){data={...defaults}}
 const $=id=>document.getElementById(id);
 const save=()=>{localStorage.setItem(KEY,JSON.stringify(data));renderAll()};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const today=()=>new Date().toISOString().slice(0,10);
-const addDays=(n)=>{let d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const addDays=n=>{let d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
 function go(page){
  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+page));
  document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
  const names={dashboard:"Dashboard",pyqs:"Explore PYQs",practice:"Practice Zone",performance:"Performance",study:"My Study Space",revision:"Revision Planner",goals:"Daily Goals",bookmarks:"Bookmarks",mistakes:"Mistake Notebook",timer:"Focus Timer",trends:"PYQ Trend Analysis",newsroom:"Newsroom",account:"My Account",settings:"Settings"};
- $("title").textContent=names[page]||page;
- $("crumb").textContent=names[page]||page;
- $("sidebar").classList.remove("open");
- window.scrollTo(0,0);
- if(page==="newsroom")newsHome();
- if(page==="pyqs")renderPyqs();
- if(page==="performance")renderPerformance();
+ $("title").textContent=names[page]||page;$("crumb").textContent=names[page]||page;$("sidebar").classList.remove("open");window.scrollTo(0,0);
+ if(page==="newsroom")newsHome();if(page==="pyqs")renderPyqs();if(page==="performance")renderPerformance();
 }
 document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>go(b.dataset.page));
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
 $("menu").onclick=()=>$("sidebar").classList.toggle("open");
+function profile(){$("welcomeName").textContent=data.name;$("topName").textContent=data.name;$("accountName").value=data.name}
+$("saveAccount").onclick=()=>{let n=$("accountName").value.trim();if(!n)return alert("Please enter your name.");data.name=n;save();alert("Profile updated.")};
 
-function profile(){
- $("welcomeName").textContent=data.name;
- $("topName").textContent=data.name;
- $("accountName").value=data.name;
-}
-$("saveAccount").onclick=()=>{
- let n=$("accountName").value.trim();
- if(!n)return alert("Please enter your name.");
- data.name=n;save();alert("Profile updated.");
-};
-
-/* DEMO QUESTION BANK
-   These are illustrative questions, not verified official PYQs. */
+/* DEMO QUESTION BANK: illustrative questions, not verified official PYQs. */
 const questions=[
- {id:"q1",year:2024,subject:"Polity",topic:"Fundamental Rights",
- q:"Which statement best describes Fundamental Rights?",
- o:["They are absolute.","They are enforceable by courts subject to constitutional restrictions.","They cannot be amended.","They apply only to citizens in every case."],
- a:1,why:"Fundamental Rights are judicially enforceable, subject to constitutional limitations."},
- {id:"q2",year:2023,subject:"History",topic:"Buddhism",
- q:"Which of the following is associated with Buddhist teachings?",
- o:["Four Noble Truths","Doctrine of Divine Right","Vedic ritual supremacy","Theory of Social Contract"],
- a:0,why:"The Four Noble Truths are central to Buddhist teachings."},
- {id:"q3",year:2022,subject:"Geography",topic:"Climate",
- q:"A rain shadow region is generally located:",
- o:["On the windward side","On the leeward side of a mountain","At the equator","In polar regions only"],
- a:1,why:"The leeward side receives less rainfall after moist air loses moisture on the windward side."},
- {id:"q4",year:2021,subject:"Economy",topic:"Inflation",
- q:"Demand-pull inflation is caused by:",
- o:["Rising production costs","Aggregate demand rising relative to supply","Falling demand","Lower money circulation"],
- a:1,why:"Demand-pull inflation occurs when aggregate demand rises faster than supply."},
- {id:"q5",year:2020,subject:"Environment",topic:"Biodiversity",
- q:"Biodiversity includes diversity at which levels?",
- o:["Only species","Genetic, species and ecosystem","Only ecosystem","Only genetic"],
- a:1,why:"Biodiversity is commonly understood at genetic, species and ecosystem levels."},
- {id:"q6",year:2019,subject:"Polity",topic:"Parliament",
- q:"The Council of Ministers is collectively responsible to:",
- o:["President","Lok Sabha","Supreme Court","Election Commission"],
- a:1,why:"Article 75(3) provides for collective responsibility to the Lok Sabha."}
+{id:"q1",year:2024,subject:"Polity",topic:"Fundamental Rights",q:"Which statement best describes Fundamental Rights?",o:["They are absolute.","They are enforceable by courts subject to constitutional restrictions.","They cannot be amended.","They apply only to citizens in every case."],a:1,why:"Fundamental Rights are judicially enforceable, subject to constitutional limitations."},
+{id:"q2",year:2023,subject:"History",topic:"Buddhism",q:"Which of the following is associated with Buddhist teachings?",o:["Four Noble Truths","Doctrine of Divine Right","Vedic ritual supremacy","Theory of Social Contract"],a:0,why:"The Four Noble Truths are central to Buddhist teachings."},
+{id:"q3",year:2022,subject:"Geography",topic:"Climate",q:"A rain shadow region is generally located:",o:["On the windward side","On the leeward side of a mountain","At the equator","In polar regions only"],a:1,why:"The leeward side receives less rainfall after moist air loses moisture on the windward side."},
+{id:"q4",year:2021,subject:"Economy",topic:"Inflation",q:"Demand-pull inflation is caused by:",o:["Rising production costs","Aggregate demand rising relative to supply","Falling demand","Lower money circulation"],a:1,why:"Demand-pull inflation occurs when aggregate demand rises faster than supply."},
+{id:"q5",year:2020,subject:"Environment",topic:"Biodiversity",q:"Biodiversity includes diversity at which levels?",o:["Only species","Genetic, species and ecosystem","Only ecosystem","Only genetic"],a:1,why:"Biodiversity is commonly understood at genetic, species and ecosystem levels."},
+{id:"q6",year:2019,subject:"Polity",topic:"Parliament",q:"The Council of Ministers is collectively responsible to:",o:["President","Lok Sabha","Supreme Court","Election Commission"],a:1,why:"Article 75(3) provides for collective responsibility to the Lok Sabha."}
 ];
-const topics={
- Polity:["Fundamental Rights","Parliament","Constitution","Judiciary"],
- History:["Buddhism","Ancient India","Modern India"],
- Geography:["Climate","Indian Geography"],
- Economy:["Inflation","Banking"],
- Environment:["Biodiversity"]
-};
-function updateTopics(){
- let list=topics[$("subject").value]||[];
- $("topic").innerHTML='<option value="">All Topics</option>'+list.map(t=>`<option>${esc(t)}</option>`).join("");
-}
+const topics={Polity:["Fundamental Rights","Parliament","Constitution","Judiciary"],History:["Buddhism","Ancient India","Modern India"],Geography:["Climate","Indian Geography"],Economy:["Inflation","Banking"],Environment:["Biodiversity"]};
+function updateTopics(){let list=topics[$("subject").value]||[];$("topic").innerHTML='<option value="">All Topics</option>'+list.map(t=>`<option>${esc(t)}</option>`).join("")}
 $("subject").onchange=updateTopics;
-$("exam").onchange=()=>{
- $("stateBox").classList.toggle("hidden",["UPSC","All Examinations"].includes($("exam").value));
-};
+$("exam").onchange=()=>{$("stateBox").classList.toggle("hidden",["UPSC","All Examinations"].includes($("exam").value))};
 function getFiltered(){
  let subject=$("subject").value,topic=$("topic").value,year=$("year").value,keyword=$("keyword").value.toLowerCase();
- return questions.filter(q=>
- (!subject||q.subject===subject)&&(!topic||q.topic===topic)&&
- (!keyword||q.q.toLowerCase().includes(keyword)||q.topic.toLowerCase().includes(keyword))&&
- (year==="All Years"||(year==="Older"?q.year<2015:String(q.year)===year))
- );
+ return questions.filter(q=>(!subject||q.subject===subject)&&(!topic||q.topic===topic)&&(!keyword||q.q.toLowerCase().includes(keyword)||q.topic.toLowerCase().includes(keyword))&&(year==="All Years"||(year==="Older"?q.year<2015:String(q.year)===year)));
 }
 function questionHTML(q,showBookmark=true){
  let saved=data.bookmarks.some(x=>x.id===q.id);
- return `<div class="question">
- <span class="badge">UPSC Prelims · Demo</span>
- <p><b>${esc(q.q)}</b></p>
- ${q.o.map((o,i)=>`<div class="muted" style="padding:5px 0">${"ABCD"[i]}. ${esc(o)}</div>`).join("")}
- <p class="muted">Year: ${q.year}</p>
- <button class="btn soft small" data-answer="${q.id}">Show Answer</button>
- ${showBookmark?`<button class="btn line small" data-bookmark="${q.id}">${saved?"★ Saved":"☆ Bookmark"}</button>`:""}
- <div class="answer hidden" id="answer-${q.id}"><b>Answer: ${"ABCD"[q.a]}</b><br>${esc(q.why)}</div>
- <p class="muted">Illustrative demo question — not a verified official PYQ.</p>
- </div>`;
+ return `<div class="question"><span class="badge">UPSC Prelims · Demo</span><p><b>${esc(q.q)}</b></p>${q.o.map((o,i)=>`<div class="muted" style="padding:5px 0">${"ABCD"[i]}. ${esc(o)}</div>`).join("")}<p class="muted">Year: ${q.year}</p><button class="btn soft small" data-answer="${q.id}">Show Answer</button>${showBookmark?`<button class="btn line small" data-bookmark="${q.id}">${saved?"★ Saved":"☆ Bookmark"}</button>`:""}<div class="answer hidden" id="answer-${q.id}"><b>Answer: ${"ABCD"[q.a]}</b><br>${esc(q.why)}</div><p class="muted">Illustrative demo question — not a verified official PYQ.</p></div>`;
 }
 function wireQuestions(){
- document.querySelectorAll("[data-answer]").forEach(b=>b.onclick=()=>{
-  let a=$("answer-"+b.dataset.answer);a.classList.toggle("hidden");
-  b.textContent=a.classList.contains("hidden")?"Show Answer":"Hide Answer";
- });
- document.querySelectorAll("[data-bookmark]").forEach(b=>b.onclick=()=>{
-  let q=questions.find(x=>x.id===b.dataset.bookmark);
-  if(data.bookmarks.some(x=>x.id===q.id))data.bookmarks=data.bookmarks.filter(x=>x.id!==q.id);
-  else data.bookmarks.push(q);
-  save();renderPyqs();
- });
+ document.querySelectorAll("[data-answer]").forEach(b=>b.onclick=()=>{let a=$("answer-"+b.dataset.answer);a.classList.toggle("hidden");b.textContent=a.classList.contains("hidden")?"Show Answer":"Hide Answer"});
+ document.querySelectorAll("[data-bookmark]").forEach(b=>b.onclick=()=>{let q=questions.find(x=>x.id===b.dataset.bookmark);if(data.bookmarks.some(x=>x.id===q.id))data.bookmarks=data.bookmarks.filter(x=>x.id!==q.id);else data.bookmarks.push(q);save();renderPyqs()});
 }
-function renderPyqs(){
- let qs=getFiltered();
- $("resultCount").textContent=qs.length+" questions";
- $("results").innerHTML=qs.length?qs.map(q=>questionHTML(q)).join(""):"<div class='card muted'>No matching sample questions. Try changing filters.</div>";
- wireQuestions();
-}
+function renderPyqs(){let qs=getFiltered();$("resultCount").textContent=qs.length+" questions";$("results").innerHTML=qs.length?qs.map(q=>questionHTML(q)).join(""):"<div class='card muted'>No matching sample questions. Try changing filters.</div>";wireQuestions()}
 $("search").onclick=renderPyqs;
-$("reset").onclick=()=>{
- $("exam").value="UPSC";$("state").value="";$("stateBox").classList.add("hidden");
- $("subject").value="";updateTopics();$("year").value="All Years";$("keyword").value="";
- renderPyqs();
-};
+$("reset").onclick=()=>{$("exam").value="UPSC";$("state").value="";$("stateBox").classList.add("hidden");$("subject").value="";updateTopics();$("year").value="All Years";$("keyword").value="";renderPyqs()};
 
 /* PRACTICE */
 let practice=[],pIndex=0,pAnswers={};
-$("startPractice").onclick=()=>{
- let subject=$("practiceSubject").value;
- practice=questions.filter(q=>subject==="All Subjects"||q.subject===subject).slice(0,+$("practiceCount").value);
- if(!practice.length)practice=questions.slice(0,5);
- pIndex=0;pAnswers={};$("practiceArea").classList.remove("hidden");
- $("practiceResult").classList.add("hidden");renderPractice();
-};
+$("startPractice").onclick=()=>{let subject=$("practiceSubject").value;practice=questions.filter(q=>subject==="All Subjects"||q.subject===subject).slice(0,+$("practiceCount").value);if(!practice.length)practice=questions.slice(0,5);pIndex=0;pAnswers={};$("practiceArea").classList.remove("hidden");$("practiceResult").classList.add("hidden");renderPractice()};
 function renderPractice(){
- let q=practice[pIndex];
- $("practiceProgress").textContent=`Question ${pIndex+1} of ${practice.length}`;
- $("practiceQuestion").innerHTML=`<p><b>${esc(q.q)}</b></p>`+
- q.o.map((o,i)=>`<label class="option"><input type="radio" name="pa" value="${i}" ${pAnswers[q.id]===i?"checked":""}> ${"ABCD"[i]}. ${esc(o)}</label>`).join("");
+ let q=practice[pIndex];$("practiceProgress").textContent=`Question ${pIndex+1} of ${practice.length}`;
+ $("practiceQuestion").innerHTML=`<p><b>${esc(q.q)}</b></p>`+q.o.map((o,i)=>`<label class="option"><input type="radio" name="pa" value="${i}" ${pAnswers[q.id]===i?"checked":""}> ${"ABCD"[i]}. ${esc(o)}</label>`).join("");
  document.querySelectorAll("[name=pa]").forEach(r=>r.onchange=()=>pAnswers[q.id]=+r.value);
- $("prev").disabled=pIndex===0;
- $("next").classList.toggle("hidden",pIndex===practice.length-1);
- $("submit").classList.toggle("hidden",pIndex!==practice.length-1);
+ $("prev").disabled=pIndex===0;$("next").classList.toggle("hidden",pIndex===practice.length-1);$("submit").classList.toggle("hidden",pIndex!==practice.length-1);
 }
 $("prev").onclick=()=>{if(pIndex>0){pIndex--;renderPractice()}};
 $("next").onclick=()=>{if(pIndex<practice.length-1){pIndex++;renderPractice()}};
 $("submit").onclick=()=>{
  let correct=0;
- practice.forEach(q=>{
-  let ok=pAnswers[q.id]===q.a;if(ok)correct++;
-  data.attempts.push({subject:q.subject,correct:ok,date:today()});
- });
- data.sessions.push({date:today(),correct,total:practice.length});
- save();
- $("practiceResult").classList.remove("hidden");
- $("practiceResult").innerHTML=`<h3>Practice Completed</h3><div class="timer">${correct}/${practice.length}</div><p class="muted">Accuracy: ${Math.round(correct/practice.length*100)}%</p>`;
+ practice.forEach(q=>{let ok=pAnswers[q.id]===q.a;if(ok)correct++;data.attempts.push({subject:q.subject,correct:ok,date:today()})});
+ data.sessions.push({date:today(),correct,total:practice.length});save();
+ $("practiceResult").classList.remove("hidden");$("practiceResult").innerHTML=`<h3>Practice Completed</h3><div class="timer">${correct}/${practice.length}</div><p class="muted">Accuracy: ${Math.round(correct/practice.length*100)}%</p>`;
 };
 
 /* PERFORMANCE */
 function renderPerformance(){
  let a=data.attempts,c=a.filter(x=>x.correct).length;
- $("pAttempt").textContent=a.length;$("pCorrect").textContent=c;
- $("pWrong").textContent=a.length-c;
- $("pAccuracy").textContent=(a.length?Math.round(c/a.length*100):0)+"%";
- $("sessions").innerHTML=data.sessions.length?
- data.sessions.slice(-8).reverse().map(s=>`<p>${s.date} — ${s.correct}/${s.total} correct</p>`).join(""):"No practice sessions recorded.";
+ $("pAttempt").textContent=a.length;$("pCorrect").textContent=c;$("pWrong").textContent=a.length-c;$("pAccuracy").textContent=(a.length?Math.round(c/a.length*100):0)+"%";
+ $("sessions").innerHTML=data.sessions.length?data.sessions.slice(-8).reverse().map(s=>`<p>${s.date} — ${s.correct}/${s.total} correct</p>`).join(""):"No practice sessions recorded.";
 }
 
 /* NOTES */
 function renderNotes(){
- $("notesList").innerHTML=data.notes.length?data.notes.slice().reverse().map(n=>
- `<div style="padding:10px 0;border-bottom:1px solid #eee">
- <b>${esc(n.title)}</b> <span class="badge">${esc(n.subject)}</span>
- <p class="muted" style="white-space:pre-wrap">${esc(n.body)}</p>
- <button class="btn danger small" data-note-del="${n.id}">Delete</button></div>`).join(""):"No notes saved yet.";
- document.querySelectorAll("[data-note-del]").forEach(b=>b.onclick=()=>{
-  data.notes=data.notes.filter(n=>n.id!==b.dataset.noteDel);save();
- });
+ $("notesList").innerHTML=data.notes.length?data.notes.slice().reverse().map(n=>`<div style="padding:10px 0;border-bottom:1px solid #eee"><b>${esc(n.title)}</b> <span class="badge">${esc(n.subject)}</span><p class="muted" style="white-space:pre-wrap">${esc(n.body)}</p><button class="btn danger small" data-note-del="${n.id}">Delete</button></div>`).join(""):"No notes saved yet.";
+ document.querySelectorAll("[data-note-del]").forEach(b=>b.onclick=()=>{data.notes=data.notes.filter(n=>n.id!==b.dataset.noteDel);save()});
 }
-$("saveNote").onclick=()=>{
- let title=$("noteTitle").value.trim(),body=$("noteBody").value.trim();
- if(!title||!body)return alert("Enter note title and content.");
- data.notes.push({id:uid(),title,body,subject:$("noteSubject").value});
- $("noteTitle").value="";$("noteBody").value="";save();
-};
+$("saveNote").onclick=()=>{let title=$("noteTitle").value.trim(),body=$("noteBody").value.trim();if(!title||!body)return alert("Enter note title and content.");data.notes.push({id:uid(),title,body,subject:$("noteSubject").value});$("noteTitle").value="";$("noteBody").value="";save()};
 
 /* REVISION */
 function renderRevisions(){
- $("revisionList").innerHTML=data.revisions.length?data.revisions.map(r=>
- `<div class="between" style="padding:12px 0;border-bottom:1px solid #eee">
- <div><b>${esc(r.topic)}</b><p class="muted">${esc(r.subject)} · Due ${r.due}</p></div>
- <div><button class="btn soft small" data-rev-done="${r.id}">${r.done?"Undo":"Done"}</button>
- <button class="btn danger small" data-rev-del="${r.id}">×</button></div></div>`).join(""):"No topics scheduled.";
- document.querySelectorAll("[data-rev-done]").forEach(b=>b.onclick=()=>{
-  let r=data.revisions.find(x=>x.id===b.dataset.revDone);r.done=!r.done;save();
- });
- document.querySelectorAll("[data-rev-del]").forEach(b=>b.onclick=()=>{
-  data.revisions=data.revisions.filter(x=>x.id!==b.dataset.revDel);save();
- });
+ $("revisionList").innerHTML=data.revisions.length?data.revisions.map(r=>`<div class="between" style="padding:12px 0;border-bottom:1px solid #eee"><div><b>${esc(r.topic)}</b><p class="muted">${esc(r.subject)} · Due ${r.due}</p></div><div><button class="btn soft small" data-rev-done="${r.id}">${r.done?"Undo":"Done"}</button><button class="btn danger small" data-rev-del="${r.id}">×</button></div></div>`).join(""):"No topics scheduled.";
+ document.querySelectorAll("[data-rev-done]").forEach(b=>b.onclick=()=>{let r=data.revisions.find(x=>x.id===b.dataset.revDone);r.done=!r.done;save()});
+ document.querySelectorAll("[data-rev-del]").forEach(b=>b.onclick=()=>{data.revisions=data.revisions.filter(x=>x.id!==b.dataset.revDel);save()});
 }
-$("addRevision").onclick=()=>{
- let topic=$("revTopic").value.trim();if(!topic)return alert("Enter topic.");
- data.revisions.push({id:uid(),topic,subject:$("revSubject").value,
- due:addDays(+$("revDays").value),done:false});
- $("revTopic").value="";save();
-};
+$("addRevision").onclick=()=>{let topic=$("revTopic").value.trim();if(!topic)return alert("Enter topic.");data.revisions.push({id:uid(),topic,subject:$("revSubject").value,due:addDays(+$("revDays").value),done:false});$("revTopic").value="";save()};
 
 /* GOALS */
 function renderGoals(){
- let list=data.goals.filter(g=>g.date===today()),done=list.filter(g=>g.done).length;
- let pct=list.length?Math.round(done/list.length*100):0;
- $("goalCount").textContent=done+" / "+list.length;
- $("goalBar").style.width=pct+"%";
- $("goalSummary").textContent=list.length?`${done} completed out of ${list.length} goals.`:"No goals added yet.";
- $("goalList").innerHTML=list.length?list.map(g=>
- `<div class="between" style="padding:10px 0;border-bottom:1px solid #eee">
- <label style="display:flex;gap:8px;align-items:center">
- <input type="checkbox" data-goal="${g.id}" ${g.done?"checked":""} style="width:auto">
- ${esc(g.text)} <span class="badge">${esc(g.type)}</span></label>
- <button class="btn danger small" data-goal-del="${g.id}">Delete</button>
- </div>`).join(""):"No goals added yet.";
- document.querySelectorAll("[data-goal]").forEach(b=>b.onchange=()=>{
-  data.goals.find(g=>g.id===b.dataset.goal).done=b.checked;save();
- });
- document.querySelectorAll("[data-goal-del]").forEach(b=>b.onclick=()=>{
-  data.goals=data.goals.filter(g=>g.id!==b.dataset.goalDel);save();
- });
+ let list=data.goals.filter(g=>g.date===today()),done=list.filter(g=>g.done).length,pct=list.length?Math.round(done/list.length*100):0;
+ $("goalCount").textContent=done+" / "+list.length;$("goalBar").style.width=pct+"%";$("goalSummary").textContent=list.length?`${done} completed out of ${list.length} goals.`:"No goals added yet.";
+ $("goalList").innerHTML=list.length?list.map(g=>`<div class="between" style="padding:10px 0;border-bottom:1px solid #eee"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-goal="${g.id}" ${g.done?"checked":""} style="width:auto">${esc(g.text)} <span class="badge">${esc(g.type)}</span></label><button class="btn danger small" data-goal-del="${g.id}">Delete</button></div>`).join(""):"No goals added yet.";
+ document.querySelectorAll("[data-goal]").forEach(b=>b.onchange=()=>{data.goals.find(g=>g.id===b.dataset.goal).done=b.checked;save()});
+ document.querySelectorAll("[data-goal-del]").forEach(b=>b.onclick=()=>{data.goals=data.goals.filter(g=>g.id!==b.dataset.goalDel);save()});
 }
-$("addGoal").onclick=()=>{
- let text=$("goalInput").value.trim();if(!text)return alert("Write a goal.");
- data.goals.push({id:uid(),text,type:$("goalType").value,date:today(),done:false});
- $("goalInput").value="";save();
-};
+$("addGoal").onclick=()=>{let text=$("goalInput").value.trim();if(!text)return alert("Write a goal.");data.goals.push({id:uid(),text,type:$("goalType").value,date:today(),done:false});$("goalInput").value="";save()};
 
 /* BOOKMARKS */
 function renderBookmarks(){
- $("bookmarkList").innerHTML=data.bookmarks.length?
- data.bookmarks.map(q=>questionHTML(q,false)+
- `<button class="btn danger small" data-unmark="${q.id}">Remove Bookmark</button>`).join(""):"No bookmarks yet.";
- document.querySelectorAll("[data-unmark]").forEach(b=>b.onclick=()=>{
-  data.bookmarks=data.bookmarks.filter(q=>q.id!==b.dataset.unmark);save();
- });
+ $("bookmarkList").innerHTML=data.bookmarks.length?data.bookmarks.map(q=>questionHTML(q,false)+`<button class="btn danger small" data-unmark="${q.id}">Remove Bookmark</button>`).join(""):"No bookmarks yet.";
+ document.querySelectorAll("[data-unmark]").forEach(b=>b.onclick=()=>{data.bookmarks=data.bookmarks.filter(q=>q.id!==b.dataset.unmark);save()});
 }
 
 /* MISTAKE NOTEBOOK */
 function renderMistakes(){
- $("mistakeList").innerHTML=data.mistakes.length?data.mistakes.map(m=>
- `<div style="padding:10px 0;border-bottom:1px solid #eee">
- <b>${esc(m.topic)}</b><p class="muted">${esc(m.reason)}</p>
- <p class="muted">${esc(m.lesson)}</p>
- <button class="btn danger small" data-mistake-del="${m.id}">Delete</button></div>`).join(""):"No mistakes saved.";
- document.querySelectorAll("[data-mistake-del]").forEach(b=>b.onclick=()=>{
-  data.mistakes=data.mistakes.filter(m=>m.id!==b.dataset.mistakeDel);save();
- });
+ $("mistakeList").innerHTML=data.mistakes.length?data.mistakes.map(m=>`<div style="padding:10px 0;border-bottom:1px solid #eee"><b>${esc(m.topic)}</b><p class="muted">${esc(m.reason)}</p><p class="muted">${esc(m.lesson)}</p><button class="btn danger small" data-mistake-del="${m.id}">Delete</button></div>`).join(""):"No mistakes saved.";
+ document.querySelectorAll("[data-mistake-del]").forEach(b=>b.onclick=()=>{data.mistakes=data.mistakes.filter(m=>m.id!==b.dataset.mistakeDel);save()});
 }
-$("saveMistake").onclick=()=>{
- let topic=$("mistakeTopic").value.trim();if(!topic)return alert("Enter topic.");
- data.mistakes.push({id:uid(),topic,reason:$("mistakeReason").value,
- lesson:$("mistakeLesson").value});
- $("mistakeTopic").value="";$("mistakeLesson").value="";save();
-};
+$("saveMistake").onclick=()=>{let topic=$("mistakeTopic").value.trim();if(!topic)return alert("Enter topic.");data.mistakes.push({id:uid(),topic,reason:$("mistakeReason").value,lesson:$("mistakeLesson").value});$("mistakeTopic").value="";$("mistakeLesson").value="";save()};
 
 /* TIMER */
 let seconds=1500,mode="focus",interval=null;
-function timerRender(){
- $("timerMode").textContent=mode==="focus"?"Focus Session":"Break Time";
- $("timerDisplay").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");
- $("timerStatus").textContent=interval?"Timer running. Stay focused.":"Ready when you are.";
-}
-function timerReset(){
- clearInterval(interval);interval=null;
- seconds=(mode==="focus"?data.settings.focus:data.settings.break)*60;
- timerRender();
-}
-$("timerStart").onclick=()=>{
- if(interval)return;
- interval=setInterval(()=>{
-  seconds--;
-  if(seconds<=0){clearInterval(interval);interval=null;seconds=0;
-   timerRender();alert(mode==="focus"?"Focus complete! Take a break.":"Break complete!");return}
-  timerRender();
- },1000);timerRender();
-};
+function timerRender(){$("timerMode").textContent=mode==="focus"?"Focus Session":"Break Time";$("timerDisplay").textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0");$("timerStatus").textContent=interval?"Timer running. Stay focused.":"Ready when you are."}
+function timerReset(){clearInterval(interval);interval=null;seconds=(mode==="focus"?data.settings.focus:data.settings.break)*60;timerRender()}
+$("timerStart").onclick=()=>{if(interval)return;interval=setInterval(()=>{seconds--;if(seconds<=0){clearInterval(interval);interval=null;seconds=0;timerRender();alert(mode==="focus"?"Focus complete! Take a break.":"Break complete!");return}timerRender()},1000);timerRender()};
 $("timerPause").onclick=()=>{clearInterval(interval);interval=null;timerRender()};
 $("timerReset").onclick=timerReset;
 $("timerSwitch").onclick=()=>{mode=mode==="focus"?"break":"focus";timerReset()};
 
 /* TREND DEMO */
-$("trendList").innerHTML=[
- ["Polity",26],["History",21],["Geography",18],
- ["Economy",16],["Environment",12],["Science & Technology",7]
-].map(([n,v])=>`<p><b>${n}</b> — ${v}%</p><div class="progress"><span style="width:${v}%"></span></div>`).join("")+
- "<p class='muted'>Illustrative percentages only. Not actual UPSC question frequency.</p>";
+$("trendList").innerHTML=[["Polity",26],["History",21],["Geography",18],["Economy",16],["Environment",12],["Science & Technology",7]].map(([n,v])=>`<p><b>${n}</b> — ${v}%</p><div class="progress"><span style="width:${v}%"></span></div>`).join("")+"<p class='muted'>Illustrative percentages only. Not actual UPSC question frequency.</p>";
 
 /* NEWSROOM */
-const newspaperLinks={
- "The Hindu":"https://www.thehindu.com/",
- "The Indian Express":"https://indianexpress.com/",
- "Business Standard":"https://www.business-standard.com/"
-};
+const newspaperLinks={"The Hindu":"https://www.thehindu.com/","The Indian Express":"https://indianexpress.com/","Business Standard":"https://www.business-standard.com/"};
 let selectedPaper="The Hindu";
-function selectPaper(name){
- selectedPaper=name;
- $("selectedPaper").textContent=name;
- $("readerSelect").value=name;
- $("readerHeading").textContent=name;
- document.querySelectorAll("[data-paper]").forEach(b=>b.classList.toggle("selected",b.dataset.paper===name));
-}
-function openNewspaper(){
- window.open(newspaperLinks[selectedPaper],"_blank","noopener,noreferrer");
-}
+function selectPaper(name){selectedPaper=name;$("selectedPaper").textContent=name;$("readerSelect").value=name;$("readerHeading").textContent=name;document.querySelectorAll("[data-paper]").forEach(b=>b.classList.toggle("selected",b.dataset.paper===name))}
+function openNewspaper(){window.open(newspaperLinks[selectedPaper],"_blank","noopener,noreferrer")}
 document.querySelectorAll("[data-paper]").forEach(b=>b.onclick=()=>selectPaper(b.dataset.paper));
 $("openPaper").onclick=openNewspaper;
-$("readerButton").onclick=()=>{
- $("newsHome").classList.add("hidden");
- $("readerPanel").classList.remove("hidden");
-};
+$("readerButton").onclick=()=>{$("newsHome").classList.add("hidden");$("readerPanel").classList.remove("hidden")};
 $("backNews").onclick=()=>newsHome();
 $("readerSelect").onchange=e=>selectPaper(e.target.value);
-$("readerOpen").onclick=openNewspaper;
-$("readerContinue").onclick=openNewspaper;
-function newsHome(){
- $("newsHome").classList.remove("hidden");
- $("readerPanel").classList.add("hidden");
-}
+$("readerOpen").onclick=openNewspaper;$("readerContinue").onclick=openNewspaper;
+function newsHome(){$("newsHome").classList.remove("hidden");$("readerPanel").classList.add("hidden")}
 const featureContent={
  "Daily News Feed":["National Affairs","Polity & Governance","Indian Economy","International Relations","Environment","Science & Technology"],
  "Editorial Analysis":["Central argument","Background","Key concepts","Balanced perspectives","Way forward"],
  "Syllabus Mapping":["GS Paper I","GS Paper II","GS Paper III","GS Paper IV","Essay"],
  "Prelims Facts":["Reports and indices","Constitutional provisions","Places in news","Species and protected areas"],
- "Vocabulary":["English word","Hindi meaning","Odia meaning","Synonyms and usage"],
  "Daily Quiz":["Current affairs MCQs","Statement-based questions","Explanations"],
  "Read Later":["Saved articles","Reading status","Revision list"],
  "Reading Tracker":["Daily reading time","Articles completed","Weekly progress"],
  "Radar Daily Brief":["Polity & Governance","Indian Economy","International Relations","Environment","Ethics & Society"]
 };
+
+/* VOCABULARY: DAILY UPSC WORDS */
+const vocabularyLanguages=[
+ ["English","en"],["Hindi","hi"],["Odia","or"],["Bengali","bn"],["Assamese","as"],
+ ["Gujarati","gu"],["Kannada","kn"],["Malayalam","ml"],["Marathi","mr"],["Nepali","ne"],
+ ["Punjabi","pa"],["Sanskrit","sa"],["Tamil","ta"],["Telugu","te"],["Urdu","ur"],
+ ["Arabic","ar"],["Chinese (Simplified)","zh-CN"],["Chinese (Traditional)","zh-TW"],
+ ["French","fr"],["German","de"],["Spanish","es"],["Portuguese","pt"],["Russian","ru"],
+ ["Japanese","ja"],["Korean","ko"],["Italian","it"],["Dutch","nl"],["Turkish","tr"],
+ ["Persian","fa"],["Swahili","sw"],["Thai","th"],["Vietnamese","vi"],
+ ["Indonesian","id"],["Malay","ms"],["Ukrainian","uk"],["Polish","pl"],
+ ["Greek","el"],["Hebrew","he"],["Romanian","ro"],["Burmese","my"],
+ ["Filipino","tl"],["Czech","cs"],["Danish","da"],["Finnish","fi"],
+ ["Hungarian","hu"],["Norwegian","no"],["Swedish","sv"],["Croatian","hr"],
+ ["Serbian","sr"],["Slovak","sk"],["Bulgarian","bg"],["Albanian","sq"],
+ ["Lithuanian","lt"],["Latvian","lv"],["Estonian","et"],["Catalan","ca"],
+ ["Welsh","cy"],["Irish","ga"],["Haitian Creole","ht"]
+];
+const upscVocabularyBank=[
+{word:"Resilience",meaning:"The ability to recover quickly from difficulties.",synonyms:"Endurance, strength, adaptability",example:"Institutional resilience is essential for effective governance."},
+{word:"Pragmatic",meaning:"Dealing with problems in a practical and realistic way.",synonyms:"Practical, realistic, sensible",example:"A pragmatic approach can help address complex policy challenges."},
+{word:"Inclusive",meaning:"Including all sections of society and ensuring participation.",synonyms:"Comprehensive, broad-based, participatory",example:"Inclusive growth aims to ensure that development benefits all sections."},
+{word:"Accountability",meaning:"The obligation to explain actions and accept responsibility.",synonyms:"Answerability, responsibility, liability",example:"Accountability strengthens public institutions and democratic governance."},
+{word:"Sustainable",meaning:"Able to continue over time without exhausting resources.",synonyms:"Viable, maintainable, enduring",example:"Sustainable development balances economic, social and environmental goals."},
+{word:"Mitigate",meaning:"To make something harmful or serious less severe.",synonyms:"Alleviate, reduce, lessen",example:"Disaster preparedness can mitigate the impact of natural hazards."},
+{word:"Equitable",meaning:"Fair and impartial, taking different needs into account.",synonyms:"Fair, just, impartial",example:"Equitable access to education supports social justice."},
+{word:"Disparity",meaning:"A noticeable difference or inequality between people or things.",synonyms:"Inequality, imbalance, gap",example:"Regional disparities can affect balanced economic development."},
+{word:"Consensus",meaning:"A general agreement reached by a group.",synonyms:"Agreement, accord, common ground",example:"Constitutional reforms often require broad political consensus."},
+{word:"Precarious",meaning:"Uncertain, unstable or not safely secured.",synonyms:"Unstable, uncertain, insecure",example:"Informal workers may face precarious employment conditions."},
+{word:"Alleviate",meaning:"To make suffering or a problem less severe.",synonyms:"Relieve, ease, lessen",example:"Targeted welfare programmes seek to alleviate poverty."},
+{word:"Constitute",meaning:"To form, make up or establish something.",synonyms:"Form, compose, comprise",example:"Fundamental rights constitute an essential part of constitutional democracy."},
+{word:"Inevitable",meaning:"Certain to happen and impossible to avoid.",synonyms:"Unavoidable, certain, inescapable",example:"Technological change is an inevitable feature of modern economies."},
+{word:"Impartial",meaning:"Treating everyone fairly without favouritism.",synonyms:"Neutral, unbiased, objective",example:"An impartial civil service is important for good governance."},
+{word:"Vulnerable",meaning:"Exposed to the possibility of harm or disadvantage.",synonyms:"Susceptible, at-risk, exposed",example:"Public policy should protect vulnerable sections of society."},
+{word:"Legitimacy",meaning:"The quality of being accepted as lawful, justified or valid.",synonyms:"Validity, lawfulness, acceptability",example:"Public trust contributes to the legitimacy of institutions."},
+{word:"Convergence",meaning:"The process of becoming more similar or coming together.",synonyms:"Coming together, integration, coordination",example:"Policy convergence can improve coordination among government departments."},
+{word:"Devolution",meaning:"The transfer of power or authority to a lower level.",synonyms:"Decentralisation, delegation, transfer",example:"Devolution empowers local self-government institutions."},
+{word:"Exacerbate",meaning:"To make a problem or difficult situation worse.",synonyms:"Worsen, intensify, aggravate",example:"Poor urban planning can exacerbate flood risks."},
+{word:"Restraint",meaning:"Control over actions, behaviour or the use of power.",synonyms:"Moderation, self-control, limitation",example:"Constitutional restraint limits arbitrary exercise of power."},
+{word:"Paradigm",meaning:"A typical model, pattern or framework of ideas.",synonyms:"Model, framework, pattern",example:"Digital governance represents a paradigm shift in public service delivery."},
+{word:"Robust",meaning:"Strong, effective and able to withstand pressure.",synonyms:"Resilient, sturdy, effective",example:"A robust grievance-redressal system improves citizen confidence."},
+{word:"Ambiguity",meaning:"The quality of having more than one possible meaning.",synonyms:"Uncertainty, vagueness, obscurity",example:"Ambiguity in rules can create difficulties in implementation."},
+{word:"Dissemination",meaning:"The act of spreading information or knowledge widely.",synonyms:"Distribution, circulation, communication",example:"Dissemination of accurate information is vital during emergencies."},
+{word:"Inequity",meaning:"A lack of fairness or justice in treatment or distribution.",synonyms:"Unfairness, injustice, disparity",example:"Policy interventions can address inequity in access to healthcare."},
+{word:"Prudent",meaning:"Acting with care and good judgement.",synonyms:"Wise, sensible, judicious",example:"Prudent fiscal management helps maintain economic stability."},
+{word:"Endorse",meaning:"To publicly support or approve something.",synonyms:"Approve, support, recommend",example:"The committee endorsed a set of administrative reforms."},
+{word:"Substantive",meaning:"Important, meaningful or related to the main matter.",synonyms:"Meaningful, significant, essential",example:"Substantive equality may require addressing structural barriers."},
+{word:"Deterrence",meaning:"The act of discouraging an action through fear of consequences.",synonyms:"Prevention, discouragement, dissuasion",example:"Effective enforcement can create deterrence against corruption."},
+{word:"Foster",meaning:"To encourage the development or growth of something.",synonyms:"Promote, encourage, nurture",example:"Public institutions should foster innovation and civic participation."}
+];
+let vocabLanguage=localStorage.getItem("pyqVocabLanguage")||"en";
+let vocabBookmarks=JSON.parse(localStorage.getItem("pyqVocabBookmarks")||"[]");
+function getDailyWords(){
+ const start=new Date(2026,0,1),now=new Date();
+ const day=Math.max(0,Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-start)/86400000));
+ const first=(day*5)%upscVocabularyBank.length;
+ return Array.from({length:5},(_,i)=>upscVocabularyBank[(first+i)%upscVocabularyBank.length]);
+}
+async function translateVocab(text,language){
+ if(language==="en")return text;
+ const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${encodeURIComponent(language)}`;
+ const response=await fetch(url);if(!response.ok)throw new Error("Translation unavailable");
+ const result=await response.json();return result.responseData?.translatedText||"Translation unavailable";
+}
+function showVocabulary(){
+ $("newsFeatureTitle").textContent="Daily UPSC Vocabulary";$("newsFeatureContent").className="";
+ $("newsFeatureContent").innerHTML=`
+ <div class="card" style="max-width:850px">
+  <div class="between" style="flex-wrap:wrap;gap:10px">
+   <div><span class="badge">DAILY LEARNING</span><h3 style="margin:8px 0">Today's 5 UPSC Words</h3><p class="muted">Learn useful words for editorials, newspapers, essays and answer writing.</p></div><span class="badge">5 Words Daily</span>
+  </div>
+  <div class="field"><label for="vocabLanguage">MEANING LANGUAGE</label>
+   <select id="vocabLanguage">${vocabularyLanguages.map(([name,code])=>`<option value="${code}" ${code===vocabLanguage?"selected":""}>${name}</option>`).join("")}</select>
+   <p class="muted">English is the default. Choose any listed language to translate the meanings.</p>
+  </div>
+  <div id="dailyWordList"></div>
+  <div class="card" style="background:#f1f6ff;margin-top:16px"><h3>Daily Revision</h3><p class="muted">Reveal and revise all five words for today.</p><button class="btn" id="reviseWords">Revise Today's Words</button></div>
+  <h3 class="section-title">My Saved Words</h3><div id="savedVocabWords"></div>
+  <h3 class="section-title">Search Any English Word</h3><div class="field"><input id="customVocabWord" placeholder="Enter an English word"></div><button class="btn" id="customVocabSearch">Find Meaning</button><div id="customVocabResult" style="margin-top:12px"></div>
+  <p class="muted" style="margin-top:14px">Translation needs an internet connection. Availability and accuracy can vary by language.</p>
+ </div>`;
+ $("newsFeaturePanel").classList.remove("hidden");renderDailyWords();
+ $("vocabLanguage").onchange=e=>{vocabLanguage=e.target.value;localStorage.setItem("pyqVocabLanguage",vocabLanguage);renderDailyWords()};
+ $("reviseWords").onclick=()=>document.querySelectorAll(".vocab-translation").forEach(x=>x.classList.remove("hidden"));
+ $("customVocabSearch").onclick=searchCustomWord;
+ $("customVocabWord").addEventListener("keydown",e=>{if(e.key==="Enter")searchCustomWord()});
+ renderSavedVocabulary();
+}
+async function renderDailyWords(){
+ const words=getDailyWords(),container=$("dailyWordList");
+ container.innerHTML=words.map((w,i)=>`
+ <div class="question">
+  <div class="between"><span class="badge">WORD ${i+1} OF 5</span><button class="btn line small" data-vocab-save="${i}">${vocabBookmarks.some(x=>x.word===w.word)?"★ Saved":"☆ Save Word"}</button></div>
+  <h3 style="margin:12px 0 6px">${esc(w.word)}</h3>
+  <p><b>Meaning in English</b></p><p class="muted">${esc(w.meaning)}</p>
+  <div class="vocab-translation hidden" id="translation-${i}"><p class="muted">Translation will appear here.</p></div>
+  <p><b>Synonyms</b></p><p class="muted">${esc(w.synonyms)}</p>
+  <p><b>Example sentence</b></p><p class="muted">${esc(w.example)}</p>
+  <button class="btn soft small" data-vocab-reveal="${i}">Show Meaning in Selected Language</button>
+ </div>`).join("");
+ document.querySelectorAll("[data-vocab-save]").forEach(b=>b.onclick=()=>{
+  const word=words[+b.dataset.vocabSave];
+  if(vocabBookmarks.some(x=>x.word===word.word))vocabBookmarks=vocabBookmarks.filter(x=>x.word!==word.word);else vocabBookmarks.push(word);
+  localStorage.setItem("pyqVocabBookmarks",JSON.stringify(vocabBookmarks));renderDailyWords();renderSavedVocabulary();
+ });
+ document.querySelectorAll("[data-vocab-reveal]").forEach(b=>b.onclick=async()=>{
+  const i=+b.dataset.vocabReveal,target=$("translation-"+i),word=words[i];target.classList.remove("hidden");
+  if(vocabLanguage==="en"){target.innerHTML=`<p><b>English meaning:</b> ${esc(word.meaning)}</p>`;return}
+  target.innerHTML='<p class="muted">Translating meaning…</p>';
+  try{
+   const translated=await translateVocab(word.meaning,vocabLanguage);
+   const langName=vocabularyLanguages.find(x=>x[1]===vocabLanguage)?.[0]||vocabLanguage;
+   target.innerHTML=`<p><b>Meaning in ${esc(langName)}:</b></p><p>${esc(translated)}</p>`;
+  }catch(e){target.innerHTML='<p class="muted">Translation unavailable right now. Please try again later.</p>'}
+ });
+}
+function renderSavedVocabulary(){
+ const box=$("savedVocabWords");if(!box)return;
+ box.innerHTML=vocabBookmarks.length?vocabBookmarks.map((w,i)=>`
+ <div class="question"><b>${esc(w.word)}</b><p class="muted">${esc(w.meaning)}</p><p class="muted">Synonyms: ${esc(w.synonyms)}</p><button class="btn danger small" data-vocab-remove="${i}">Remove</button></div>`).join(""):"<p class='muted'>No saved words yet. Use Save Word on any daily word.</p>";
+ document.querySelectorAll("[data-vocab-remove]").forEach(b=>b.onclick=()=>{
+  vocabBookmarks.splice(+b.dataset.vocabRemove,1);localStorage.setItem("pyqVocabBookmarks",JSON.stringify(vocabBookmarks));renderSavedVocabulary();renderDailyWords();
+ });
+}
+async function searchCustomWord(){
+ const word=$("customVocabWord").value.trim(),result=$("customVocabResult");
+ if(!word){result.innerHTML="<p class='muted'>Please enter a word.</p>";return}
+ result.innerHTML="<p class='muted'>Searching dictionary…</p>";
+ try{
+  const response=await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+  if(!response.ok)throw new Error("Word not found");
+  const entries=await response.json(),entry=entries[0];
+  const definitions=(entry.meanings||[]).slice(0,3).map(m=>`<p><b>${esc(m.partOfSpeech)}:</b> ${esc(m.definitions?.[0]?.definition||"")}</p>`).join("");
+  const firstDefinition=entry.meanings?.[0]?.definitions?.[0]?.definition||word;
+  result.innerHTML=`<div class="card"><h3>${esc(entry.word)}</h3><b>Meaning in English</b>${definitions}<button class="btn soft" id="translateCustom">Translate Meaning</button><div id="customTranslated" class="muted" style="margin-top:10px"></div></div>`;
+  $("translateCustom").onclick=async()=>{
+   const target=$("customTranslated");target.textContent="Translating…";
+   try{target.textContent=await translateVocab(firstDefinition,vocabLanguage)}catch(e){target.textContent="Translation unavailable. Please try again later."}
+  };
+ }catch(e){result.innerHTML="<p class='muted'>Word not found or dictionary service unavailable. Check the spelling and try again.</p>"}
+}
 document.querySelectorAll("[data-feature]").forEach(b=>b.onclick=()=>{
- let name=b.dataset.feature;
- $("newsFeatureTitle").textContent=name;
- $("newsFeatureContent").innerHTML=featureContent[name].map(x=>
- `<div class="card"><b>${esc(x)}</b><p class="muted">Sample feature section. Live content is not connected.</p></div>`).join("");
+ let name=b.dataset.feature;if(name==="Vocabulary"){showVocabulary();return}
+ $("newsFeatureTitle").textContent=name;$("newsFeatureContent").className="grid g2";
+ $("newsFeatureContent").innerHTML=featureContent[name].map(x=>`<div class="card"><b>${esc(x)}</b><p class="muted">Sample feature section. Live content is not connected.</p></div>`).join("");
  $("newsFeaturePanel").classList.remove("hidden");
 });
 $("closeNewsFeature").onclick=()=>$("newsFeaturePanel").classList.add("hidden");
 
 /* SETTINGS */
-const quoteList=[
- "Small progress every day adds up to big results.",
- "Discipline turns preparation into progress.",
- "Consistency is more powerful than occasional intensity.",
- "Understand the concept. Question the assumption. Revise the lesson.",
- "Your future is shaped by what you practise today.",
- "Every revision makes knowledge more accessible.",
- "Read deeply, think clearly, revise regularly.",
- "A difficult question is an opportunity to learn.",
- "Focus on the process; let progress follow.",
- "One thoughtful hour can make a difference."
-];
-const themes={
- blue:"linear-gradient(120deg,#173b85,#2877cf)",
- purple:"linear-gradient(120deg,#6038b9,#2876d7)",
- green:"linear-gradient(120deg,#08765c,#28a77b)"
-};
+const quoteList=["Small progress every day adds up to big results.","Discipline turns preparation into progress.","Consistency is more powerful than occasional intensity.","Understand the concept. Question the assumption. Revise the lesson.","Your future is shaped by what you practise today.","Every revision makes knowledge more accessible.","Read deeply, think clearly, revise regularly.","A difficult question is an opportunity to learn.","Focus on the process; let progress follow.","One thoughtful hour can make a difference."];
+const themes={blue:"linear-gradient(120deg,#173b85,#2877cf)",purple:"linear-gradient(120deg,#6038b9,#2876d7)",green:"linear-gradient(120deg,#08765c,#28a77b)"};
 let quoteIndex=0,quoteInterval;
-function updateQuote(){
- let count=+data.settings.quoteCount;
- quoteIndex=(quoteIndex+1)%count;
- $("quoteText").textContent="“"+quoteList[quoteIndex]+"”";
- let theme=data.settings.quoteTheme;
- $("quoteCard").style.background=theme==="auto"?
- [themes.purple,themes.green,themes.blue][quoteIndex%3]:themes[theme];
-}
-function setupQuotes(){
- clearInterval(quoteInterval);
- $("quoteCard").classList.toggle("hidden",!data.settings.showQuote);
- quoteIndex=0;$("quoteText").textContent="“"+quoteList[0]+"”";
- quoteInterval=setInterval(updateQuote,Math.max(15,+data.settings.quoteInterval)*1000);
-}
-$("saveTimerSettings").onclick=()=>{
- data.settings.focus=Math.max(1,Math.min(180,+$("focusSetting").value||25));
- data.settings.break=Math.max(1,Math.min(60,+$("breakSetting").value||5));
- timerReset();save();alert("Timer settings saved.");
-};
-$("saveQuoteSettings").onclick=()=>{
- data.settings.quoteCount=+$("quoteCount").value;
- data.settings.quoteInterval=+$("quoteInterval").value;
- data.settings.quoteTheme=$("quoteTheme").value;
- data.settings.showQuote=$("showQuote").checked;
- save();setupQuotes();alert("Thought settings saved.");
-};
+function updateQuote(){let count=+data.settings.quoteCount;quoteIndex=(quoteIndex+1)%count;$("quoteText").textContent="“"+quoteList[quoteIndex]+"”";let theme=data.settings.quoteTheme;$("quoteCard").style.background=theme==="auto"?[themes.purple,themes.green,themes.blue][quoteIndex%3]:themes[theme]}
+function setupQuotes(){clearInterval(quoteInterval);$("quoteCard").classList.toggle("hidden",!data.settings.showQuote);quoteIndex=0;$("quoteText").textContent="“"+quoteList[0]+"”";quoteInterval=setInterval(updateQuote,Math.max(15,+data.settings.quoteInterval)*1000)}
+$("saveTimerSettings").onclick=()=>{data.settings.focus=Math.max(1,Math.min(180,+$("focusSetting").value||25));data.settings.break=Math.max(1,Math.min(60,+$("breakSetting").value||5));timerReset();save();alert("Timer settings saved.")};
+$("saveQuoteSettings").onclick=()=>{data.settings.quoteCount=+$("quoteCount").value;data.settings.quoteInterval=+$("quoteInterval").value;data.settings.quoteTheme=$("quoteTheme").value;data.settings.showQuote=$("showQuote").checked;save();setupQuotes();alert("Thought settings saved.")};
 
 /* LOCAL DATA EXPORT / RESET */
-$("exportData").onclick=()=>{
- let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- let url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="pyq-radar-backup.json";a.click();
- URL.revokeObjectURL(url);
-};
-$("resetData").onclick=()=>{
- if(!confirm("Reset all saved data in this browser?"))return;
- localStorage.removeItem(KEY);location.reload();
-};
+$("exportData").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});let url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="pyq-radar-backup.json";a.click();URL.revokeObjectURL(url)};
+$("resetData").onclick=()=>{if(!confirm("Reset all saved data in this browser?"))return;localStorage.removeItem(KEY);location.reload()};
 
-function renderDashboard(){
- let a=data.attempts,c=a.filter(x=>x.correct).length;
- $("dashAttempt").textContent=a.length;
- $("dashAccuracy").textContent=(a.length?Math.round(c/a.length*100):0)+"%";
- $("dashBookmarks").textContent=data.bookmarks.length;
- $("dashRevision").textContent=data.revisions.filter(r=>!r.done).length;
-}
-function renderAll(){
- profile();renderDashboard();renderNotes();renderRevisions();
- renderGoals();renderBookmarks();renderMistakes();renderPerformance();
-}
-$("focusSetting").value=data.settings.focus;
-$("breakSetting").value=data.settings.break;
-$("quoteCount").value=data.settings.quoteCount;
-$("quoteInterval").value=data.settings.quoteInterval;
-$("quoteTheme").value=data.settings.quoteTheme;
-$("showQuote").checked=data.settings.showQuote;
-updateTopics();
-selectPaper("The Hindu");
-renderAll();
-setupQuotes();
-renderPyqs();
+function renderDashboard(){let a=data.attempts,c=a.filter(x=>x.correct).length;$("dashAttempt").textContent=a.length;$("dashAccuracy").textContent=(a.length?Math.round(c/a.length*100):0)+"%";$("dashBookmarks").textContent=data.bookmarks.length;$("dashRevision").textContent=data.revisions.filter(r=>!r.done).length}
+function renderAll(){profile();renderDashboard();renderNotes();renderRevisions();renderGoals();renderBookmarks();renderMistakes();renderPerformance()}
+$("focusSetting").value=data.settings.focus;$("breakSetting").value=data.settings.break;$("quoteCount").value=data.settings.quoteCount;$("quoteInterval").value=data.settings.quoteInterval;$("quoteTheme").value=data.settings.quoteTheme;$("showQuote").checked=data.settings.showQuote;
+updateTopics();selectPaper("The Hindu");renderAll();setupQuotes();renderPyqs();
 </script>
 </body>
 </html>
