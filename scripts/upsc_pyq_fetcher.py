@@ -25,12 +25,12 @@ TEXT_DIR = OUT / "text"
 HEADERS = {
     "User-Agent": "PYQ-Radar/1.0 (educational question-paper indexer; respectful automated access)"
 }
-EXAM_RE = re.compile(r"Civil Services\\s*\\((?:Preliminary|Main)\\)", re.I)
+EXAM_RE = re.compile(r"Civil Services\s*\((?:Preliminary|Main)\)", re.I)
 PAPER_RE = re.compile(
-    r"(General Studies Paper\\s*[-–]?\\s*[I1-4]|GS Paper\\s*[-–]?\\s*[I1-4]|Essay)",
+    r"(General Studies Paper\s*[-–]?\s*[I1-4]|GS Paper\s*[-–]?\s*[I1-4]|Essay)",
     re.I,
 )
-YEAR_RE = re.compile(r"\\b(20\\d{2})\\b")
+YEAR_RE = re.compile(r"\b(20\d{2})\b")
 
 
 def nearest_context(anchor) -> str:
@@ -68,7 +68,7 @@ def extract_pdf_text(pdf_path: Path, text_path: Path) -> dict:
     doc = fitz.open(pdf_path)
     pages = []
     for page_number, page in enumerate(doc, start=1):
-        pages.append(f"\\n\\n--- PAGE {page_number} ---\\n{page.get_text('text')}")
+        pages.append(f"\n\n--- PAGE {page_number} ---\n{page.get_text('text')}")
     text = "".join(pages).strip()
     text_path.write_text(text, encoding="utf-8")
     return {"pages": len(doc), "characters": len(text), "has_text": bool(text.strip())}
@@ -95,7 +95,7 @@ def main() -> int:
             continue
         stage, year, paper = classification
         # First release covers CSE Prelims GS-I/CSAT and Mains GS-I to GS-IV/Essay.
-        if stage == "Preliminary" and not re.search(r"(?:Paper\\s*[-–]?\\s*[I1]|Paper\\s*[-–]?\\s*II|GS)", paper, re.I):
+        if stage == "Preliminary" and not re.search(r"(?:Paper\s*[-–]?\s*[I1]|Paper\s*[-–]?\s*II|GS)", paper, re.I):
             continue
         if stage == "Main" and not re.search(r"(General Studies|Essay|GS)", paper, re.I):
             continue
@@ -145,10 +145,10 @@ def main() -> int:
     }
     (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     (OUT / "summary.txt").write_text(
-        f"Official UPSC CSE papers discovered: {len(papers)}\\n"
-        f"Processed: {sum(p.get('fetch_status') == 'downloaded' for p in downloaded)}\\n"
-        f"Errors: {sum(p.get('fetch_status') == 'error' for p in downloaded)}\\n"
-        "Review extracted text before converting it into individual PYQ records.\\n",
+        f"Official UPSC CSE papers discovered: {len(papers)}\n"
+        f"Processed: {sum(p.get('fetch_status') == 'downloaded' for p in downloaded)}\n"
+        f"Errors: {sum(p.get('fetch_status') == 'error' for p in downloaded)}\n"
+        "Review extracted text before converting it into individual PYQ records.\n",
         encoding="utf-8",
     )
     return 0 if downloaded else 2
