@@ -729,7 +729,14 @@ document.querySelectorAll(".option").forEach(option=>{
    const q=rows[0]; activeQuestionId=q.id;
    setText("pyq-year",q.year || "Year N/A");
    setText("pyq-exam",q.paper || "Competitive Exam");
-   setText("pyq-subject","Subject ID: "+String(q.subject_id || "N/A").slice(0,8));
+   let subjectLabel="Subject not assigned";
+   if(q.subject_id){
+    const {data: subjectRow,error: subjectError}=await client.from("subjects")
+     .select("name").eq("id",q.subject_id).maybeSingle();
+    if(!subjectError && subjectRow && subjectRow.name) subjectLabel=subjectRow.name;
+    else if(subjectError) console.warn("Subject name could not be loaded:",subjectError.message);
+   }
+   setText("pyq-subject",subjectLabel);
    questionEl.textContent=q.question_text || "Question text missing.";
    const {data: opts,error: optionError}=await client.from("question_options")
     .select("option_key,option_text").eq("question_id",q.id).order("option_key",{ascending:true});
