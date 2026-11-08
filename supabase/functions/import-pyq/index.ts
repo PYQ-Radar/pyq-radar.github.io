@@ -13,6 +13,7 @@ const corsHeaders = {
 type ImportRecord = {
   exam_id: string;
   subject_id?: string | null;
+  subject_name?: string | null;
   state_id?: string | null;
   topic_id?: string | null;
   year: number;
@@ -44,7 +45,12 @@ Deno.serve(async (req) => {
   }
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  // Supabase now injects named secret keys as JSON; retain legacy fallback.
+  let serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const secretKeysJson = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (!serviceRoleKey && secretKeysJson) {
+    try { serviceRoleKey = JSON.parse(secretKeysJson).default; } catch { /* handled below */ }
+  }
   if (!supabaseUrl || !serviceRoleKey) {
     return response({ error: "Server configuration is incomplete" }, 500);
   }
@@ -105,11 +111,18 @@ Deno.serve(async (req) => {
       continue;
     }
 
+    let resolvedSubjectId = item.subject_id ?? null;
+    if (!resolvedSubjectId && item.subject_name?.trim()) {
+      const { data: subjectRow } = await client.from("subjects")
+        .select("id").ilike("name", item.subject_name.trim()).limit(1).maybeSingle();
+      resolvedSubjectId = subjectRow?.id ?? null;
+    }
+
     const { data: question, error: questionError } = await client
       .from("questions")
       .insert({
         exam_id: item.exam_id,
-        subject_id: item.subject_id ?? null,
+        subject_id: resolvedSubjectId,
         state_id: item.state_id ?? null,
         topic_id: item.topic_id ?? null,
         year: item.year,
