@@ -28,6 +28,13 @@ jobs:
       - name: Discover official UPSC PDFs and extract text
         run: python scripts/upsc_pyq_fetcher.py
 
+      - name: Parse and bulk-import UPSC Prelims GS-I questions
+        env:
+          PYQ_IMPORT_URL: https://fzepobjbcehirerwtnsz.supabase.co/functions/v1/import-pyq
+          PYQ_IMPORT_TOKEN: ${{ secrets.PYQ_IMPORT_TOKEN }}
+          UPSC_EXAM_ID: ${{ secrets.UPSC_EXAM_ID }}
+        run: python scripts/parse_and_import_upsc.py
+
       - name: Upload fetched papers and manifest
         if: always()
         uses: actions/upload-artifact@v4
