@@ -1,0 +1,2 @@
+[functions.import-pyq]
+verify_jwt = false
