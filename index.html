@@ -503,31 +503,19 @@ footer strong{color:#dce7ff}
 
     <div class="question-body">
      <div class="tags">
-      <span class="tag">DEMO QUESTION</span>
-      <span class="tag">UPSC CSE</span>
-      <span class="tag">2023</span>
-      <span class="tag">Polity</span>
+      <span class="tag" id="pyq-status">CONNECTING</span>
+      <span class="tag" id="pyq-exam">PYQ RADAR</span>
+      <span class="tag" id="pyq-year">—</span>
+      <span class="tag" id="pyq-subject">All Subjects</span>
      </div>
 
-     <h3>Consider the following statements regarding the Basic Structure of the Constitution:</h3>
-     <ol>
-      <li>It is a doctrine evolved by the Supreme Court.</li>
-      <li>It includes the essential features of the Constitution.</li>
-     </ol>
-     <h3>Which of the statements given above is/are correct?</h3>
+     <h3 id="pyq-question">Supabase se verified PYQ load ho raha hai...</h3>
+     <div id="pyq-options"><p style="color:#aab8d5;font-size:14px">Please wait...</p></div>
 
-     <label class="option"><input type="radio" name="answer"> A. 1 only</label>
-     <label class="option"><input type="radio" name="answer"> B. 2 only</label>
-     <label class="option"><input type="radio" name="answer"> C. Both 1 and 2</label>
-     <label class="option"><input type="radio" name="answer"> D. Neither 1 nor 2</label>
-
-     <button class="answer-btn" onclick="showAnswer()">
+     <button class="answer-btn" id="pyq-answer-btn" onclick="showAnswer()">
       <i class="fa-solid fa-play"></i> Show Answer
      </button>
-     <div class="answer" id="answer">
-      <strong><i class="fa-solid fa-circle-check"></i> Correct Answer: C. Both 1 and 2</strong>
-      <p>The Basic Structure doctrine was developed by the Supreme Court in the Kesavananda Bharati case, 1973.</p>
-     </div>
+     <div class="answer" id="answer"></div>
     </div>
    </div>
 
@@ -703,5 +691,91 @@ document.querySelectorAll(".option").forEach(option=>{
  });
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* PYQ Radar: live Supabase question feed. Browser uses publishable key only. */
+(function(){
+ const SUPABASE_URL = "https://fzepobjbcehirerwtnsz.supabase.co";
+ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
+ const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+ let activeQuestionId = null;
+ let answerVisible = false;
+
+ function setText(id, value){ const el=document.getElementById(id); if(el) el.textContent=value ?? ""; }
+ function escapeHtml(value){
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+ }
+ function status(message){ setText("pyq-status",message); }
+ async function loadQuestion(){
+  status("LOADING");
+  const questionEl=document.getElementById("pyq-question");
+  const optionsEl=document.getElementById("pyq-options");
+  const answerEl=document.getElementById("answer");
+  answerEl.style.display="none"; answerEl.innerHTML=""; answerVisible=false;
+  document.getElementById("pyq-answer-btn").innerHTML='<i class="fa-solid fa-play"></i> Show Answer';
+  try{
+   const {data: rows,error}=await client.from("questions")
+    .select("id,exam_id,subject_id,year,paper,question_text,explanation,source_name,source_url")
+    .eq("is_verified",true).order("created_at",{ascending:false}).limit(1);
+   if(error) throw error;
+   if(!rows || !rows.length){
+    activeQuestionId=null; status("NO VERIFIED PYQ");
+    questionEl.textContent="Abhi database mein koi verified PYQ available nahi hai.";
+    optionsEl.innerHTML='<p style="color:#aab8d5;font-size:14px">Verified questions add hone ke baad yahan automatically dikhenge.</p>';
+    setText("pyq-year","—"); setText("pyq-exam","PYQ RADAR"); setText("pyq-subject","All Subjects");
+    return;
+   }
+   const q=rows[0]; activeQuestionId=q.id;
+   setText("pyq-year",q.year || "Year N/A");
+   setText("pyq-exam",q.paper || "Competitive Exam");
+   setText("pyq-subject","Subject ID: "+String(q.subject_id || "N/A").slice(0,8));
+   questionEl.textContent=q.question_text || "Question text missing.";
+   const {data: opts,error: optionError}=await client.from("question_options")
+    .select("option_key,option_text").eq("question_id",q.id).order("option_key",{ascending:true});
+   if(optionError) throw optionError;
+   if(!opts || !opts.length){
+    optionsEl.innerHTML='<p style="color:#ffd27a;font-size:13px">Is question ke options abhi available nahi hain.</p>';
+   }else{
+    optionsEl.innerHTML=opts.map(o=>'<label class="option"><input type="radio" name="answer" value="'+escapeHtml(o.option_key)+'"> <span>'+escapeHtml(o.option_key)+'. '+escapeHtml(o.option_text)+'</span></label>').join("");
+    optionsEl.querySelectorAll(".option").forEach(el=>el.addEventListener("click",()=>{
+     optionsEl.querySelectorAll(".option").forEach(x=>x.classList.remove("selected")); el.classList.add("selected");
+    }));
+   }
+   status("VERIFIED PYQ");
+  }catch(err){
+   console.error("PYQ Radar Supabase error:",err);
+   status("CONNECTION ERROR");
+   questionEl.textContent="Supabase se questions load nahi ho paaye.";
+   optionsEl.innerHTML='<p style="color:#ffb2b2;font-size:13px">Database/RLS/API error: '+escapeHtml(err.message || "Unknown error")+'</p>';
+  }
+ }
+ window.showAnswer = async function(){
+  const box=document.getElementById("answer"), btn=document.getElementById("pyq-answer-btn");
+  if(answerVisible){box.style.display="none";answerVisible=false;btn.innerHTML='<i class="fa-solid fa-play"></i> Show Answer';return;}
+  if(!activeQuestionId){box.style.display="block";box.textContent="Answer tabhi dikhega jab verified question load hoga.";return;}
+  btn.disabled=true; btn.textContent="Checking...";
+  try{
+   let result=await client.rpc("reveal_question_answer",{p_question_id:activeQuestionId});
+   if(result.error && /parameter|argument|function/i.test(result.error.message)){
+    result=await client.rpc("reveal_question_answer",{question_id:activeQuestionId});
+   }
+   if(result.error) throw result.error;
+   const payload=Array.isArray(result.data)?result.data[0]:result.data;
+   if(!payload) throw new Error("Answer function ne koi answer return nahi kiya.");
+   const key=payload.correct_option || payload.answer || payload.option_key;
+   const explanation=payload.explanation || "";
+   box.innerHTML='<strong><i class="fa-solid fa-circle-check"></i> Correct Answer: '+escapeHtml(key || "Available")+'</strong><p>'+escapeHtml(explanation)+'</p>';
+   box.style.display="block"; answerVisible=true; btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> Hide Answer';
+  }catch(err){
+   box.textContent="Answer reveal nahi ho paaya: "+(err.message || "Function/RLS configuration check required.");
+   box.style.display="block";
+  }finally{btn.disabled=false;}
+ };
+ window.loadNextPYQ=loadQuestion;
+ document.addEventListener("DOMContentLoaded",loadQuestion);
+})();
+</script>
+
 </body>
 </html>
