@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYQ Explorer | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--blue:#2677ff;--text:#f5f7ff;--muted:#aab8d5;--border:rgba(117,151,255,.22)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;overflow-x:hidden}
+button,select,input{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:270px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--border);padding:23px 15px;position:fixed;height:100vh;overflow-y:auto;z-index:10}
+.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 26px}
+.logo-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:22px}
+.logo h2{font-size:20px;font-weight:800}.logo p{font-size:10px;color:var(--muted);margin-top:4px}
+.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px 13px 7px}
+.nav-item{display:flex;align-items:center;gap:14px;padding:11px 14px;margin:4px 0;color:#dce6ff;border-radius:11px;font-size:13px;text-decoration:none;cursor:pointer}
+.nav-item i{width:20px;font-size:16px;color:#a9c3f7}
+.nav-item:hover,.nav-item.active{background:linear-gradient(100deg,#174fae,#174080);color:white}
+.main{margin-left:270px;width:calc(100% - 270px);min-width:0}
+.topbar{height:76px;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:#101b38;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
+.top-title{font-size:17px;font-weight:700}.top-title small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:4px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.back-btn{border:1px solid #4387ff;background:transparent;color:white;border-radius:10px;padding:9px 13px;text-decoration:none;font-size:12px}
+.content{padding:24px;max-width:1500px;margin:auto}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:20px}
+.page-head h1{font-size:26px;margin-bottom:7px}.page-head p{color:var(--muted);font-size:13px;line-height:1.6}
+.count-pill{background:#172d56;border:1px solid #315b9b;border-radius:12px;padding:10px 14px;font-size:12px;color:#d8e6ff;white-space:nowrap}
+.filters{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:15px;padding:17px;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr auto;gap:11px;margin-bottom:18px}
+.field label{display:block;font-size:10px;color:#aab8d5;margin:0 0 7px 2px;text-transform:uppercase;letter-spacing:1px}
+.field input,.field select{width:100%;height:42px;background:#0d1935;border:1px solid #344a77;border-radius:9px;color:#f4f7ff;padding:0 11px;outline:none;font-size:12px}
+.field input:focus,.field select:focus{border-color:#4387ff}
+.reset-btn{align-self:end;height:42px;border:1px solid #48618f;background:#1a2c50;color:#dce8ff;border-radius:9px;padding:0 13px;font-size:12px}
+.results-head{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 12px;gap:12px}
+.results-head h2{font-size:16px}.results-head span{font-size:11px;color:var(--muted)}
+.question-list{display:flex;flex-direction:column;gap:12px}
+.question-card{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:14px;overflow:hidden}
+.q-meta{display:flex;flex-wrap:wrap;gap:7px;padding:14px 17px 0}
+.tag{background:#243a64;color:#d9e7ff;border:1px solid #405b8a;border-radius:7px;padding:5px 8px;font-size:10px}
+.tag.verified{background:#123f38;border-color:#1f765e;color:#a8f4d5}
+.q-text{padding:12px 17px 14px;font-size:14px;line-height:1.7;color:#f4f7ff}
+.q-actions{display:flex;gap:8px;padding:0 17px 15px;align-items:center}
+.primary-btn,.secondary-btn{border-radius:9px;padding:9px 13px;font-size:11px}
+.primary-btn{background:linear-gradient(90deg,#1766ee,#347dff);border:0;color:white}
+.secondary-btn{background:transparent;border:1px solid #4387ff;color:#dce8ff}
+.practice-area{display:none;border-top:1px solid var(--border);padding:15px 17px 17px;background:#0e1933}
+.option{display:flex;gap:10px;align-items:flex-start;background:#e6edff;color:#17264a;border-radius:8px;padding:10px 12px;margin:7px 0;font-size:12px;line-height:1.5;cursor:pointer}
+.option input{margin-top:2px;accent-color:#246cff}
+.option.chosen{outline:2px solid #56a1ff;background:#c8dcff}
+.answer-box{display:none;margin-top:12px;padding:12px;border-radius:9px;background:#104d3d;border:1px solid #27b77c;color:#d7ffeb;font-size:12px;line-height:1.6}
+.empty,.error{padding:30px;text-align:center;color:var(--muted);background:#121e3e;border:1px solid var(--border);border-radius:13px;font-size:13px}
+.error{color:#ffb2b2}
+.pagination{display:flex;align-items:center;justify-content:center;gap:12px;padding:20px 0}
+.pagination button{background:#1a2c50;color:white;border:1px solid #48618f;border-radius:8px;padding:9px 14px;font-size:12px}
+.pagination button:disabled{opacity:.4;cursor:not-allowed}
+.page-number{font-size:12px;color:#c8d8f7}
+.loading{padding:25px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:1050px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}.reset-btn{align-self:end}}
+@media(max-width:760px){.sidebar{display:none}.main{margin-left:0;width:100%}.topbar{height:65px;padding:10px 14px}.content{padding:17px 12px}.page-head{align-items:flex-start;flex-direction:column}.page-head h1{font-size:22px}.filters{grid-template-columns:1fr 1fr;padding:12px}.field:first-child{grid-column:1/-1}.reset-btn{width:100%}.q-text{font-size:13px}.top-title{font-size:14px}}
+@media(max-width:420px){.filters{grid-template-columns:1fr}.field:first-child{grid-column:auto}.q-actions{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+ <div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a>
+ <a class="nav-item active" href="pyq-explorer.html"><i class="fa-solid fa-file-circle-question"></i>PYQ Explorer</a>
+ <div class="nav-item"><i class="fa-solid fa-clipboard-check"></i>Mock Tests</div>
+ <div class="nav-item"><i class="fa-solid fa-layer-group"></i>Practice by Topic</div>
+ <div class="nav-item"><i class="fa-solid fa-book-open"></i>Vocabulary</div>
+ <div class="nav-item"><i class="fa-solid fa-newspaper"></i>Newsroom</div>
+ <div class="nav-label">MY STUDY SPACE</div>
+ <div class="nav-item"><i class="fa-solid fa-bookmark"></i>Bookmarks</div>
+ <div class="nav-item"><i class="fa-solid fa-list-check"></i>My Revision List</div>
+ <div class="nav-item"><i class="fa-solid fa-chart-pie"></i>Study Progress</div>
+ <div class="nav-item"><i class="fa-solid fa-chart-column"></i>Performance Analysis</div>
+ <div class="nav-item"><i class="fa-solid fa-bullseye"></i>Weak Topics</div>
+ <div class="nav-label">ACCOUNT</div>
+ <div class="nav-item"><i class="fa-solid fa-user"></i>My Account</div>
+ <div class="nav-item"><i class="fa-solid fa-gear"></i>Settings</div>
+ <div class="nav-item"><i class="fa-solid fa-circle-question"></i>Help &amp; Support</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="top-title">PYQ Explorer<small>Find and practise UPSC previous year questions</small></div><div class="top-actions"><a class="back-btn" href="index.html"><i class="fa-solid fa-arrow-left"></i> Dashboard</a></div></header>
+<div class="content">
+ <section class="page-head"><div><h1>UPSC PYQ Library</h1><p>Search previous year questions, narrow them by year, subject and topic, then practise at your own pace.</p></div><div class="count-pill" id="total-count">Loading questions…</div></section>
+ <section class="filters">
+  <div class="field"><label for="search">Search questions</label><input id="search" type="search" placeholder="Type a word or phrase…"></div>
+  <div class="field"><label for="year-filter">Year</label><select id="year-filter"><option value="">All years</option></select></div>
+  <div class="field"><label for="subject-filter">Subject</label><select id="subject-filter"><option value="">All subjects</option></select></div>
+  <div class="field"><label for="topic-filter">Topic</label><select id="topic-filter"><option value="">All topics</option></select></div>
+  <button class="reset-btn" id="reset-filters"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+ </section>
+ <div class="results-head"><h2>Questions</h2><span id="result-summary">Preparing your question library…</span></div>
+ <section class="question-list" id="question-list"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading UPSC questions…</div></section>
+ <div class="pagination"><button id="prev-page" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button><span class="page-number" id="page-label">Page 1</span><button id="next-page" disabled>Next <i class="fa-solid fa-chevron-right"></i></button></div>
+</div>
+</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const PAGE_SIZE=15;
+let examId=null,page=0,totalRows=0,searchTimer=null,allMeta=[],subjectRows=[],topicRows=[];
+const el=id=>document.getElementById(id);
+function safe(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function setStatus(message){el("result-summary").textContent=message;}
+async function loadFilterData(){
+ const {data:exam,error:examError}=await db.from("exams").select("id,name").eq("name","UPSC Civil Services Examination").maybeSingle();
+ if(examError) throw examError;
+ if(!exam) throw new Error("UPSC Civil Services Examination exam record was not found.");
+ examId=exam.id;
+ let offset=0;
+ while(true){
+  const {data,error}=await db.from("questions").select("year,subject_id,topic_id").eq("exam_id",examId).range(offset,offset+999);
+  if(error) throw error;
+  const rows=data||[];allMeta=allMeta.concat(rows);
+  if(rows.length<1000) break;offset+=1000;
+ }
+ const subjectIds=[...new Set(allMeta.map(x=>x.subject_id).filter(Boolean))];
+ const topicIds=[...new Set(allMeta.map(x=>x.topic_id).filter(Boolean))];
+ const [subjectsResult,topicsResult]=await Promise.all([
+  db.from("subjects").select("id,name").in("id",subjectIds).order("name"),
+  topicIds.length?db.from("topics").select("id,name,subject_id").in("id",topicIds).order("name"):Promise.resolve({data:[],error:null})
+ ]);
+ if(subjectsResult.error) throw subjectsResult.error;
+ if(topicsResult.error) throw topicsResult.error;
+ subjectRows=subjectsResult.data||[];topicRows=topicsResult.data||[];
+ const years=[...new Set(allMeta.map(x=>x.year).filter(y=>y!==null))].sort((a,b)=>b-a);
+ el("year-filter").innerHTML='<option value="">All years</option>'+years.map(y=>'<option value="'+safe(y)+'">'+safe(y)+'</option>').join("");
+ el("subject-filter").innerHTML='<option value="">All subjects</option>'+subjectRows.map(s=>'<option value="'+s.id+'">'+safe(s.name)+'</option>').join("");
+ updateTopicOptions();
+ el("total-count").textContent=allMeta.length.toLocaleString("en-IN")+" questions in library";
+}
+function updateTopicOptions(){
+ const sid=el("subject-filter").value;
+ const usedTopics=new Set(allMeta.filter(x=>!sid||x.subject_id===sid).map(x=>x.topic_id).filter(Boolean));
+ const available=topicRows.filter(t=>usedTopics.has(t.id)&&(!sid||t.subject_id===sid));
+ el("topic-filter").innerHTML='<option value="">All topics</option>'+available.map(t=>'<option value="'+t.id+'">'+safe(t.name)+'</option>').join("");
+}
+function buildQuery(){
+ let q=db.from("questions").select("id,year,paper,question_text,is_verified,subject_id,topic_id,subjects(name),topics(name)",{count:"exact"}).eq("exam_id",examId);
+ const year=el("year-filter").value,subject=el("subject-filter").value,topic=el("topic-filter").value,term=el("search").value.trim();
+ if(year) q=q.eq("year",Number(year));
+ if(subject) q=q.eq("subject_id",subject);
+ if(topic) q=q.eq("topic_id",topic);
+ if(term) q=q.ilike("question_text","%"+term+"%");
+ return q.order("year",{ascending:false}).order("created_at",{ascending:false}).range(page*PAGE_SIZE,(page+1)*PAGE_SIZE-1);
+}
+function questionCard(q,index){
+ const subject=q.subjects?.name||"Subject not assigned";
+ const topic=q.topics?.name||"Topic not assigned";
+ const verified=q.is_verified===true;
+ return '<article class="question-card" data-id="'+q.id+'">'+
+  '<div class="q-meta"><span class="tag">'+safe(q.year||"Year N/A")+'</span><span class="tag">'+safe(q.paper||"Prelims")+'</span><span class="tag">'+safe(subject)+'</span><span class="tag">'+safe(topic)+'</span><span class="tag '+(verified?"verified":"")+'">'+(verified?"Verified":"Under review")+'</span></div>'+
+  '<div class="q-text"><b>Q'+(page*PAGE_SIZE+index+1)+'.</b> '+safe(q.question_text)+'</div>'+
+  '<div class="q-actions"><button class="primary-btn practice-btn" data-id="'+q.id+'"><i class="fa-solid fa-pen-to-square"></i> Practise Question</button></div>'+
+  '<div class="practice-area" id="practice-'+q.id+'"><div class="loading">Loading options…</div></div>'+
+ '</article>';
+}
+async function loadQuestions(){
+ el("question-list").innerHTML='<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading questions…</div>';
+ el("prev-page").disabled=true;el("next-page").disabled=true;
+ try{
+  const {data,error,count}=await buildQuery();
+  if(error) throw error;
+  totalRows=count||0;
+  if(!data||!data.length){
+   el("question-list").innerHTML='<div class="empty"><i class="fa-regular fa-folder-open"></i><p style="margin-top:9px">No questions found. Try changing your filters.</p></div>';
+  }else{
+   el("question-list").innerHTML=data.map(questionCard).join("");
+   el("question-list").querySelectorAll(".practice-btn").forEach(btn=>btn.addEventListener("click",()=>togglePractice(btn.dataset.id,btn)));
+  }
+  const first=totalRows?page*PAGE_SIZE+1:0,last=Math.min((page+1)*PAGE_SIZE,totalRows);
+  setStatus("Showing "+first+"–"+last+" of "+totalRows.toLocaleString("en-IN")+" questions");
+  el("page-label").textContent="Page "+(page+1)+" of "+Math.max(1,Math.ceil(totalRows/PAGE_SIZE));
+  el("prev-page").disabled=page===0;
+  el("next-page").disabled=(page+1)*PAGE_SIZE>=totalRows;
+ }catch(err){
+  console.error(err);
+  el("question-list").innerHTML='<div class="error">Could not load questions: '+safe(err.message||"Unknown error")+'</div>';
+  setStatus("Unable to load question library");
+ }
+}
+async function togglePractice(id,button){
+ const area=el("practice-"+id);
+ const opening=area.style.display!=="block";
+ if(!opening){area.style.display="none";button.innerHTML='<i class="fa-solid fa-pen-to-square"></i> Practise Question';return;}
+ area.style.display="block";button.innerHTML='<i class="fa-solid fa-chevron-up"></i> Close Practice';
+ if(area.dataset.loaded==="true") return;
+ area.innerHTML='<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading options…</div>';
+ try{
+  const {data,error}=await db.from("question_options").select("option_key,option_text").eq("question_id",id).order("option_key");
+  if(error) throw error;
+  if(!data||!data.length){area.innerHTML='<p class="empty">Options are not available for this question yet.</p>';return;}
+  area.innerHTML='<div class="options-list">'+data.map(o=>'<label class="option"><input type="radio" name="answer-'+id+'" value="'+safe(o.option_key)+'"><span><b>'+safe(o.option_key)+'.</b> '+safe(o.option_text)+'</span></label>').join("")+'</div><button class="primary-btn reveal-btn" data-id="'+id+'"><i class="fa-solid fa-eye"></i> Reveal Answer</button><div class="answer-box" id="answer-'+id+'"></div>';
+  area.querySelectorAll(".option").forEach(label=>label.addEventListener("click",()=>{area.querySelectorAll(".option").forEach(x=>x.classList.remove("chosen"));label.classList.add("chosen");}));
+  area.querySelector(".reveal-btn").addEventListener("click",()=>revealAnswer(id));
+  area.dataset.loaded="true";
+ }catch(err){area.innerHTML='<p class="error">Options could not be loaded: '+safe(err.message)+'</p>';}
+}
+async function revealAnswer(id){
+ const box=el("answer-"+id),btn=el("practice-"+id).querySelector(".reveal-btn");
+ const selected=el("practice-"+id).querySelector('input[name="answer-'+id+'"]:checked');
+ btn.disabled=true;btn.textContent="Checking answer…";
+ try{
+  const {data,error}=await db.rpc("reveal_question_answer",{question_id:id});
+  if(error) throw error;
+  const payload=Array.isArray(data)?data[0]:data;
+  if(!payload){box.textContent="Answer key unavailable.";box.style.display="block";return;}
+  const key=payload.correct_option||"";
+  const special={"DROPPED":"Dropped by UPSC — no official answer","NO_VALID_OPTION":"No valid option — question is flawed","REVIEW":"Source review required — answer not confirmed"};
+  if(special[key]) box.textContent=special[key];
+  else{
+   const verdict=selected?(selected.value===key?"Your answer is correct. ":"Your answer is incorrect. "):"";
+   box.textContent=verdict+"Correct Answer: "+key;
+  }
+  box.style.display="block";
+  btn.textContent="Answer Revealed";
+ }catch(err){box.textContent="Answer could not be loaded. Please try again.";box.style.display="block";btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-eye"></i> Reveal Answer';}
+}
+function applyFilters(){page=0;loadQuestions();}
+el("search").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(applyFilters,400);});
+el("year-filter").addEventListener("change",applyFilters);
+el("subject-filter").addEventListener("change",()=>{updateTopicOptions();el("topic-filter").value="";applyFilters();});
+el("topic-filter").addEventListener("change",applyFilters);
+el("reset-filters").addEventListener("click",()=>{el("search").value="";el("year-filter").value="";el("subject-filter").value="";updateTopicOptions();el("topic-filter").value="";applyFilters();});
+el("prev-page").addEventListener("click",()=>{if(page>0){page--;loadQuestions();}});
+el("next-page").addEventListener("click",()=>{if((page+1)*PAGE_SIZE<totalRows){page++;loadQuestions();}});
+(async()=>{try{await loadFilterData();await loadQuestions();}catch(err){console.error(err);el("question-list").innerHTML='<div class="error">PYQ Explorer could not connect to the question database: '+safe(err.message)+'</div>';setStatus("Connection error");}})();
+</script>
+</body>
+</html>
