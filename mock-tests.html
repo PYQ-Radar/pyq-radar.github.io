@@ -49,15 +49,37 @@ let examId=null,subjects=[],topics=[],mode="full",questions=[],answers={},curren
 function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
 async function init(){
  try{
- const {data:exam,error}=await db.from("exams").select("id").eq("name","UPSC Civil Services Examination").maybeSingle();if(error)throw error;if(!exam)throw new Error("UPSC exam record not found.");examId=exam.id;
- const {data:s,error:se}=await db.from("subjects").select("id,name").order("name");if(se)throw se;subjects=s||[];
- const {data:q,error:qe}=await db.from("questions").select("subject_id,topic_id").eq("exam_id",examId);if(qe)throw qe;
- const usedS=new Set((q||[]).map(x=>x.subject_id).filter(Boolean));subjects=subjects.filter(x=>usedS.has(x.id));
- $("subject").innerHTML=subjects.map(x=>'<option value="'+x.id+'">'+safe(x.name)+'</option>').join("");
- const usedT=new Set((q||[]).map(x=>x.topic_id).filter(Boolean));
- const {data:t,error:te}=await db.from("topics").select("id,name,subject_id").in("id",[...usedT]).order("name");if(te)throw te;topics=t||[];updateTopics();
- $("status").textContent="Question bank connected.";
- }catch(e){$("status").textContent="Could not load test setup: "+(e.message||"Please refresh.");$("start").disabled=true;}
+  const {data:exam,error:examError}=await db.from("exams").select("id,name").eq("name","UPSC Civil Services Examination").maybeSingle();
+  if(examError)throw examError;
+  if(!exam)throw new Error("UPSC Civil Services Examination exam record was not found.");
+  examId=exam.id;
+  let meta=[],offset=0;
+  while(true){
+   const {data,error}=await db.from("questions").select("subject_id,topic_id").eq("exam_id",examId).range(offset,offset+999);
+   if(error)throw error;
+   const rows=data||[];meta=meta.concat(rows);
+   if(rows.length<1000)break;
+   offset+=1000;
+  }
+  const subjectIds=[...new Set(meta.map(x=>x.subject_id).filter(Boolean))];
+  const topicIds=[...new Set(meta.map(x=>x.topic_id).filter(Boolean))];
+  const [subjectResult,topicResult]=await Promise.all([
+   subjectIds.length?db.from("subjects").select("id,name").in("id",subjectIds).order("name"):Promise.resolve({data:[],error:null}),
+   topicIds.length?db.from("topics").select("id,name,subject_id").in("id",topicIds).order("name"):Promise.resolve({data:[],error:null})
+  ]);
+  if(subjectResult.error)throw subjectResult.error;
+  if(topicResult.error)throw topicResult.error;
+  subjects=subjectResult.data||[];
+  topics=topicResult.data||[];
+  $("subject").innerHTML=subjects.map(x=>'<option value="'+x.id+'">'+safe(x.name)+'</option>').join("");
+  updateTopics();
+  if(!subjects.length)throw new Error("No subjects are linked to the UPSC question bank yet.");
+  $("status").textContent="Question bank connected · "+meta.length+" questions available.";
+ }catch(e){
+  console.error("Mock Tests setup error:",e);
+  $("status").textContent="Could not load test setup: "+(e.message||"Please refresh.");
+  $("start").disabled=true;
+ }
 }
 function updateTopics(){const sid=$("subject").value;const rows=topics.filter(t=>!sid||t.subject_id===sid);$("topic").innerHTML=rows.map(t=>'<option value="'+t.id+'">'+safe(t.name)+'</option>').join("");}
 document.querySelectorAll(".mode").forEach(card=>card.addEventListener("click",()=>{document.querySelectorAll(".mode").forEach(x=>x.classList.remove("selected"));card.classList.add("selected");mode=card.dataset.mode;$("subject-wrap").classList.toggle("hidden",mode==="full");$("topic-wrap").classList.toggle("hidden",mode!=="topic");}));
