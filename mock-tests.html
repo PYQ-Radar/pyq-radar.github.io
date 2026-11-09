@@ -28,7 +28,7 @@
 </div>
 <div class="settings"><div class="field" id="subject-wrap"><label>SUBJECT</label><select id="subject"><option value="">Loading subjects…</option></select></div><div class="field hidden" id="topic-wrap"><label>TOPIC</label><select id="topic"><option value="">Choose a topic</option></select></div></div>
 <div class="start-row"><span class="note">Scoring: +2 for correct, −⅔ for incorrect, 0 for unanswered.</span><button class="primary" id="start">Start Test <i class="fa-solid fa-arrow-right"></i></button></div>
-</div><p class="note">Questions are randomly selected from the available UPSC question bank. The answer key is checked only after you submit the test.</p>
+</div><p class="note">The answer key is checked only after you submit the test.</p>
 </section>
 <section id="test" class="hidden"><div class="test-head"><div><b id="test-name">Mock Test</b><div class="qnumber" id="progress">Question 1 of 100</div></div><div class="timer" id="timer">120:00</div></div>
 <div class="test-layout"><div class="panel" style="margin:0"><div class="qnumber" id="qmeta"></div><div class="qtext" id="qtext"></div><div id="options"></div><div class="actions"><button class="secondary" id="prev">Previous</button><button class="primary" id="next">Next <i class="fa-solid fa-arrow-right"></i></button></div></div>
@@ -74,7 +74,7 @@ async function init(){
   $("subject").innerHTML=subjects.map(x=>'<option value="'+x.id+'">'+safe(x.name)+'</option>').join("");
   updateTopics();
   if(!subjects.length)throw new Error("No subjects are linked to the UPSC question bank yet.");
-  $("status").textContent="Question bank connected · "+meta.length+" questions available.";
+  $("status").textContent="";
  }catch(e){
   console.error("Mock Tests setup error:",e);
   $("status").textContent="Could not load test setup: "+(e.message||"Please refresh.");
