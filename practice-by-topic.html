@@ -27,11 +27,11 @@ async function init(){
   const {data:exam,error:e}=await db.from("exams").select("id").eq("name","UPSC Civil Services Examination").maybeSingle();if(e)throw e;if(!exam)throw new Error("UPSC exam record not found.");examId=exam.id;
   const [sr,tr]=await Promise.all([db.from("subjects").select("id,name").order("name"),db.from("topics").select("id,name,subject_id").order("name")]);if(sr.error)throw sr.error;if(tr.error)throw tr.error;
   subjects=sr.data||[];topics=tr.data||[];
-  const {data:qs,error:qe}=await db.from("questions").select("id,topic_id").eq("exam_id",examId);if(qe)throw qe;
-  const counts={};(qs||[]).forEach(q=>{if(q.topic_id)counts[q.topic_id]=(counts[q.topic_id]||0)+1;});
+  let qs=[],offset=0;while(true){const {data,error}=await db.from("questions").select("id,topic_id").eq("exam_id",examId).range(offset,offset+999);if(error)throw error;const page=data||[];qs=qs.concat(page);if(page.length<1000)break;offset+=1000;}
+  const counts={};qs.forEach(q=>{if(q.topic_id)counts[q.topic_id]=(counts[q.topic_id]||0)+1;});
   topics=topics.map(t=>({...t,count:counts[t.id]||0}));
   $("subject").innerHTML='<option value="">All Subjects</option>'+subjects.map(s=>'<option value="'+s.id+'">'+safe(s.name)+'</option>').join("");
-  $("subject-count").textContent="Subjects: "+subjects.length;$("topic-count").textContent="Topics: "+topics.length;$("question-count").textContent="Questions: "+(qs||[]).length;
+  $("subject-count").textContent="Subjects: "+subjects.length;$("topic-count").textContent="Topics: "+topics.length;$("question-count").textContent="Questions: "+qs.length;
   renderTopics();
  }catch(e){console.error(e);$("topics").innerHTML='<div class="empty">Could not load topics: '+safe(e.message)+'</div>';}
 }
