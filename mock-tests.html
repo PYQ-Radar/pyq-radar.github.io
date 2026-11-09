@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mock Tests | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--text:#f5f7ff;--muted:#aab8d5;--line:rgba(117,151,255,.22);--blue:#2677ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.app{min-height:100vh}.sidebar{width:270px;position:fixed;inset:0 auto 0 0;padding:23px 15px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--line);overflow:auto}.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 26px}.logo-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:22px}.logo h2{font-size:20px;margin:0}.logo p{font-size:10px;color:var(--muted);margin:4px 0}.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px 13px 7px}.nav-item{display:flex;gap:14px;align-items:center;padding:11px 14px;margin:4px 0;border-radius:11px;color:#dce6ff;font-size:13px;text-decoration:none}.nav-item i{width:20px;color:#a9c3f7}.nav-item:hover,.nav-item.active{background:linear-gradient(100deg,#174fae,#174080);color:#fff}.main{margin-left:270px;min-height:100vh}.topbar{height:76px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:#101b38;border-bottom:1px solid var(--line)}.topbar small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.back{color:#dce8ff;border:1px solid #4387ff;border-radius:9px;padding:9px 13px;text-decoration:none;font-size:12px}.content{padding:25px;max-width:1450px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:20px;gap:15px}.heading h1{font-size:26px;margin:0 0 7px}.heading p{font-size:13px;color:var(--muted);margin:0;line-height:1.6}.panel{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:15px;padding:19px;margin-bottom:17px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.mode{background:#101d3b;border:1px solid #344b79;border-radius:13px;padding:17px;cursor:pointer;transition:.2s}.mode:hover,.mode.selected{border-color:#4387ff;background:#172d56}.mode i{font-size:22px;color:#8db7ff}.mode h3{font-size:15px;margin:12px 0 6px}.mode p{font-size:11px;color:var(--muted);line-height:1.6;margin:0}.settings{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:17px}.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 7px}.field select{width:100%;height:42px;background:#0d1935;border:1px solid #344a77;border-radius:9px;color:white;padding:0 10px}.primary,.secondary{border:0;border-radius:10px;padding:12px 18px;font-weight:700;color:white;background:linear-gradient(90deg,#1766ee,#347dff);cursor:pointer}.secondary{background:#24395f;border:1px solid #45618e}.start-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}.note{font-size:11px;color:var(--muted);line-height:1.6}.hidden{display:none!important}.test-layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px}.test-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.timer{font-size:18px;font-weight:800;color:#ffd66b;background:#392f22;padding:9px 13px;border-radius:9px}.qnumber{font-size:12px;color:#a9c3f7}.qtext{font-size:17px;line-height:1.7;margin:13px 0 17px}.opt{display:flex;gap:11px;align-items:flex-start;background:#e6edff;color:#17264a;padding:12px 14px;border-radius:9px;margin:8px 0;cursor:pointer;font-size:13px;line-height:1.55}.opt input{margin-top:3px;accent-color:#246cff}.opt.chosen{outline:2px solid #4387ff;background:#c7dcff}.qnav{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.qnav button{border:1px solid #42577f;background:#101d3b;color:#dce8ff;border-radius:7px;padding:9px 0;cursor:pointer}.qnav button.current{border-color:#75a9ff;background:#2456a2}.qnav button.done{background:#155b49;border-color:#27886e}.qnav button.flag{box-shadow:inset 0 -3px #e7ae43}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:16px}.result-score{font-size:42px;font-weight:800;color:#8fc2ff}.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.result-stat{background:#0d1935;padding:14px;border-radius:10px}.result-stat b{font-size:21px;display:block}.result-stat span{font-size:10px;color:var(--muted)}.review-item{padding:14px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.6}.correct{color:#80e0b6}.wrong{color:#ffaaa8}.empty{color:var(--muted);padding:20px;text-align:center}.loading{color:#9fc1ff;padding:20px;text-align:center}
+@media(max-width:900px){.sidebar{width:220px}.main{margin-left:220px}.test-layout{grid-template-columns:1fr}.modes{grid-template-columns:1fr}.qnav{grid-template-columns:repeat(8,1fr)}}@media(max-width:650px){.sidebar{display:none}.main{margin:0}.content{padding:15px}.topbar{padding:0 15px}.settings{grid-template-columns:1fr}.heading{align-items:flex-start;flex-direction:column}.result-grid{grid-template-columns:repeat(2,1fr)}.qnav{grid-template-columns:repeat(6,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar"><div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
+<div class="nav-label">MAIN MENU</div>
+<a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a><a class="nav-item" href="pyq-explorer.html"><i class="fa-solid fa-file-circle-question"></i>PYQ Explorer</a><a class="nav-item active" href="mock-tests.html"><i class="fa-solid fa-clipboard-check"></i>Mock Tests</a><a class="nav-item" href="index.html"><i class="fa-solid fa-layer-group"></i>Practice by Topic</a><a class="nav-item" href="index.html"><i class="fa-solid fa-book-open"></i>Vocabulary</a><a class="nav-item" href="index.html"><i class="fa-solid fa-newspaper"></i>Newsroom</a>
+<div class="nav-label">MY STUDY SPACE</div><a class="nav-item" href="index.html"><i class="fa-solid fa-bookmark"></i>Bookmarks</a><a class="nav-item" href="index.html"><i class="fa-solid fa-list-check"></i>My Revision List</a><a class="nav-item" href="index.html"><i class="fa-solid fa-chart-line"></i>Study Progress</a><a class="nav-item" href="index.html"><i class="fa-solid fa-chart-column"></i>Performance Analysis</a><a class="nav-item" href="index.html"><i class="fa-solid fa-bullseye"></i>Weak Topics</a>
+<div class="nav-label">ACCOUNT</div><a class="nav-item" href="index.html"><i class="fa-solid fa-user"></i>My Account</a><a class="nav-item" href="index.html"><i class="fa-solid fa-gear"></i>Settings</a><a class="nav-item" href="index.html"><i class="fa-solid fa-circle-question"></i>Help &amp; Support</a></aside>
+<main class="main"><header class="topbar"><div><b>Mock Tests</b><small>UPSC Civil Services Examination · Prelims</small></div><a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Dashboard</a></header>
+<div class="content"><div class="heading"><div><h1>Mock Test Centre</h1><p>Practice with questions from the PYQ Radar UPSC question bank.</p></div></div>
+<section id="setup">
+<div class="panel"><h3 style="margin:0 0 14px">Choose your test</h3><div class="modes">
+<div class="mode selected" data-mode="full"><i class="fa-solid fa-file-circle-check"></i><h3>Full Length Test</h3><p>100 questions · 120 minutes<br>Mixed subjects · UPSC-style marking</p></div>
+<div class="mode" data-mode="subject"><i class="fa-solid fa-book-open"></i><h3>Subject-wise Test</h3><p>25 questions · 30 minutes<br>Choose one subject to practise</p></div>
+<div class="mode" data-mode="topic"><i class="fa-solid fa-layer-group"></i><h3>Topic-wise Test</h3><p>20 questions · 25 minutes<br>Focus on one specific topic</p></div>
+</div>
+<div class="settings"><div class="field" id="subject-wrap"><label>SUBJECT</label><select id="subject"><option value="">Loading subjects…</option></select></div><div class="field hidden" id="topic-wrap"><label>TOPIC</label><select id="topic"><option value="">Choose a topic</option></select></div></div>
+<div class="start-row"><span class="note">Scoring: +2 for correct, −⅔ for incorrect, 0 for unanswered.</span><button class="primary" id="start">Start Test <i class="fa-solid fa-arrow-right"></i></button></div>
+</div><p class="note">Questions are randomly selected from the available UPSC question bank. The answer key is checked only after you submit the test.</p>
+</section>
+<section id="test" class="hidden"><div class="test-head"><div><b id="test-name">Mock Test</b><div class="qnumber" id="progress">Question 1 of 100</div></div><div class="timer" id="timer">120:00</div></div>
+<div class="test-layout"><div class="panel" style="margin:0"><div class="qnumber" id="qmeta"></div><div class="qtext" id="qtext"></div><div id="options"></div><div class="actions"><button class="secondary" id="prev">Previous</button><button class="primary" id="next">Next <i class="fa-solid fa-arrow-right"></i></button></div></div>
+<div class="panel" style="margin:0"><b style="font-size:13px">Question palette</b><p class="note" style="margin:8px 0 13px">Green = answered · Blue = current</p><div class="qnav" id="palette"></div><button class="primary" id="submit" style="width:100%;margin-top:17px">Submit Test</button></div></div>
+</section>
+<section id="results" class="hidden"><div class="panel"><div class="qnumber">TEST COMPLETED</div><h2 style="margin:8px 0">Your Result</h2><div class="result-score" id="score">0 / 200</div><p class="note" id="result-caption"></p><div class="result-grid" id="stats"></div><button class="primary" id="newtest">Take Another Test</button></div><div class="panel"><h3 style="margin:0 0 8px">Answer Review</h3><div id="review"></div></div></section>
+<div id="status" class="note" style="margin-top:15px"></div>
+</div></main></div>
+<script>
+"use strict";
+const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);
+const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let examId=null,subjects=[],topics=[],mode="full",questions=[],answers={},current=0,seconds=0,tick=null,submitted=false,optionMap={};
+function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
+async function init(){
+ try{
+ const {data:exam,error}=await db.from("exams").select("id").eq("name","UPSC Civil Services Examination").maybeSingle();if(error)throw error;if(!exam)throw new Error("UPSC exam record not found.");examId=exam.id;
+ const {data:s,error:se}=await db.from("subjects").select("id,name").order("name");if(se)throw se;subjects=s||[];
+ const {data:q,error:qe}=await db.from("questions").select("subject_id,topic_id").eq("exam_id",examId);if(qe)throw qe;
+ const usedS=new Set((q||[]).map(x=>x.subject_id).filter(Boolean));subjects=subjects.filter(x=>usedS.has(x.id));
+ $("subject").innerHTML=subjects.map(x=>'<option value="'+x.id+'">'+safe(x.name)+'</option>').join("");
+ const usedT=new Set((q||[]).map(x=>x.topic_id).filter(Boolean));
+ const {data:t,error:te}=await db.from("topics").select("id,name,subject_id").in("id",[...usedT]).order("name");if(te)throw te;topics=t||[];updateTopics();
+ $("status").textContent="Question bank connected.";
+ }catch(e){$("status").textContent="Could not load test setup: "+(e.message||"Please refresh.");$("start").disabled=true;}
+}
+function updateTopics(){const sid=$("subject").value;const rows=topics.filter(t=>!sid||t.subject_id===sid);$("topic").innerHTML=rows.map(t=>'<option value="'+t.id+'">'+safe(t.name)+'</option>').join("");}
+document.querySelectorAll(".mode").forEach(card=>card.addEventListener("click",()=>{document.querySelectorAll(".mode").forEach(x=>x.classList.remove("selected"));card.classList.add("selected");mode=card.dataset.mode;$("subject-wrap").classList.toggle("hidden",mode==="full");$("topic-wrap").classList.toggle("hidden",mode!=="topic");}));
+$("subject").addEventListener("change",updateTopics);
+async function startTest(){
+ $("start").disabled=true;$("status").textContent="Preparing your test…";
+ try{
+ let query=db.from("questions").select("id,year,paper,question_text,subject_id,topic_id,subjects(name),topics(name)").eq("exam_id",examId);
+ if(mode!=="full")query=query.eq("subject_id",$("subject").value);
+ if(mode==="topic")query=query.eq("topic_id",$("topic").value);
+ const {data,error}=await query;if(error)throw error;
+ const count=mode==="full"?100:mode==="subject"?25:20;
+ if(!data||data.length<count)throw new Error("This selection has only "+(data||[]).length+" questions. Choose another subject or topic.");
+ questions=shuffle(data).slice(0,count);answers={};current=0;submitted=false;optionMap={};
+ const ids=questions.map(q=>q.id);
+ const {data:opts,error:oe}=await db.from("question_options").select("question_id,option_key,option_text").in("question_id",ids).order("option_key");if(oe)throw oe;
+ (opts||[]).forEach(o=>(optionMap[o.question_id]??=[]).push(o));
+ questions=questions.filter(q=>(optionMap[q.id]||[]).length>0);
+ if(!questions.length)throw new Error("Options are not available for this test selection.");
+ seconds=(mode==="full"?120:mode==="subject"?30:25)*60;
+ $("test-name").textContent=mode==="full"?"Full Length Test":mode==="subject"?"Subject-wise Test":"Topic-wise Test";
+ $("setup").classList.add("hidden");$("results").classList.add("hidden");$("test").classList.remove("hidden");$("status").textContent="";
+ renderQuestion();renderPalette();startTimer();
+ }catch(e){$("status").textContent=e.message||"Could not start test.";$("start").disabled=false;}
+}
+function renderQuestion(){
+ const q=questions[current];$("progress").textContent="Question "+(current+1)+" of "+questions.length;
+ $("qmeta").textContent=(q.year||"Year N/A")+" · "+(q.subjects?.name||"UPSC")+" · "+(q.topics?.name||"General");
+ $("qtext").textContent=q.question_text;
+ $("options").innerHTML=(optionMap[q.id]||[]).map(o=>'<label class="opt '+(answers[q.id]===o.option_key?"chosen":"")+'"><input type="radio" name="answer" value="'+safe(o.option_key)+'" '+(answers[q.id]===o.option_key?"checked":"")+'><span><b>'+safe(o.option_key)+'.</b> '+safe(o.option_text)+'</span></label>').join("");
+ $("options").querySelectorAll("input").forEach(input=>input.addEventListener("change",()=>{answers[q.id]=input.value;renderPalette();renderQuestion();}));
+ $("prev").disabled=current===0;$("next").textContent=current===questions.length-1?"Review answers":"Next →";
+}
+function renderPalette(){$("palette").innerHTML=questions.map((q,i)=>'<button class="'+(i===current?"current ":"")+(answers[q.id]?"done":"")+'" data-i="'+i+'">'+(i+1)+'</button>').join("");$("palette").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{current=Number(b.dataset.i);renderQuestion();renderPalette();}));}
+function startTimer(){clearInterval(tick);updateTimer();tick=setInterval(()=>{seconds--;updateTimer();if(seconds<=0){clearInterval(tick);finishTest(true);}},1000);}
+function updateTimer(){const m=Math.floor(Math.max(0,seconds)/60),s=Math.max(0,seconds)%60;$("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");}
+$("prev").addEventListener("click",()=>{if(current>0){current--;renderQuestion();renderPalette();}});
+$("next").addEventListener("click",()=>{if(current<questions.length-1){current++;renderQuestion();renderPalette();}else{const first=questions.findIndex(q=>!answers[q.id]);if(first>=0){current=first;renderQuestion();renderPalette();}else if(confirm("All questions are answered. Submit your test?"))finishTest(false);}});
+$("submit").addEventListener("click",()=>{const unanswered=questions.filter(q=>!answers[q.id]).length;if(confirm("Submit test? "+unanswered+" question(s) are unanswered."))finishTest(false);});
+async function finishTest(auto){
+ if(submitted)return;submitted=true;clearInterval(tick);$("submit").disabled=true;$("status").textContent="Checking your answers…";
+ try{
+ const ids=questions.filter(q=>answers[q.id]).map(q=>q.id),keys={};
+ for(let i=0;i<ids.length;i+=10){const batch=ids.slice(i,i+10);const results=await Promise.all(batch.map(async id=>{const {data,error}=await db.rpc("reveal_question_answer",{question_id:id});if(error)throw error;const row=Array.isArray(data)?data[0]:data;return [id,row?.correct_option||""]; }));results.forEach(([id,k])=>keys[id]=k);}
+ let correct=0,wrong=0,unanswered=0,score=0;
+ questions.forEach(q=>{const chosen=answers[q.id],key=keys[q.id];if(!chosen){unanswered++;}else if(key==="DROPPED"||key==="NO_VALID_OPTION"||key==="REVIEW"||!key){unanswered++;}else if(chosen===key){correct++;score+=2;}else{wrong++;score-=2/3;}});
+ $("score").textContent=score.toFixed(2)+" / "+(questions.length*2);
+ $("result-caption").textContent=(auto?"Time is up. ":"")+"Test submitted. Score is calculated as +2 / −⅔ / 0.";
+ $("stats").innerHTML=[["Correct",correct],["Incorrect",wrong],["Unanswered",unanswered],["Attempted",correct+wrong]].map(x=>'<div class="result-stat"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>').join("");
+ $("review").innerHTML=questions.map((q,i)=>{const chosen=answers[q.id],key=keys[q.id],valid=key&& !["DROPPED","NO_VALID_OPTION","REVIEW"].includes(key);const label=!chosen?"Not answered":!valid?"Answer key unavailable / review":chosen===key?"Correct":"Incorrect";const cls=label==="Correct"?"correct":label==="Incorrect"?"wrong":"";return '<div class="review-item"><b>Q'+(i+1)+'.</b> '+safe(q.question_text)+'<br><span class="'+cls+'">'+label+'</span>'+(chosen?" · Your answer: "+safe(chosen):"")+(valid?" · Correct answer: "+safe(key):"")+'</div>';}).join("");
+ $("test").classList.add("hidden");$("results").classList.remove("hidden");$("status").textContent="";
+ }catch(e){submitted=false;$("submit").disabled=false;$("status").textContent="Could not calculate result: "+(e.message||"Please try again.");}
+}
+$("newtest").addEventListener("click",()=>{clearInterval(tick);$("results").classList.add("hidden");$("setup").classList.remove("hidden");$("start").disabled=false;$("submit").disabled=false;$("status").textContent="Ready for your next test.";});
+$("start").addEventListener("click",startTest);
+init();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</body></html>
