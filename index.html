@@ -322,19 +322,19 @@ footer strong{color:#dce7ff}
 <section class="stats">
  <div class="stat">
   <div class="stat-icon" style="color:#bd91ff"><i class="fa-solid fa-book-open"></i></div>
-  <div><small>Questions Loaded</small><h2 id="stat-questions">—</h2></div>
+  <div><small>UPSC PYQ Library</small><h2 style="font-size:17px">Prelims Practice</h2></div>
  </div>
  <div class="stat">
-  <div class="stat-icon" style="color:#38e88e"><i class="fa-solid fa-shield-halved"></i></div>
-  <div><small>Verified Loaded</small><h2 id="stat-verified">—</h2></div>
+  <div class="stat-icon" style="color:#38e88e"><i class="fa-solid fa-layer-group"></i></div>
+  <div><small>Learn by Subject</small><h2 style="font-size:17px">Topic-wise Study</h2></div>
  </div>
  <div class="stat">
-  <div class="stat-icon" style="color:#ff9a43"><i class="fa-solid fa-clock"></i></div>
-  <div><small>Unverified Loaded</small><h2 id="stat-unverified">—</h2></div>
+  <div class="stat-icon" style="color:#ffca43"><i class="fa-solid fa-lightbulb"></i></div>
+  <div><small>Build Your Knowledge</small><h2 style="font-size:17px">Daily Vocabulary</h2></div>
  </div>
  <div class="stat">
-  <div class="stat-icon" style="color:#75baff"><i class="fa-solid fa-database"></i></div>
-  <div><small>Feed Status</small><h2 id="stat-status" style="font-size:17px">Connecting</h2></div>
+  <div class="stat-icon" style="color:#75baff"><i class="fa-solid fa-bookmark"></i></div>
+  <div><small>Stay Consistent</small><h2 style="font-size:17px">Revise & Improve</h2></div>
  </div>
 </section>
 
@@ -510,7 +510,6 @@ function escapeHtml(value){
 }
 
 function setFeedStatus(value){
- setText("stat-status",value);
  setText("pyq-status",value);
 }
 
@@ -573,9 +572,6 @@ async function fetchQuestions(searchTerm=""){
   const verified=questionRows.filter(q=>q.is_verified===true).length;
   const unverified=questionRows.length-verified;
 
-  setText("stat-questions",questionRows.length);
-  setText("stat-verified",verified);
-  setText("stat-unverified",unverified);
   setText("quick-verified",verified);
   setText("quick-review",unverified);
 
