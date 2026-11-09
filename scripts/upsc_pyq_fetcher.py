@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch only official UPSC CSE Prelims GS-I PDFs and extract searchable text."""
+"""Fetch official UPSC CSE Prelims GS-I PDFs and extract searchable text."""
 from __future__ import annotations
 
 import hashlib
@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
-import fitz
+import pymupdf
 import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
@@ -32,10 +32,34 @@ session.mount("https://", HTTPAdapter(max_retries=retry))
 session.mount("http://", HTTPAdapter(max_retries=retry))
 
 
+def exam_context(anchor):
+    """Walk up the DOM until the containing block identifies CSE Prelims and year."""
+    node = anchor
+    for _ in range(20):
+        if node is None:
+            break
+        text = " ".join(node.get_text(" ", strip=True).split())
+        exam = re.search(
+            r"Civil Services\s*\(\s*Preliminary\s*\)\s*Examination",
+            text,
+            re.I,
+        )
+        year = re.search(r"\b20\d{2}\b", text)
+        gs1 = re.search(
+            r"General Studies\s*Paper\s*[-–—]?\s*(?:I|1)\b",
+            text,
+            re.I,
+        )
+        if exam and year and gs1:
+            return int(year.group(0)), text
+        node = node.parent
+    return None, ""
+
+
 def extract_pdf_text(pdf_path: Path, text_path: Path) -> dict:
-    with fitz.open(pdf_path) as doc:
+    with pymupdf.open(pdf_path) as doc:
         pages = [
-            f"\n\n--- PAGE {number} ---\n{page.get_text('text')}"
+            f"\n\n--- PAGE {number} ---\n{page.get_text()}"
             for number, page in enumerate(doc, start=1)
         ]
     text = "".join(pages).strip()
@@ -53,39 +77,32 @@ def main() -> int:
     soup = BeautifulSoup(response.text, "html.parser")
 
     papers = {}
+    pdf_links_seen = 0
     for anchor in soup.find_all("a", href=True):
-        label = " ".join(anchor.get_text(" ", strip=True).split())
         href = urljoin(SOURCE_URL, anchor["href"])
-        path = urlparse(href).path
-        if not label or urlparse(href).scheme not in ("http", "https"):
+        path = urlparse(href).path.lower()
+        if not path.endswith(".pdf"):
             continue
-        if not (path.lower().endswith(".pdf") or "pdf" in label.lower()):
+        pdf_links_seen += 1
+
+        year, context = exam_context(anchor)
+        if year is None:
             continue
 
-        # UPSC CSE Preliminary filenames use the CSP marker. Exclude CSM/Mains
-        # and all other UPSC examinations; only select GS Paper-I.
-        upper = path.upper()
-        label_upper = label.upper().replace("–", "-").replace("—", "-")
-        is_prelims = bool(re.search(r"QP[-_]?CSP", upper))
-        is_gs1 = bool(
-            re.search(r"GS[-_]?I(?:[-_.]|$)", upper)
-            or re.search(r"GENERAL STUDIES\s*PAPER\s*[-–]?\s*(?:I|1)\b", label_upper)
-            or re.search(r"GS\s*PAPER\s*[-–]?\s*(?:I|1)\b", label_upper)
-        )
-        if not (is_prelims and is_gs1):
+        # The UPSC page groups each paper link under its exam heading.
+        # Match the surrounding exam block, not the PDF filename or tiny link label.
+        if not re.search(
+            r"Civil Services\s*\(\s*Preliminary\s*\)\s*Examination",
+            context,
+            re.I,
+        ):
             continue
-
-        context = " ".join(anchor.parent.get_text(" ", strip=True).split())
-        year_match = re.search(r"20\d{2}", context) or re.search(r"20\d{2}", path)
-        if not year_match:
-            # Some filenames encode the year as two digits, e.g. QP-CSP-24.
-            short_year = re.search(r"QP[-_]?CSP[-_]?([0-9]{2})", upper)
-            if not short_year:
-                print(f"[SKIP] Could not identify year: {label}")
-                continue
-            year = 2000 + int(short_year.group(1))
-        else:
-            year = int(year_match.group(0))
+        if not re.search(
+            r"General Studies\s*Paper\s*[-–—]?\s*(?:I|1)\b",
+            context,
+            re.I,
+        ):
+            continue
 
         key = f"prelims-{year}-gs-paper-i"
         papers[key] = {
@@ -93,17 +110,18 @@ def main() -> int:
             "stage": "Preliminary",
             "year": year,
             "paper": "General Studies Paper-I",
-            "title": label,
+            "title": f"Civil Services (Preliminary) Examination {year} - General Studies Paper-I",
             "source_name": "Union Public Service Commission",
             "source_url": href,
             "listing_url": SOURCE_URL,
         }
 
+    print(f"UPSC page PDF links inspected: {pdf_links_seen}", flush=True)
     print(f"UPSC CSE Prelims GS-I PDFs discovered: {len(papers)}", flush=True)
     if not papers:
         print(
-            "No matching CSP GS-I PDF links found. UPSC may have changed its link naming; "
-            "stopping safely rather than downloading unrelated examinations.",
+            "No matching papers found in the page's exam sections. "
+            "Stopping safely; no unrelated PDFs will be downloaded.",
             file=sys.stderr,
             flush=True,
         )
@@ -118,7 +136,7 @@ def main() -> int:
         try:
             if not pdf_path.exists():
                 pdf_response = session.get(
-                    item["source_url"], headers=HEADERS, timeout=(20, 60)
+                    item["source_url"], headers=HEADERS, timeout=(20, 90)
                 )
                 pdf_response.raise_for_status()
                 if not pdf_response.content.startswith(b"%PDF"):
@@ -144,7 +162,7 @@ def main() -> int:
     manifest = {
         "source": SOURCE_URL,
         "generated_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "note": "Only official UPSC CSE Prelims GS-I PDFs. Extracted questions remain unverified.",
+        "note": "Official UPSC CSE Prelims GS-I only. Imported questions remain unverified.",
         "papers_found": len(papers),
         "papers_processed": len(downloaded),
         "papers": downloaded,
