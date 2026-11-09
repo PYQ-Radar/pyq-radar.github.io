@@ -64,9 +64,15 @@ def discover_cse_prelims_gs1(soup):
 
         if isinstance(node, Tag) and node.name == "a" and node.get("href"):
             href = urljoin(SOURCE_URL, node["href"])
+            anchor_label = " ".join(node.get_text(" ", strip=True).split())
+            anchor_is_gs1 = bool(re.match(
+                r"^General Studies\\s*Paper\\s*[-–—]?\\s*(?:I|1)\\b",
+                anchor_label,
+                re.I,
+            ))
             if (
                 active_year is not None
-                and active_paper_is_gs1
+                and (active_paper_is_gs1 or anchor_is_gs1)
                 and urlparse(href).path.lower().endswith(".pdf")
             ):
                 key = f"prelims-{active_year}-gs-paper-i"
