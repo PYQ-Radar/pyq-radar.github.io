@@ -830,76 +830,7 @@ fetchQuestions();
 
 </script>
 
-<div id="bulk-admin-panel" style="display:none;max-width:760px;margin:24px auto;padding:22px;background:#121e3e;border:1px solid rgba(117,151,255,.35);border-radius:14px;color:#f5f7ff">
-  <h2 style="font-size:20px;margin-bottom:8px">PYQ Radar — Explanation Batch</h2>
-  <p style="color:#aab8d5;line-height:1.6;margin-bottom:14px">Secure admin task. This will submit missing UPSC explanations to the OpenAI Batch API and save completed explanations in Supabase. Processing can take up to 24 hours and API usage charges may apply.</p>
-  <label for="bulk-admin-token" style="display:block;margin-bottom:6px;color:#dce6ff">One-time admin token</label>
-  <input id="bulk-admin-token" type="password" autocomplete="off" placeholder="Paste the one-time token" style="width:100%;padding:12px;border-radius:8px;border:1px solid #40537c;background:#081329;color:#fff;margin-bottom:12px">
-  <div style="display:flex;gap:10px;flex-wrap:wrap">
-    <button id="bulk-start-btn" style="padding:11px 16px;border:0;border-radius:8px;background:#2677ff;color:white;font-weight:700;cursor:pointer">Find / Start Batch</button>
-    <button id="bulk-status-btn" style="padding:11px 16px;border:1px solid #40537c;border-radius:8px;background:#1a2b50;color:white;font-weight:700;cursor:pointer" disabled>Check Progress</button>
-  </div>
-  <p id="bulk-admin-status" role="status" style="white-space:pre-wrap;color:#dce6ff;line-height:1.6;margin-top:14px">Ready. Start only if you accept possible API usage charges.</p>
-</div>
-<script>
-(() => {
-  if (new URLSearchParams(window.location.search).get("bulk-admin") !== "1") return;
-  const panel = document.getElementById("bulk-admin-panel");
-  panel.style.display = "block";
-  let jobId = null;
-  const status = document.getElementById("bulk-admin-status");
-  const tokenInput = document.getElementById("bulk-admin-token");
-  const startButton = document.getElementById("bulk-start-btn");
-  const statusButton = document.getElementById("bulk-status-btn");
 
-  async function callBulk(action) {
-    const token = tokenInput.value.trim();
-    if (!token) {
-      status.textContent = "Admin token enter karo.";
-      return;
-    }
-    status.textContent = action === "start" ? "Batch check/start ho raha hai..." : "Progress check ho rahi hai...";
-    startButton.disabled = true;
-    statusButton.disabled = true;
-    try {
-      const { data, error } = await supabaseClient.functions.invoke("bulk-pyq-explanations", {
-        body: { action, token, job_id: jobId }
-      });
-      if (error) throw error;
-      if (data && data.job && data.job.id) {
-        jobId = data.job.id;
-        statusButton.disabled = false;
-      }
-      if (data && data.error) throw new Error(data.error);
-      if (data && data.job) {
-        const j = data.job;
-        status.textContent =
-          "Batch ID: " + j.id +
-          "\nStatus: " + (j.status || data.batch_status || "submitted") +
-          "\nTotal requests: " + (j.total_requests || data.submitted || 0) +
-          "\nSaved explanations: " + (j.imported_count || 0) +
-          "\nFailed requests: " + (j.failed_count || 0) +
-          (data.request_counts ? "\nOpenAI progress: " + data.request_counts.completed + "/" + data.request_counts.total : "") +
-          (data.message ? "\n" + data.message : "") +
-          (data.complete ? "\nAll completed explanations have been saved to the database." : "");
-      } else {
-        status.textContent = JSON.stringify(data);
-      }
-    } catch (err) {
-      status.textContent = "Error: " + (err.message || "Request failed");
-    } finally {
-      startButton.disabled = false;
-      if (jobId) statusButton.disabled = false;
-    }
-  }
-
-  startButton.addEventListener("click", () => {
-    if (!window.confirm("This will start or reconnect to the UPSC explanation batch. OpenAI API usage charges may apply. Continue?")) return;
-    callBulk("start");
-  });
-  statusButton.addEventListener("click", () => callBulk("status"));
-})();
-</script>
 
 </body>
 </html>
