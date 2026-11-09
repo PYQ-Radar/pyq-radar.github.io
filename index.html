@@ -637,7 +637,7 @@ async function renderQuestion(){
 
  setText(
   "question-note",
-  "Answer key is loaded securely. Missing explanations are generated and saved automatically."
+  "Answer keys are loaded securely. Explanations will be added later."
  );
 
  try{
@@ -737,9 +737,7 @@ async function showAnswer(){
   const payload=Array.isArray(data)?data[0]:data;
 
   if(!payload){
-   box.innerHTML=
-    "<strong><i class='fa-solid fa-circle-info'></i> Answer key unavailable</strong>"+
-    "<p>Is question ki answer key database mein available nahi hai. Reliable explanation dene ke liye pehle answer key verify karna zaroori hai.</p>";
+   box.innerHTML="<strong><i class='fa-solid fa-circle-info'></i> Answer key unavailable</strong>";
    box.style.display="block";
    answerVisible=true;
    btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> Hide Answer';
@@ -747,51 +745,19 @@ async function showAnswer(){
   }
 
   const key=payload.correct_option||"Not provided";
-  let explanation=(payload.explanation||"").trim();
-
   const specialStatus = {
    DROPPED: "Dropped by UPSC — no official answer",
    NO_VALID_OPTION: "No valid option — question is flawed",
    REVIEW: "Source review required — answer not confirmed"
   };
+
   if(specialStatus[key]){
-   box.innerHTML=
-    "<strong><i class='fa-solid fa-circle-info'></i> "+
-    escapeHtml(specialStatus[key])+
-    "</strong>"+
-    '<p class="answer-explanation">'+escapeHtml(explanation).replace(/\n/g,"<br>")+"</p>";
-   box.style.display="block";
-   answerVisible=true;
-   btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> Hide Answer';
-   return;
+   box.innerHTML="<strong><i class='fa-solid fa-circle-info'></i> "+
+    escapeHtml(specialStatus[key])+"</strong>";
+  }else{
+   box.innerHTML="<strong><i class='fa-solid fa-circle-check'></i> Correct Answer: "+
+    escapeHtml(key)+"</strong>";
   }
-
-  if(!explanation){
-   btn.textContent="Generating explanation...";
-   box.innerHTML=
-    "<strong><i class='fa-solid fa-circle-check'></i> Correct Answer: "+
-    escapeHtml(key)+
-    "</strong>"+
-    "<p>Explanation taiyar ho rahi hai...</p>";
-   box.style.display="block";
-
-   const {data:generated,error:generateError}=await supabaseClient.functions.invoke(
-    "generate-pyq-explanation",
-    { body:{ question_id:activeQuestionId } }
-   );
-
-   if(generateError) throw generateError;
-   if(!generated || !generated.explanation) {
-    throw new Error(generated?.error||"Explanation generate nahi ho paayi.");
-   }
-   explanation=generated.explanation.trim();
-  }
-
-  box.innerHTML=
-   "<strong><i class='fa-solid fa-circle-check'></i> Correct Answer: "+
-   escapeHtml(key)+
-   "</strong>"+
-   '<p class="answer-explanation">'+escapeHtml(explanation).replace(/\n/g,"<br>")+"</p>";
 
   box.style.display="block";
   answerVisible=true;
@@ -799,7 +765,7 @@ async function showAnswer(){
 
  }catch(err){
   console.error("Answer reveal error:",err);
-  box.textContent="Explanation load nahi ho paayi. Kripya thodi der baad dobara try karein.";
+  box.textContent="Answer load nahi ho paaya. Kripya thodi der baad dobara try karein.";
   box.style.display="block";
   answerVisible=true;
   btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> Hide Answer';
