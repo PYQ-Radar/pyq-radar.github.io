@@ -589,7 +589,7 @@ function renderEmpty(searchTerm){
 
  $("pyq-question").textContent=searchTerm
   ?"Is search ke liye koi question nahi mila."
-  :"Database mein abhi koi question available nahi hai.";
+  :"Website ko Supabase se koi question row visible nahi hui.";
 
  $("pyq-options").innerHTML='<p class="muted-note">Search badal kar dekhein ya Reload Questions par click karein.</p>';
 
@@ -619,14 +619,14 @@ async function renderQuestion(){
 
  setText(
   "pyq-status",
-  activeVerified?"VERIFIED PYQ":"UNVERIFIED • REVIEW"
+  "PYQ PRACTICE"
  );
 
  setText(
   "question-note",
   activeVerified
-   ?"Verified question. Answer is available through the protected database function."
-   :"This question is awaiting verification. Answer reveal is disabled until it is verified."
+   ?"Answer is available through the protected database function."
+   :"Answer reveal is unavailable for this question until its answer is verified."
  );
 
  try{
