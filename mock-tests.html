@@ -37,6 +37,7 @@
 <section id="results" class="hidden"><div class="panel"><div class="qnumber">TEST COMPLETED</div><h2 style="margin:8px 0">Your Result</h2><div class="result-score" id="score">0 / 200</div><p class="note" id="result-caption"></p><div class="result-grid" id="stats"></div><button class="primary" id="newtest">Take Another Test</button></div><div class="panel"><h3 style="margin:0 0 8px">Answer Review</h3><div id="review"></div></div></section>
 <div id="status" class="note" style="margin-top:15px"></div>
 </div></main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
 const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
@@ -114,5 +115,4 @@ $("newtest").addEventListener("click",()=>{clearInterval(tick);$("results").clas
 $("start").addEventListener("click",startTest);
 init();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body></html>
