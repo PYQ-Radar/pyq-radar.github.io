@@ -351,7 +351,10 @@ footer strong{color:#dce7ff}
  <div class="panel">
   <div class="panel-head">
    <h3><i class="fa-solid fa-bullseye"></i>Today's PYQ Practice</h3>
-   <button class="outline-btn" id="next-question-btn">Next Question <i class="fa-solid fa-rotate"></i></button>
+   <div style="display:flex;gap:8px;align-items:center">
+     <button class="outline-btn" id="next-subject-btn" style="padding:8px 11px;font-size:12px">Next Subject <i class="fa-solid fa-book"></i></button>
+     <button class="outline-btn" id="next-question-btn">Next Question <i class="fa-solid fa-rotate"></i></button>
+    </div>
   </div>
 
   <div class="question-body">
@@ -592,7 +595,7 @@ async function fetchQuestions(searchTerm=""){
    return;
   }
 
-  currentIndex=0;
+  currentIndex=Math.floor(Math.random()*questionRows.length);
   await renderQuestion();
 
  }catch(err){
@@ -710,6 +713,31 @@ async function nextQuestion(){
  await renderQuestion();
 }
 
+/* NEXT SUBJECT */
+async function nextSubject(){
+ if(!questionRows.length) return;
+
+ const subjectIds=[...new Set(questionRows.map(q=>q.subject_id).filter(Boolean))];
+ if(!subjectIds.length){
+  setText("question-note","Subject information is not available for these questions yet.");
+  return;
+ }
+
+ const currentSubject=questionRows[currentIndex]?.subject_id;
+ const currentPos=subjectIds.indexOf(currentSubject);
+ const nextId=subjectIds[(currentPos+1+subjectIds.length)%subjectIds.length];
+
+ const candidates=questionRows
+  .map((q,index)=>({q,index}))
+  .filter(item=>item.q.subject_id===nextId);
+
+ if(!candidates.length) return;
+
+ const chosen=candidates[Math.floor(Math.random()*candidates.length)];
+ currentIndex=chosen.index;
+ await renderQuestion();
+}
+
 /* SECURE ANSWER REVEAL */
 async function showAnswer(){
 
@@ -782,6 +810,7 @@ async function showAnswer(){
 $("pyq-answer-btn").addEventListener("click",showAnswer);
 
 $("next-question-btn").addEventListener("click",nextQuestion);
+$("next-subject-btn").addEventListener("click",nextSubject);
 
 $("reload-btn").addEventListener("click",()=>{
  fetchQuestions($("question-search").value);
