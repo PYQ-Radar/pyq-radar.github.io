@@ -1,0 +1,38 @@
+name: Bulk Verify PYQ Answers
+
+on:
+  workflow_dispatch:
+    inputs:
+      records_json:
+        description: "JSON array of verified records (maximum 100)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  bulk-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate and submit verification batch
+        env:
+          RECORDS_JSON: ${{ inputs.records_json }}
+          IMPORT_TOKEN: ${{ secrets.PYQ_IMPORT_TOKEN }}
+          SUPABASE_URL: "https://fzepobjbcehirerwtnsz.supabase.co"
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${IMPORT_TOKEN:-}" ]; then
+            echo "::error::Repository secret PYQ_IMPORT_TOKEN is not configured."
+            exit 1
+          fi
+          printf '%s' "$RECORDS_JSON" | jq -e 'type == "array" and length >= 1 and length <= 100' >/dev/null
+          jq -n --argjson records "$RECORDS_JSON" '{records:$records}' > payload.json
+          curl --fail-with-body --silent --show-error \
+            -X POST "$SUPABASE_URL/functions/v1/bulk-verify-pyq" \
+            -H "Content-Type: application/json" \
+            -H "x-import-token: $IMPORT_TOKEN" \
+            --data-binary @payload.json \
+            -o response.json
+          jq . response.json
