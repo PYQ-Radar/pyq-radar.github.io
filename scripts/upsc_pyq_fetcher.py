@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch official UPSC CSE Prelims GS-I PDFs and extract searchable text."""
+"""Fetch only official UPSC CSE Prelims GS-I PDFs and extract searchable text."""
 from __future__ import annotations
 
 import hashlib
@@ -24,36 +24,48 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; PYQ-Radar/1.0; educational in
 
 session = requests.Session()
 retry = Retry(
-    total=3, connect=3, read=3, status=3,
-    backoff_factor=2, status_forcelist=(429, 500, 502, 503, 504),
+    total=1, connect=1, read=1, status=1,
+    backoff_factor=1, status_forcelist=(429, 500, 502, 503, 504),
     allowed_methods=frozenset(["GET"]),
 )
 session.mount("https://", HTTPAdapter(max_retries=retry))
 session.mount("http://", HTTPAdapter(max_retries=retry))
 
+EXAM_RE = re.compile(
+    r"^Civil Services\s*\(\s*Preliminary\s*\)\s*Examination\s*,?\s*(20\d{2})$",
+    re.I,
+)
+GS1_RE = re.compile(
+    r"^General Studies\s*Paper\s*[-–—]?\s*(?:I|1)$",
+    re.I,
+)
 
-def exam_context(anchor):
-    """Walk up the DOM until the containing block identifies CSE Prelims and year."""
-    node = anchor
-    for _ in range(20):
-        if node is None:
-            break
-        text = " ".join(node.get_text(" ", strip=True).split())
-        exam = re.search(
-            r"Civil Services\s*\(\s*Preliminary\s*\)\s*Examination",
-            text,
-            re.I,
-        )
-        year = re.search(r"\b20\d{2}\b", text)
-        gs1 = re.search(
-            r"General Studies\s*Paper\s*[-–—]?\s*(?:I|1)\b",
-            text,
-            re.I,
-        )
-        if exam and year and gs1:
-            return int(year.group(0)), text
-        node = node.parent
-    return None, ""
+
+def get_prelims_gs1_context(anchor):
+    """Use the nearest preceding paper label and exam heading, never broad ancestors."""
+    previous = []
+    for node in anchor.find_all_previous(string=True, limit=80):
+        value = " ".join(str(node).split())
+        if value:
+            previous.append(value)
+
+    # In nearest-first order, the first exam heading is the one owning this link.
+    exam_index = next(
+        (i for i, value in enumerate(previous) if EXAM_RE.fullmatch(value)),
+        None,
+    )
+    if exam_index is None:
+        return None
+
+    exam_match = EXAM_RE.fullmatch(previous[exam_index])
+    # The exact GS-I label must occur between this link and its owning exam heading.
+    paper_label = next(
+        (value for value in previous[:exam_index] if GS1_RE.fullmatch(value)),
+        None,
+    )
+    if not paper_label:
+        return None
+    return int(exam_match.group(1))
 
 
 def extract_pdf_text(pdf_path: Path, text_path: Path) -> dict:
@@ -80,28 +92,12 @@ def main() -> int:
     pdf_links_seen = 0
     for anchor in soup.find_all("a", href=True):
         href = urljoin(SOURCE_URL, anchor["href"])
-        path = urlparse(href).path.lower()
-        if not path.endswith(".pdf"):
+        if not urlparse(href).path.lower().endswith(".pdf"):
             continue
         pdf_links_seen += 1
 
-        year, context = exam_context(anchor)
+        year = get_prelims_gs1_context(anchor)
         if year is None:
-            continue
-
-        # The UPSC page groups each paper link under its exam heading.
-        # Match the surrounding exam block, not the PDF filename or tiny link label.
-        if not re.search(
-            r"Civil Services\s*\(\s*Preliminary\s*\)\s*Examination",
-            context,
-            re.I,
-        ):
-            continue
-        if not re.search(
-            r"General Studies\s*Paper\s*[-–—]?\s*(?:I|1)\b",
-            context,
-            re.I,
-        ):
             continue
 
         key = f"prelims-{year}-gs-paper-i"
@@ -118,13 +114,11 @@ def main() -> int:
 
     print(f"UPSC page PDF links inspected: {pdf_links_seen}", flush=True)
     print(f"UPSC CSE Prelims GS-I PDFs discovered: {len(papers)}", flush=True)
+    for item in sorted(papers.values(), key=lambda p: p["year"]):
+        print(f"[MATCH] {item['year']} | {item['paper']} | {item['source_url']}", flush=True)
+
     if not papers:
-        print(
-            "No matching papers found in the page's exam sections. "
-            "Stopping safely; no unrelated PDFs will be downloaded.",
-            file=sys.stderr,
-            flush=True,
-        )
+        print("No exact Civil Services Prelims GS-I links found; stopping safely.", file=sys.stderr, flush=True)
         return 2
 
     downloaded = []
@@ -136,7 +130,7 @@ def main() -> int:
         try:
             if not pdf_path.exists():
                 pdf_response = session.get(
-                    item["source_url"], headers=HEADERS, timeout=(20, 90)
+                    item["source_url"], headers=HEADERS, timeout=(15, 45)
                 )
                 pdf_response.raise_for_status()
                 if not pdf_response.content.startswith(b"%PDF"):
@@ -162,7 +156,7 @@ def main() -> int:
     manifest = {
         "source": SOURCE_URL,
         "generated_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "note": "Official UPSC CSE Prelims GS-I only. Imported questions remain unverified.",
+        "note": "Only official UPSC CSE Prelims GS-I PDFs. Extracted questions remain unverified.",
         "papers_found": len(papers),
         "papers_processed": len(downloaded),
         "papers": downloaded,
