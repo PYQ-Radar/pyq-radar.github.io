@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Map Room | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--panel2:#19294e;--text:#f5f7ff;--muted:#aab8d5;--border:rgba(117,151,255,.22);--blue:#2677ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:auto;padding:24px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:18px}
+.brand i{color:#80b8ff;font-size:23px}
+.back{border:1px solid var(--border);background:#17264a;color:white;border-radius:10px;padding:10px 14px;font-size:13px}
+.hero{background:radial-gradient(ellipse at 20% 0%,#1554a4 0%,transparent 55%),linear-gradient(110deg,#102750,#18294d 70%,#3a304d);border:1px solid #2869e5;border-radius:17px;padding:25px 27px;margin-bottom:20px}
+.eyebrow{font-size:11px;letter-spacing:1.7px;color:#b9d5ff;font-weight:700}
+.hero h1{font-size:27px;margin:9px 0}
+.hero p{font-size:13px;color:#cfddf7;line-height:1.6;max-width:650px}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(270px,.8fr);gap:17px;align-items:start}
+.section{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid var(--border);border-radius:15px;padding:17px}
+.section h2{font-size:16px;margin-bottom:13px}
+.categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.category{border:1px solid var(--border);background:#142344;border-radius:12px;padding:13px;text-align:left;color:white;cursor:pointer;transition:.2s;min-height:91px}
+.category:hover,.category.active{border-color:#6ba8ff;background:#1d3969;transform:translateY(-1px)}
+.category .ico{font-size:19px;color:#8ec4ff;margin-bottom:9px}
+.category strong{display:block;font-size:13px}
+.category small{display:block;color:var(--muted);font-size:11px;margin-top:5px;line-height:1.4}
+.topic-list{display:grid;gap:7px}
+.topic{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#17284b;border:1px solid transparent;border-radius:9px;padding:11px 12px;color:#eaf1ff;font-size:12px;text-align:left;cursor:pointer}
+.topic:hover,.topic.active{border-color:#5b94ee;background:#203c6b}
+.topic i{color:#8dbbff}
+.preview{min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;border:1px dashed #5673a5;border-radius:12px;background:linear-gradient(145deg,#14284a,#111d39)}
+.preview .mapicon{font-size:42px;color:#7eb8ff;margin-bottom:13px}
+.preview h3{font-size:15px;margin-bottom:8px}
+.preview p{font-size:12px;color:var(--muted);line-height:1.6;max-width:290px}
+.pill{display:inline-block;margin-top:13px;padding:6px 10px;border-radius:20px;background:#253b61;color:#c8dcff;font-size:10px}
+.note{font-size:11px;color:#8fa3c8;line-height:1.6;margin-top:13px}
+@media(max-width:760px){.wrap{padding:14px}.layout{grid-template-columns:1fr}.hero{padding:20px}.hero h1{font-size:23px}.categories{gap:8px}.category{padding:11px;min-height:88px}.section{padding:14px}}
+@media(max-width:360px){.categories{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header class="top">
+  <a class="brand" href="index.html"><i class="fa-solid fa-bullseye"></i><span>PYQ Radar</span></a>
+  <a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+ </header>
+ <section class="hero">
+  <div class="eyebrow">UPSC PREPARATION • MAP COLLECTION</div>
+  <h1><i class="fa-solid fa-map-location-dot" style="color:#8fc4ff"></i> UPSC Map Room</h1>
+  <p>Explore important map topics for UPSC Prelims and Mains. Choose a category to browse its topic-wise map collection.</p>
+ </section>
+ <main class="layout">
+  <section class="section">
+   <h2>Explore Categories</h2>
+   <div class="categories" id="categories"></div>
+  </section>
+  <section class="section">
+   <h2 id="topic-heading">Indian Geography</h2>
+   <div class="topic-list" id="topics"></div>
+   <p class="note">Choose a topic to open its map section. Map visuals and topic notes will be added category-wise.</p>
+  </section>
+ </main>
+ <section class="section" style="margin-top:17px">
+  <div class="preview" id="preview" aria-live="polite">
+   <div class="mapicon"><i class="fa-regular fa-map"></i></div>
+   <h3>Select a map topic</h3>
+   <p>Choose any topic from the list to open its map preview area.</p>
+   <span class="pill">MAP PREVIEW</span>
+  </div>
+ </section>
+</div>
+<script>
+const groups=[
+ {id:'indian-geography',name:'Indian Geography',icon:'fa-map-location-dot',desc:'States, rivers, mountains, lakes and dams',topics:['States & Union Territories','Rivers of India','Mountain Ranges','Lakes & Dams','Passes & Islands']},
+ {id:'world-geography',name:'World Geography',icon:'fa-earth-asia',desc:'Countries, continents, oceans and straits',topics:['Countries & Capitals','Continents & Oceans','Seas & Gulfs','Important Straits','Important World Locations']},
+ {id:'environment',name:'Environment & Ecology',icon:'fa-leaf',desc:'Protected areas and biodiversity locations',topics:['National Parks','Wildlife Sanctuaries','Tiger Reserves','Biosphere Reserves','Ramsar Sites']},
+ {id:'history',name:'History Maps',icon:'fa-landmark',desc:'Ancient, medieval and modern historical places',topics:['Indus Valley Sites','Mahajanapadas & Empires','Medieval Kingdoms','Revolt of 1857','Freedom Movement Centres']},
+ {id:'international-relations',name:'International Relations',icon:'fa-handshake',desc:'Neighbourhood, borders and strategic regions',topics:['India’s Neighbours','Border Regions','Indian Ocean Region','Important Ports','Trade Routes']},
+ {id:'economic-geography',name:'Economic Geography',icon:'fa-industry',desc:'Minerals, crops, industries and infrastructure',topics:['Mineral Resources','Major Industries','Agricultural Crops','Power Plants','Transport Corridors']},
+ {id:'physical-geography',name:'Physical Geography',icon:'fa-mountain-sun',desc:'Landforms, climate, soils and vegetation',topics:['Plateaus & Plains','Mountains & Deserts','Climate Regions','Soil Types','Natural Vegetation']}
+];
+let selected=0;
+const categories=document.getElementById('categories'),topics=document.getElementById('topics'),heading=document.getElementById('topic-heading'),preview=document.getElementById('preview');
+function render(){
+ categories.innerHTML='';
+ groups.forEach((g,i)=>{
+  const b=document.createElement('button');b.className='category'+(i===selected?' active':'');
+  b.innerHTML='<div class="ico"><i class="fa-solid '+g.icon+'"></i></div><strong>'+g.name+'</strong><small>'+g.desc+'</small>';
+  b.addEventListener('click',()=>{selected=i;render();history.replaceState(null,'','#'+g.id)});
+  categories.appendChild(b);
+ });
+ const g=groups[selected];heading.textContent=g.name;topics.innerHTML='';
+ g.topics.forEach(t=>{
+  const b=document.createElement('button');b.className='topic';b.innerHTML='<span>'+t+'</span><i class="fa-solid fa-chevron-right"></i>';
+  b.addEventListener('click',()=>{
+   topics.querySelectorAll('.topic').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+   preview.innerHTML='<div class="mapicon"><i class="fa-regular fa-map"></i></div><h3>'+t+'</h3><p>This topic is included in the Map Room. Its labelled map and concise UPSC notes will appear here as the map collection is added.</p><span class="pill">MAP CONTENT IN PROGRESS</span>';
+  });
+  topics.appendChild(b);
+ });
+}
+const initial=location.hash.slice(1);const idx=groups.findIndex(g=>g.id===initial);if(idx>=0)selected=idx;
+render();
+</script>
+</body>
+</html>
