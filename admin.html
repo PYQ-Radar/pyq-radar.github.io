@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PYQ Radar | Bulk Verification</title>
+<style>
+:root{color-scheme:dark;--bg:#080f25;--panel:#121e3e;--line:#314875;--blue:#2677ff;--muted:#aab8d5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f7ff;font:15px Inter,system-ui,Arial,sans-serif}
+main{max-width:980px;margin:38px auto;padding:0 18px}.top{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#2677ff,#8058ed);display:grid;place-items:center;font-size:23px}
+h1{font-size:25px;margin:0}p{color:var(--muted);line-height:1.65}
+.card{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0}
+h2{font-size:18px;margin:0 0 12px}.steps{padding-left:22px;line-height:1.9;color:#dce6ff}
+textarea{width:100%;min-height:310px;background:#08132d;color:#dce6ff;border:1px solid #45618e;border-radius:12px;padding:15px;font:13px/1.6 ui-monospace,monospace;resize:vertical}
+button,a.btn{display:inline-block;border:0;border-radius:10px;padding:12px 17px;background:var(--blue);color:white;font-weight:700;text-decoration:none;cursor:pointer;margin:10px 8px 0 0}
+button.secondary{background:#26385f;border:1px solid #49618e}
+.note{border-left:3px solid #e6b84c;padding:10px 14px;background:#2a261d;border-radius:6px;color:#f5e7bf}
+small{color:var(--muted)}code{color:#a9c9ff}
+</style>
+</head>
+<body>
+<main>
+ <div class="top"><div class="logo">◎</div><div><h1>PYQ Radar — Bulk Verification</h1><small>Admin utility · UPSC CSE</small></div></div>
+ <section class="card">
+  <h2>How to verify a batch</h2>
+  <ol class="steps">
+   <li>Prepare only questions whose correct answer has been checked against a reliable answer key or source.</li>
+   <li>Enter 1–100 records in the JSON box below. Each record needs question_id, correct_option, explanation, source_name and source_url.</li>
+   <li>Copy the JSON, open the secure GitHub workflow, paste it into <b>records_json</b>, and run the workflow.</li>
+   <li>Open the workflow run to see which records were verified or rejected.</li>
+  </ol>
+  <p class="note">Never mark an answer verified just because it looks plausible. Missing or uncertain answers must stay unverified. Do not put passwords, API keys, or service-role keys in this page.</p>
+ </section>
+ <section class="card">
+  <h2>Verification batch JSON</h2>
+  <p>Replace the sample values with confirmed data. The sample is a template only and will not verify a real question.</p>
+  <textarea id="payload" spellcheck="false">[
+  {
+    "question_id": "00000000-0000-4000-8000-000000000000",
+    "correct_option": "B",
+    "explanation": "Write a concise explanation supported by the cited answer key or source.",
+    "source_name": "Official answer key / reliable source name",
+    "source_url": "https://example.com/official-source"
+  }
+]</textarea>
+  <div>
+   <button id="copy">Copy JSON</button>
+   <button class="secondary" id="validate">Validate JSON</button>
+   <a class="btn" href="https://github.com/PYQ-Radar/pyq-radar.github.io/actions/workflows/bulk-verify-pyq.yml" target="_blank" rel="noopener">Open Secure Verification Workflow ↗</a>
+  </div>
+  <p id="status" aria-live="polite"></p>
+  <small>Maximum 100 records per run. The workflow uses the existing repository secret; no secret is entered or stored in this page.</small>
+ </section>
+</main>
+<script>
+const area=document.getElementById('payload'),status=document.getElementById('status');
+function check(){try{const v=JSON.parse(area.value);if(!Array.isArray(v)||v.length<1||v.length>100)throw Error('JSON must be an array with 1–100 records.');const keys=['question_id','correct_option','explanation','source_name','source_url'];for(let i=0;i<v.length;i++){if(!v[i]||keys.some(k=>!(k in v[i])))throw Error('Record '+(i+1)+' is missing a required field.');}status.textContent='JSON structure looks valid. This does not verify whether the answers or sources are factually correct.';status.style.color='#9fe8bd';return true;}catch(e){status.textContent=e.message;status.style.color='#ffaaaa';return false;}}
+document.getElementById('validate').addEventListener('click',check);
+document.getElementById('copy').addEventListener('click',async()=>{if(!check())return;try{await navigator.clipboard.writeText(area.value);status.textContent='JSON copied. Open the workflow and paste it into records_json.';}catch(e){status.textContent='Clipboard access blocked. Select and copy the JSON manually.';}});
+</script>
+</body></html>
