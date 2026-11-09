@@ -23,6 +23,7 @@
 <main class="layout"><section class="section"><h2>Explore Categories</h2><div class="categories" id="categories"></div></section><section class="section"><h2 id="topic-heading">Indian Geography</h2><div class="topic-list" id="topics"></div><p class="empty" id="no-results" hidden>No matching topic found.</p></section></main>
 <section class="section content" id="content" aria-live="polite"><div class="empty">Select a topic to load its study notes.</div></section>
 </div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
 const groups=[
 {id:'indian-geography',name:'Indian Geography',icon:'fa-map-location-dot',desc:'States, rivers, mountains and water bodies',topics:['States & Union Territories','Rivers of India','Mountain Ranges','Lakes & Dams','Passes & Islands']},
@@ -91,9 +92,12 @@ const intro=document.createElement('p');intro.className='intro';intro.textConten
 const grid=document.createElement('div');grid.className='content-grid';
 [['Important locations / concepts',d[1]],['What to connect on the map',d[2]]].forEach(([title,txt])=>{const card=document.createElement('article');card.className='info-card';const h=document.createElement('h3');h.textContent=title;card.appendChild(h);const ul=document.createElement('ul');txt.split('. ').filter(Boolean).forEach(s=>{const li=document.createElement('li');li.textContent=s.replace(/[.]$/,'');ul.appendChild(li)});card.appendChild(ul);grid.appendChild(card)});panel.appendChild(grid);
 const tip=document.createElement('div');tip.className='tip';tip.innerHTML='<strong><i class="fa-solid fa-lightbulb"></i> UPSC map practice:</strong> ';tip.append(document.createTextNode(d[3]));panel.appendChild(tip);
+const mapLabel=document.createElement('h3');mapLabel.className='map-title';mapLabel.textContent='Interactive location map';panel.appendChild(mapLabel);
+const mapEl=document.createElement('div');mapEl.id='real-map';mapEl.setAttribute('role','application');mapEl.setAttribute('aria-label','Interactive map showing important locations');panel.appendChild(mapEl);
+drawRealMap(topic);
 }
 function renderTopics(){const g=groups[selected];heading.textContent=g.name;topics.innerHTML='';const q=search.value.trim().toLowerCase();let matches=0;g.topics.filter(t=>{const d=D[t].join(' ').toLowerCase();return !q||t.toLowerCase().includes(q)||d.includes(q)}).forEach(t=>{matches++;const b=document.createElement('button');b.className='topic';b.dataset.topic=t;b.innerHTML='<span>'+t+'</span><i class="fa-solid fa-chevron-right"></i>';b.onclick=()=>showTopic(t);topics.appendChild(b)});empty.hidden=matches>0;if(selectedTopic&&g.topics.includes(selectedTopic)&&matches)showTopic(selectedTopic);else if(matches)showTopic(topics.querySelector('.topic').dataset.topic);else panel.innerHTML='<div class="empty">No matching topic in this category. Try another search term.</div>'}
 function render(){renderCategories();renderTopics()}
 search.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();if(q){const found=groups.findIndex(g=>g.topics.some(t=>t.toLowerCase().includes(q)||D[t].join(' ').toLowerCase().includes(q)));if(found>=0&&found!==selected)selected=found}render()});
 const initial=location.hash.slice(1),idx=groups.findIndex(g=>g.id===initial);if(idx>=0)selected=idx;render();
-</script><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script></body></html>
+</script></body></html>
