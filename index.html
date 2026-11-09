@@ -749,6 +749,23 @@ async function showAnswer(){
   const key=payload.correct_option||"Not provided";
   let explanation=(payload.explanation||"").trim();
 
+  const specialStatus = {
+   DROPPED: "Dropped by UPSC — no official answer",
+   NO_VALID_OPTION: "No valid option — question is flawed",
+   REVIEW: "Source review required — answer not confirmed"
+  };
+  if(specialStatus[key]){
+   box.innerHTML=
+    "<strong><i class='fa-solid fa-circle-info'></i> "+
+    escapeHtml(specialStatus[key])+
+    "</strong>"+
+    '<p class="answer-explanation">'+escapeHtml(explanation).replace(/\n/g,"<br>")+"</p>";
+   box.style.display="block";
+   answerVisible=true;
+   btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> Hide Answer';
+   return;
+  }
+
   if(!explanation){
    btn.textContent="Generating explanation...";
    box.innerHTML=
