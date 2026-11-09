@@ -68,9 +68,9 @@ async function startTest(){
  let query=db.from("questions").select("id,year,paper,question_text,subject_id,topic_id,subjects(name),topics(name)").eq("exam_id",examId);
  if(mode!=="full")query=query.eq("subject_id",$("subject").value);
  if(mode==="topic")query=query.eq("topic_id",$("topic").value);
- const {data,error}=await query;if(error)throw error;
+ let data=[],offset=0;while(true){const {data:chunk,error}=await query.range(offset,offset+999);if(error)throw error;const rows=chunk||[];data=data.concat(rows);if(rows.length<1000)break;offset+=1000;}
  const count=mode==="full"?100:mode==="subject"?25:20;
- if(!data||data.length<count)throw new Error("This selection has only "+(data||[]).length+" questions. Choose another subject or topic.");
+ if(data.length<count)throw new Error("This selection has only "+data.length+" questions. Choose another subject or topic.");
  questions=shuffle(data).slice(0,count);answers={};current=0;submitted=false;optionMap={};
  const ids=questions.map(q=>q.id);
  const {data:opts,error:oe}=await db.from("question_options").select("question_id,option_key,option_text").in("question_id",ids).order("option_key");if(oe)throw oe;
