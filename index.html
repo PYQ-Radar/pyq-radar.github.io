@@ -624,9 +624,7 @@ async function renderQuestion(){
 
  setText(
   "question-note",
-  activeVerified
-   ?"Answer is available through the protected database function."
-   :"Answer reveal is unavailable for this question until its answer is verified."
+  "Answer is released only by the protected database function after verification."
  );
 
  try{
@@ -710,12 +708,6 @@ async function showAnswer(){
  if(!activeQuestionId){
   box.style.display="block";
   box.textContent="Pehle ek question load hone dein.";
-  return;
- }
-
- if(!activeVerified){
-  box.style.display="block";
-  box.textContent="Yeh question abhi unverified hai. Iska answer verification ke baad hi reveal hoga.";
   return;
  }
 
