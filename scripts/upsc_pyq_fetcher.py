@@ -10,9 +10,9 @@ import time
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
+from bs4 import BeautifulSoup, NavigableString, Tag
 import pymupdf
 import requests
-from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -24,48 +24,65 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; PYQ-Radar/1.0; educational in
 
 session = requests.Session()
 retry = Retry(
-    total=1, connect=1, read=1, status=1,
-    backoff_factor=1, status_forcelist=(429, 500, 502, 503, 504),
+    total=1, connect=1, read=1, status=1, backoff_factor=1,
+    status_forcelist=(429, 500, 502, 503, 504),
     allowed_methods=frozenset(["GET"]),
 )
 session.mount("https://", HTTPAdapter(max_retries=retry))
 session.mount("http://", HTTPAdapter(max_retries=retry))
 
-EXAM_RE = re.compile(
+CSE_PRELIMS_RE = re.compile(
     r"^Civil Services\s*\(\s*Preliminary\s*\)\s*Examination\s*,?\s*(20\d{2})$",
     re.I,
 )
-GS1_RE = re.compile(
-    r"^General Studies\s*Paper\s*[-–—]?\s*(?:I|1)$",
-    re.I,
-)
+ANY_EXAM_HEADING_RE = re.compile(r"^.+\bExamination\s*,?\s*20\d{2}$", re.I)
+GS1_RE = re.compile(r"^General Studies\s*Paper\s*[-–—]?\s*(?:I|1)$", re.I)
 
 
-def get_prelims_gs1_context(anchor):
-    """Use the nearest preceding paper label and exam heading, never broad ancestors."""
-    previous = []
-    for node in anchor.find_all_previous(string=True, limit=80):
-        value = " ".join(str(node).split())
-        if value:
-            previous.append(value)
+def discover_cse_prelims_gs1(soup):
+    """Walk page content in order; every new exam heading resets prior exam state."""
+    active_year = None
+    active_paper_is_gs1 = False
+    papers = {}
 
-    # In nearest-first order, the first exam heading is the one owning this link.
-    exam_index = next(
-        (i for i, value in enumerate(previous) if EXAM_RE.fullmatch(value)),
-        None,
-    )
-    if exam_index is None:
-        return None
+    for node in soup.descendants:
+        if isinstance(node, NavigableString):
+            value = " ".join(str(node).split())
+            if not value:
+                continue
 
-    exam_match = EXAM_RE.fullmatch(previous[exam_index])
-    # The exact GS-I label must occur between this link and its owning exam heading.
-    paper_label = next(
-        (value for value in previous[:exam_index] if GS1_RE.fullmatch(value)),
-        None,
-    )
-    if not paper_label:
-        return None
-    return int(exam_match.group(1))
+            # Reset state at EVERY exam heading, not only CSE headings.
+            if ANY_EXAM_HEADING_RE.fullmatch(value):
+                match = CSE_PRELIMS_RE.fullmatch(value)
+                active_year = int(match.group(1)) if match else None
+                active_paper_is_gs1 = False
+                continue
+
+            if active_year is not None:
+                active_paper_is_gs1 = bool(GS1_RE.fullmatch(value))
+            continue
+
+        if isinstance(node, Tag) and node.name == "a" and node.get("href"):
+            href = urljoin(SOURCE_URL, node["href"])
+            if (
+                active_year is not None
+                and active_paper_is_gs1
+                and urlparse(href).path.lower().endswith(".pdf")
+            ):
+                key = f"prelims-{active_year}-gs-paper-i"
+                papers[key] = {
+                    "exam": "Civil Services Examination",
+                    "stage": "Preliminary",
+                    "year": active_year,
+                    "paper": "General Studies Paper-I",
+                    "title": f"Civil Services (Preliminary) Examination {active_year} - General Studies Paper-I",
+                    "source_name": "Union Public Service Commission",
+                    "source_url": href,
+                    "listing_url": SOURCE_URL,
+                }
+                active_paper_is_gs1 = False
+
+    return papers
 
 
 def extract_pdf_text(pdf_path: Path, text_path: Path) -> dict:
@@ -88,29 +105,11 @@ def main() -> int:
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
 
-    papers = {}
-    pdf_links_seen = 0
-    for anchor in soup.find_all("a", href=True):
-        href = urljoin(SOURCE_URL, anchor["href"])
-        if not urlparse(href).path.lower().endswith(".pdf"):
-            continue
-        pdf_links_seen += 1
-
-        year = get_prelims_gs1_context(anchor)
-        if year is None:
-            continue
-
-        key = f"prelims-{year}-gs-paper-i"
-        papers[key] = {
-            "exam": "Civil Services Examination",
-            "stage": "Preliminary",
-            "year": year,
-            "paper": "General Studies Paper-I",
-            "title": f"Civil Services (Preliminary) Examination {year} - General Studies Paper-I",
-            "source_name": "Union Public Service Commission",
-            "source_url": href,
-            "listing_url": SOURCE_URL,
-        }
+    pdf_links_seen = sum(
+        1 for a in soup.find_all("a", href=True)
+        if urlparse(urljoin(SOURCE_URL, a["href"])).path.lower().endswith(".pdf")
+    )
+    papers = discover_cse_prelims_gs1(soup)
 
     print(f"UPSC page PDF links inspected: {pdf_links_seen}", flush=True)
     print(f"UPSC CSE Prelims GS-I PDFs discovered: {len(papers)}", flush=True)
@@ -129,9 +128,7 @@ def main() -> int:
         text_path = TEXT_DIR / f"{safe}.txt"
         try:
             if not pdf_path.exists():
-                pdf_response = session.get(
-                    item["source_url"], headers=HEADERS, timeout=(15, 45)
-                )
+                pdf_response = session.get(item["source_url"], headers=HEADERS, timeout=(15, 90))
                 pdf_response.raise_for_status()
                 if not pdf_response.content.startswith(b"%PDF"):
                     raise ValueError("The linked document did not return a PDF file")
@@ -145,8 +142,7 @@ def main() -> int:
             })
             print(
                 f"[OK] {item['year']} GS-I ({extraction['pages']} pages, "
-                f"{extraction['characters']} characters)",
-                flush=True,
+                f"{extraction['characters']} characters)", flush=True
             )
         except Exception as exc:
             downloaded.append({**item, "fetch_status": "error", "error": str(exc)})
