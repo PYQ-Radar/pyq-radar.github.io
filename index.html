@@ -116,6 +116,15 @@ button{font-family:inherit;cursor:pointer}
 .stat small{color:#d5dfff;font-size:13px}
 .stat h2{font-size:23px;margin-top:4px}
 
+
+/* MAP ROOM SHORTCUTS */
+.map-shortcuts .stat{min-height:82px;text-decoration:none;color:var(--text)}
+.map-shortcuts .stat:nth-child(1){background:linear-gradient(120deg,#203f78,#202d5d)}
+.map-shortcuts .stat:nth-child(2){background:linear-gradient(120deg,#15506a,#1a3554)}
+.map-shortcuts .stat:nth-child(3){background:linear-gradient(120deg,#145744,#19394b)}
+.map-shortcuts .stat:nth-child(4){background:linear-gradient(120deg,#68452b,#3d3045)}
+.map-shortcuts .stat:hover{transform:translateY(-4px);border-color:#8bb8ff80}
+
 /* DASHBOARD */
 .dashboard-grid{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(280px,1fr);gap:18px}
 .panel{
@@ -319,23 +328,23 @@ footer strong{color:#dce7ff}
  </div>
 </section>
 
-<section class="stats">
- <div class="stat">
-  <div class="stat-icon" style="color:#bd91ff"><i class="fa-solid fa-book-open"></i></div>
-  <div><small>UPSC PYQ Library</small><h2 style="font-size:17px">Prelims Practice</h2></div>
- </div>
- <div class="stat">
-  <div class="stat-icon" style="color:#38e88e"><i class="fa-solid fa-layer-group"></i></div>
-  <div><small>Learn by Subject</small><h2 style="font-size:17px">Topic-wise Study</h2></div>
- </div>
- <div class="stat">
-  <div class="stat-icon" style="color:#ffca43"><i class="fa-solid fa-lightbulb"></i></div>
-  <div><small>Build Your Knowledge</small><h2 style="font-size:17px">Daily Vocabulary</h2></div>
- </div>
- <div class="stat">
-  <div class="stat-icon" style="color:#75baff"><i class="fa-solid fa-bookmark"></i></div>
-  <div><small>Stay Consistent</small><h2 style="font-size:17px">Revise & Improve</h2></div>
- </div>
+<section class="stats map-shortcuts" aria-label="UPSC Map Room categories">
+ <a class="stat" href="map-room.html#indian-geography">
+  <div class="stat-icon" style="color:#8fc4ff"><i class="fa-solid fa-map-location-dot"></i></div>
+  <div><small>Explore Maps</small><h2 style="font-size:16px">Indian Geography</h2></div>
+ </a>
+ <a class="stat" href="map-room.html#world-geography">
+  <div class="stat-icon" style="color:#63d7ff"><i class="fa-solid fa-earth-asia"></i></div>
+  <div><small>Explore Maps</small><h2 style="font-size:16px">World Geography</h2></div>
+ </a>
+ <a class="stat" href="map-room.html#environment">
+  <div class="stat-icon" style="color:#65e5a0"><i class="fa-solid fa-leaf"></i></div>
+  <div><small>Explore Maps</small><h2 style="font-size:16px">Environment & Ecology</h2></div>
+ </a>
+ <a class="stat" href="map-room.html#history">
+  <div class="stat-icon" style="color:#ffd078"><i class="fa-solid fa-landmark"></i></div>
+  <div><small>Explore Maps</small><h2 style="font-size:16px">History Maps</h2></div>
+ </a>
 </section>
 
 <section class="dashboard-grid">
