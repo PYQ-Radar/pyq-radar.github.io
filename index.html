@@ -158,6 +158,8 @@ button{font-family:inherit;cursor:pointer}
  background:#104d3d;border:1px solid #27b77c;color:#d7ffeb;line-height:1.6
 }
 .answer p{margin-top:7px}
+.chatgpt-explain{display:inline-block;margin-top:12px;padding:9px 13px;border-radius:9px;background:#ffffff;color:#17264a;font-size:13px;font-weight:700;text-decoration:none}
+.chatgpt-explain:hover{background:#dce8ff}
 .muted-note{color:#aab8d5;font-size:13px;line-height:1.6}
 .error-note{color:#ffb2b2;font-size:13px;line-height:1.6}
 
@@ -635,7 +637,7 @@ async function renderQuestion(){
 
  setText(
   "question-note",
-  "Answer is released only by the protected database function after verification."
+  "Stored answer key is loaded from the protected database. Use Explain with ChatGPT for an on-demand explanation."
  );
 
  try{
@@ -747,6 +749,17 @@ async function showAnswer(){
 
   const key=payload.correct_option||"Not provided";
   const explanation=payload.explanation||"";
+  const optionText=[...$("pyq-options").querySelectorAll(".option")]
+   .map(el=>el.innerText.trim()).join("\n");
+  const chatPrompt=
+   "You are a UPSC Prelims teacher. Explain this MCQ in clear Hinglish. "+
+   "Explain the concept, evaluate each statement/option, why the given answer is correct, "+
+   "and why the other options are incorrect. Keep it factually careful and mention uncertainty if needed.\n\n"+
+   "Question: "+$("pyq-question").textContent+"\n\n"+
+   "Options:\n"+optionText+"\n\n"+
+   "Stored answer key: "+key+"\n\n"+
+   "Give a concise but complete UPSC-oriented explanation.";
+  const chatUrl="https://chatgpt.com/?q="+encodeURIComponent(chatPrompt);
 
   box.innerHTML=
    "<strong><i class='fa-solid fa-circle-check'></i> Correct Answer: "+
@@ -754,7 +767,8 @@ async function showAnswer(){
    "</strong>"+
    (explanation
     ?'<p>'+escapeHtml(explanation)+'</p>'
-    :'<p>Explanation database mein available nahi hai.</p>');
+    :'<p>Explanation abhi database mein nahi hai. Neeche ChatGPT se is question ki explanation khol sakte hain.</p>')+
+   '<a class="chatgpt-explain" href="'+escapeHtml(chatUrl)+'" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-wand-magic-sparkles"></i> Explain with ChatGPT</a>';
 
   box.style.display="block";
   answerVisible=true;
