@@ -87,23 +87,41 @@ $("subject").addEventListener("change",updateTopics);
 async function startTest(){
  $("start").disabled=true;$("status").textContent="Preparing your test…";
  try{
- let query=db.from("questions").select("id,year,paper,question_text,subject_id,topic_id,subjects(name),topics(name)").eq("exam_id",examId);
- if(mode!=="full")query=query.eq("subject_id",$("subject").value);
- if(mode==="topic")query=query.eq("topic_id",$("topic").value);
- let data=[],offset=0;while(true){const {data:chunk,error}=await query.range(offset,offset+999);if(error)throw error;const rows=chunk||[];data=data.concat(rows);if(rows.length<1000)break;offset+=1000;}
- const count=mode==="full"?100:mode==="subject"?25:20;
- if(data.length<count)throw new Error("This selection has only "+data.length+" questions. Choose another subject or topic.");
- questions=shuffle(data).slice(0,count);answers={};current=0;submitted=false;optionMap={};
- const ids=questions.map(q=>q.id);
- const {data:opts,error:oe}=await db.from("question_options").select("question_id,option_key,option_text").in("question_id",ids).order("option_key");if(oe)throw oe;
- (opts||[]).forEach(o=>(optionMap[o.question_id]??=[]).push(o));
- questions=questions.filter(q=>(optionMap[q.id]||[]).length>0);
- if(!questions.length)throw new Error("Options are not available for this test selection.");
- seconds=(mode==="full"?120:mode==="subject"?30:25)*60;
- $("test-name").textContent=mode==="full"?"Full Length Test":mode==="subject"?"Subject-wise Test":"Topic-wise Test";
- $("setup").classList.add("hidden");$("results").classList.add("hidden");$("test").classList.remove("hidden");$("status").textContent="";
- renderQuestion();renderPalette();startTimer();
- }catch(e){$("status").textContent=e.message||"Could not start test.";$("start").disabled=false;}
+  let query=db.from("questions").select("id,year,paper,question_text,subject_id,topic_id,subjects(name),topics(name)").eq("exam_id",examId);
+  if(mode!=="full")query=query.eq("subject_id",$("subject").value);
+  if(mode==="topic")query=query.eq("topic_id",$("topic").value);
+  let data=[],offset=0;
+  while(true){
+   const {data:chunk,error}=await query.range(offset,offset+999);
+   if(error)throw error;
+   const rows=chunk||[];data=data.concat(rows);
+   if(rows.length<1000)break;
+   offset+=1000;
+  }
+  const optionMapLocal={};
+  for(let i=0;i<data.length;i+=400){
+   const batch=data.slice(i,i+400).map(q=>q.id);
+   const {data:opts,error}=await db.from("question_options").select("question_id,option_key,option_text").in("question_id",batch).order("option_key");
+   if(error)throw error;
+   (opts||[]).forEach(o=>(optionMapLocal[o.question_id]??=[]).push(o));
+  }
+  const eligible=data.filter(q=>(optionMapLocal[q.id]||[]).length>0);
+  if(!eligible.length)throw new Error("No questions with available options were found in this selection. Please choose another subject or topic.");
+  const requested=mode==="full"?100:mode==="subject"?25:20;
+  const actual=Math.min(requested,eligible.length);
+  questions=shuffle(eligible).slice(0,actual);
+  optionMap=optionMapLocal;answers={};current=0;submitted=false;
+  const minutesPerQuestion=mode==="topic"?1.25:1.2;
+  seconds=Math.round(actual*minutesPerQuestion*60);
+  $("test-name").textContent=mode==="full"?"Full Length Test":mode==="subject"?"Subject-wise Test":"Topic-wise Test";
+  $("setup").classList.add("hidden");$("results").classList.add("hidden");$("test").classList.remove("hidden");
+  $("status").textContent=actual<requested?"This selection has "+actual+" questions with options. Starting a "+actual+"-question test.": "";
+  renderQuestion();renderPalette();startTimer();
+ }catch(e){
+  console.error("Mock Test start error:",e);
+  $("status").textContent=e.message||"Could not start test.";
+  $("start").disabled=false;
+ }
 }
 function renderQuestion(){
  const q=questions[current];$("progress").textContent="Question "+(current+1)+" of "+questions.length;
