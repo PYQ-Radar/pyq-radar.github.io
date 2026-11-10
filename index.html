@@ -372,8 +372,8 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
     <span class="tag" id="pyq-subject">All Subjects</span>
    </div>
 
-   <h3 id="pyq-question">Supabase se PYQ load ho raha hai...</h3>
-   <div id="pyq-options"><p class="muted-note">Please wait...</p></div>
+   <h3 id="pyq-question">Loading today’s question...</h3>
+   <div id="pyq-options"><p class="muted-note">Loading answer choices...</p></div>
 
    <button class="answer-btn" id="pyq-answer-btn">
     <i class="fa-solid fa-play"></i> Show Answer
@@ -634,69 +634,88 @@ function resetAnswer(){
 
 function showLoadError(message){
  setFeedStatus("ERROR");
- $("pyq-question").textContent="Supabase se questions load nahi ho paaye.";
+ $("pyq-question").textContent="Questions could not be loaded.";
  $("pyq-options").innerHTML='<p class="error-note">'+escapeHtml(message)+'</p>';
- setText("question-note","Check internet connection, Supabase URL/key, table permissions and RLS SELECT policies.");
+ setText("question-note","Please check your connection and try again. If the issue continues, contact support.");
 }
 
-/* LOAD QUESTIONS */
+/* LOAD QUESTIONS — fetch one random row instead of downloading the full question bank */
 async function fetchQuestions(searchTerm=""){
  setFeedStatus("LOADING");
  resetAnswer();
  activeQuestionId=null;
  activeVerified=false;
-
- $("pyq-question").textContent="Loading questions...";
- $("pyq-options").innerHTML='<p class="muted-note">Please wait...</p>';
+ $("pyq-question").textContent="Loading today’s question...";
+ $("pyq-options").innerHTML='<p class="muted-note">Loading answer choices...</p>';
+ setText("question-note","");
 
  try{
-  const pageSize=1000;
-  let offset=0;
-  let allRows=[];
-
-  while(true){
-   let query=supabaseClient
-    .from("questions")
-    .select("id,exam_id,subject_id,year,paper,question_text,is_verified,created_at")
-    .order("year",{ascending:false})
-    .order("created_at",{ascending:false})
-    .range(offset,offset+pageSize-1);
-
-   if(searchTerm.trim()){
-    query=query.ilike("question_text","%"+searchTerm.trim()+"%");
-   }
-
-   const {data,error}=await query;
-   if(error) throw error;
-
-   const page=data||[];
-   allRows=allRows.concat(page);
-
-   if(page.length<pageSize) break;
-   offset+=pageSize;
+  const term=searchTerm.trim();
+  let totalQuery=supabaseClient.from("questions").select("id",{count:"exact",head:true});
+  let verifiedQuery=supabaseClient.from("questions").select("id",{count:"exact",head:true}).eq("is_verified",true);
+  if(term){
+   totalQuery=totalQuery.ilike("question_text","%"+term+"%");
+   verifiedQuery=verifiedQuery.ilike("question_text","%"+term+"%");
   }
 
-  questionRows=allRows;
+  const [totalResult,verifiedResult]=await Promise.all([totalQuery,verifiedQuery]);
+  if(totalResult.error) throw totalResult.error;
+  if(verifiedResult.error) throw verifiedResult.error;
 
-  const verified=questionRows.filter(q=>q.is_verified===true).length;
-  const unverified=questionRows.length-verified;
-
+  const total=totalResult.count||0;
+  const verified=verifiedResult.count||0;
   setText("quick-verified",verified);
-  setText("quick-review",unverified);
+  setText("quick-review",Math.max(0,total-verified));
 
-  setFeedStatus("CONNECTED");
-
-  if(!questionRows.length){
+  if(!total){
+   questionRows=[];
    currentIndex=-1;
-   renderEmpty(searchTerm);
+   setFeedStatus("NO RESULTS");
+   renderEmpty(term);
    return;
   }
 
-  currentIndex=Math.floor(Math.random()*questionRows.length);
+  /* A single randomly selected row keeps the initial dashboard request lightweight. */
+  const randomOffset=Math.floor(Math.random()*total);
+  let rowQuery=supabaseClient
+   .from("questions")
+   .select("id,exam_id,subject_id,year,paper,question_text,is_verified,created_at")
+   .order("year",{ascending:false})
+   .order("created_at",{ascending:false})
+   .range(randomOffset,randomOffset);
+
+  if(term) rowQuery=rowQuery.ilike("question_text","%"+term+"%");
+
+  const {data,error}=await rowQuery;
+  if(error) throw error;
+  questionRows=data||[];
+
+  if(!questionRows.length){
+   /* A concurrent database update may invalidate the selected offset; retry once at the first row. */
+   let retry=supabaseClient.from("questions")
+    .select("id,exam_id,subject_id,year,paper,question_text,is_verified,created_at")
+    .order("year",{ascending:false})
+    .order("created_at",{ascending:false})
+    .limit(1);
+   if(term) retry=retry.ilike("question_text","%"+term+"%");
+   const result=await retry;
+   if(result.error) throw result.error;
+   questionRows=result.data||[];
+  }
+
+  if(!questionRows.length){
+   currentIndex=-1;
+   setFeedStatus("NO RESULTS");
+   renderEmpty(term);
+   return;
+  }
+
+  currentIndex=0;
+  setFeedStatus("CONNECTED");
   await renderQuestion();
 
  }catch(err){
-  console.error("PYQ Radar Supabase error:",err);
+  console.error("PYQ Radar question load error:",err);
   showLoadError(err.message||"Unknown database error");
  }
 }
@@ -706,10 +725,10 @@ function renderEmpty(searchTerm){
  setFeedStatus("NO RESULTS");
 
  $("pyq-question").textContent=searchTerm
-  ?"Is search ke liye koi question nahi mila."
-  :"Website ko Supabase se koi question row visible nahi hui.";
+  ?"No questions match this search."
+  :"No questions are currently available.";
 
- $("pyq-options").innerHTML='<p class="muted-note">Search badal kar dekhein ya Reload Questions par click karein.</p>';
+ $("pyq-options").innerHTML='<p class="muted-note">Try another search or select Reload Questions.</p>';
 
  setText("pyq-exam","PYQ RADAR");
  setText("pyq-year","—");
@@ -719,61 +738,37 @@ function renderEmpty(searchTerm){
 
 /* DISPLAY QUESTION */
 async function renderQuestion(){
-
  const q=questionRows[currentIndex];
-
  if(!q) return;
 
  activeQuestionId=q.id;
  activeVerified=q.is_verified===true;
-
  resetAnswer();
-
  setText("pyq-year",q.year||"Year N/A");
  setText("pyq-exam",q.paper||"UPSC Prelims");
  setText("pyq-subject","Loading subject...");
-
  $("pyq-question").textContent=q.question_text||"Question text missing.";
-
- setText(
-  "pyq-status",
-  "PYQ PRACTICE"
- );
-
- setText(
-  "question-note",
-  "Answer keys are loaded securely. Explanations will be added later."
- );
+ setText("pyq-status","PYQ PRACTICE");
+ setText("question-note","Answer keys are loaded securely. Explanations will be added later.");
 
  try{
-
-  /* SUBJECT */
-  if(q.subject_id){
-   const {data,error}=await supabaseClient
-    .from("subjects")
-    .select("name")
-    .eq("id",q.subject_id)
-    .maybeSingle();
-
-   if(error) throw error;
-
-   setText("pyq-subject",data?.name||"Subject not assigned");
-
-  }else{
-   setText("pyq-subject","Subject not assigned");
-  }
-
-  /* OPTIONS */
-  const {data:opts,error:optError}=await supabaseClient
-   .from("question_options")
+  /* Load subject and answer choices together to reduce waiting time. */
+  const subjectRequest=q.subject_id
+   ? supabaseClient.from("subjects").select("name").eq("id",q.subject_id).maybeSingle()
+   : Promise.resolve({data:null,error:null});
+  const optionsRequest=supabaseClient.from("question_options")
    .select("option_key,option_text")
    .eq("question_id",q.id)
    .order("option_key",{ascending:true});
 
-  if(optError) throw optError;
+  const [subjectResult,optionsResult]=await Promise.all([subjectRequest,optionsRequest]);
+  if(subjectResult.error) throw subjectResult.error;
+  if(optionsResult.error) throw optionsResult.error;
 
-  if(!opts||!opts.length){
-   $("pyq-options").innerHTML='<p class="muted-note">Is question ke options abhi available nahi hain.</p>';
+  setText("pyq-subject",subjectResult.data?.name||"Subject not assigned");
+  const opts=optionsResult.data||[];
+  if(!opts.length){
+   $("pyq-options").innerHTML='<p class="muted-note">Answer choices are not available for this question yet.</p>';
    return;
   }
 
@@ -790,10 +785,9 @@ async function renderQuestion(){
     label.classList.add("selected");
    });
   });
-
  }catch(err){
   console.error("Question details error:",err);
-  $("pyq-options").innerHTML='<p class="error-note">Question details load nahi hue: '+escapeHtml(err.message)+'</p>';
+  $("pyq-options").innerHTML='<p class="error-note">Could not load question details: '+escapeHtml(err.message)+'</p>';
  }
 }
 
@@ -816,7 +810,7 @@ async function nextSubject(){
 
  const subjectIds=[...new Set(questionRows.map(q=>q.subject_id).filter(Boolean))];
  if(!subjectIds.length){
-  setText("question-note","Subject information is not available for these questions yet.");
+  setText("question-note","Subject information is not available for this question.");
   return;
  }
 
@@ -850,7 +844,7 @@ async function showAnswer(){
 
  if(!activeQuestionId){
   box.style.display="block";
-  box.textContent="Pehle ek question load hone dein.";
+  box.textContent="Please wait until a question has loaded.";
   return;
  }
 
