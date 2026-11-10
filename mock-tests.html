@@ -45,7 +45,7 @@ const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id);
 const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let examId=null,subjects=[],topics=[],mode="full",questions=[],answers={},current=0,seconds=0,tick=null,submitted=false,optionMap={},reviewRows=[],reviewFilter="all";
+let examId=null,subjects=[],topics=[],mode="full",questions=[],answers={},current=0,seconds=0,testDurationSeconds=0,tick=null,submitted=false,optionMap={},reviewRows=[],reviewFilter="all";
 function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
 async function init(){
  try{
@@ -112,7 +112,7 @@ async function startTest(){
   questions=shuffle(eligible).slice(0,actual);
   optionMap=optionMapLocal;answers={};current=0;submitted=false;
   const minutesPerQuestion=mode==="topic"?1.25:1.2;
-  seconds=Math.round(actual*minutesPerQuestion*60);
+  seconds=Math.round(actual*minutesPerQuestion*60);testDurationSeconds=seconds;
   $("test-name").textContent=mode==="full"?"Full Length Test":mode==="subject"?"Subject-wise Test":"Topic-wise Test";
   $("setup").classList.add("hidden");$("results").classList.add("hidden");$("test").classList.remove("hidden");
   $("status").textContent=actual<requested?"This selection has "+actual+" questions with options. Starting a "+actual+"-question test.": "";
@@ -155,8 +155,35 @@ async function finishTest(auto){
  let insight=attempted===0?"You left every question unanswered. Review the topics and try another test.":accuracy>=80?"Excellent work! Your accuracy is strong. Keep practising to make your performance consistent.":accuracy>=60?"Good effort. Review the incorrect answers and focus on the concepts behind them.":"Keep building your basics. Review each question carefully, strengthen the concepts, then retry.";
  if(unanswered>0)insight+=" You also left "+unanswered+" question(s) unanswered; practise time management.";
  $("insight").textContent="💡 "+insight;
- reviewRows=questions.map((q,i)=>{const chosen=answers[q.id],key=keys[q.id]?.correct_option,valid=key&&!["DROPPED","NO_VALID_OPTION","REVIEW"].includes(key),status=!chosen?"unanswered":!valid?"unanswered":chosen===key?"correct":"incorrect";return {q,i,chosen,key,valid,status,explanation:keys[q.id]?.explanation||""};});reviewFilter="all";renderAnswerReview();
- $("test").classList.add("hidden");$("results").classList.remove("hidden");$("status").textContent="";
+ reviewRows=questions.map((q,i)=>{const chosen=answers[q.id],key=keys[q.id]?.correct_option,valid=key&&!["DROPPED","NO_VALID_OPTION","REVIEW"].includes(key),status=!chosen?"unanswered":!valid?"unanswered":chosen===key?"correct":"incorrect";return {q,i,chosen,key,valid,status,explanation:keys[q.id]?.explanation||""};});
+ // Save aggregate attempt history to the signed-in user's private account.
+ try{
+  const {data:{user}}=await db.auth.getUser();
+  if(user){
+   const grouped={};
+   reviewRows.forEach(r=>{
+    const sid=r.q.subject_id||"unclassified";
+    if(!grouped[sid])grouped[sid]={subject_id:r.q.subject_id||null,subject_name:r.q.subjects?.name||"Unclassified",correct:0,incorrect:0,unanswered:0};
+    grouped[sid][r.status]++;
+   });
+   const attemptedCount=correct+wrong;
+   const attemptRow={
+    user_id:user.id,test_mode:mode,
+    subject_id:mode==="full"?null:(questions[0]?.subject_id||null),
+    topic_id:mode==="topic"?(questions[0]?.topic_id||null):null,
+    total_questions:questions.length,correct_count:correct,incorrect_count:wrong,
+    unanswered_count:unanswered,score:Number(score.toFixed(2)),
+    accuracy:attemptedCount?Number((correct/attemptedCount*100).toFixed(2)):0,
+    duration_seconds:Math.max(0,testDurationSeconds-seconds),
+    subject_breakdown:Object.values(grouped)
+   };
+   const {error:saveError}=await db.from("mock_test_attempts").insert(attemptRow);
+   if(saveError){console.error("Could not save mock-test attempt:",saveError);$("status").textContent="Result calculated, but history could not be saved: "+saveError.message;}
+   else $("status").textContent="Result saved to your Study Performance history.";
+  }else $("status").textContent="Sign in to save this result to your Study Performance history.";
+ }catch(saveErr){console.error("Attempt history save error:",saveErr);$("status").textContent="Result calculated, but history could not be saved. Please try again later.";}
+ reviewFilter="all";renderAnswerReview();
+ $("test").classList.add("hidden");$("results").classList.remove("hidden");
  }catch(e){submitted=false;$("submit").disabled=false;$("status").textContent="Could not calculate result: "+(e.message||"Please try again.");}
 }
 $("newtest").addEventListener("click",()=>{clearInterval(tick);$("results").classList.add("hidden");$("setup").classList.remove("hidden");$("start").disabled=false;$("submit").disabled=false;$("status").textContent="Ready for your next test.";});
