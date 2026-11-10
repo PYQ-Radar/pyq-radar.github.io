@@ -675,14 +675,15 @@ async function fetchQuestions(searchTerm=""){
    return;
   }
 
-  /* A single randomly selected row keeps the initial dashboard request lightweight. */
+  /* Load a small random slice so Next Question keeps working without downloading the full bank. */
+  const sampleSize=40;
   const randomOffset=Math.floor(Math.random()*total);
   let rowQuery=supabaseClient
    .from("questions")
    .select("id,exam_id,subject_id,year,paper,question_text,is_verified,created_at")
    .order("year",{ascending:false})
    .order("created_at",{ascending:false})
-   .range(randomOffset,randomOffset);
+   .range(randomOffset,randomOffset+sampleSize-1);
 
   if(term) rowQuery=rowQuery.ilike("question_text","%"+term+"%");
 
@@ -691,7 +692,7 @@ async function fetchQuestions(searchTerm=""){
   questionRows=data||[];
 
   if(!questionRows.length){
-   /* A concurrent database update may invalidate the selected offset; retry once at the first row. */
+   /* Retry once if a concurrent database update leaves this slice empty. */
    let retry=supabaseClient.from("questions")
     .select("id,exam_id,subject_id,year,paper,question_text,is_verified,created_at")
     .order("year",{ascending:false})
