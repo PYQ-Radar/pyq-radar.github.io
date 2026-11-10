@@ -513,29 +513,38 @@ function setText(id,value){
  $(id).textContent=value??"";
 }
 
+function applyDisplayName(name){
+ const clean=(name||"Aspirant").trim()||"Aspirant";
+ $("userDisplayName").innerHTML=escapeHtml(clean)+' <i class="fa-solid fa-pen-to-square" style="font-size:11px;opacity:.75"></i>';
+ $("welcomeName").textContent=clean;
+ $("userAvatar").textContent=clean.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"A";
+}
 async function loadAccountName(){
  try{
   const {data:{user},error}=await supabaseClient.auth.getUser();
   if(error) throw error;
-  if(!user) return;
+  if(!user){applyDisplayName("Aspirant");return}
   const meta=user.user_metadata||{};
   const fallback=(user.email||"").split("@")[0].replace(/[._-]+/g," ").trim();
-  const name=meta.full_name||meta.name||fallback||"Aspirant";
-  $("userDisplayName").textContent=name;
-  $("welcomeName").textContent=name;
-  $("userAvatar").textContent=name.split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"A";
+  applyDisplayName(meta.display_name||meta.full_name||meta.name||fallback||"Aspirant");
  }catch(e){console.warn("Could not load profile name:",e.message)}
 }
 $("userDisplayName").addEventListener("click",async()=>{
- const current=$("userDisplayName").textContent.trim();
- const entered=prompt("What name should PYQ Radar display?",current);
- if(entered===null||!entered.trim()) return;
- const name=entered.trim().slice(0,60);
- const {error}=await supabaseClient.auth.updateUser({data:{full_name:name}});
- if(error){alert("Name could not be saved: "+error.message);return}
- $("userDisplayName").textContent=name;
- $("welcomeName").textContent=name;
- $("userAvatar").textContent=name.split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"A";
+ const {data:{user}}=await supabaseClient.auth.getUser();
+ if(!user){location.href="login.html?next=index.html";return}
+ const meta=user.user_metadata||{};
+ const current=meta.display_name||meta.full_name||meta.name||(user.email||"").split("@")[0]||"";
+ const entered=prompt("Set your display name or nickname (up to 40 characters):",current);
+ if(entered===null)return;
+ const nickname=entered.trim().slice(0,40);
+ if(!nickname){alert("Please enter a name or nickname.");return}
+ const {error}=await supabaseClient.auth.updateUser({data:{display_name:nickname}});
+ if(error){alert("Nickname could not be saved: "+error.message);return}
+ applyDisplayName(nickname);
+});
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+ if(event==="SIGNED_IN"||event==="USER_UPDATED")loadAccountName();
+ if(event==="SIGNED_OUT")applyDisplayName("Aspirant");
 });
 loadAccountName();
 
