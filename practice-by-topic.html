@@ -21,7 +21,7 @@ const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id),safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let examId=null,subjects=[],topics=[],activeTopic=null,questions=[],index=0,selected={},revealed={},attempted=new Set();
+let examId=null,subjects=[],activeSubjects=[],topics=[],activeTopic=null,questions=[],index=0,selected={},revealed={},attempted=new Set();
 async function init(){
  try{
   const {data:exam,error:e}=await db.from("exams").select("id").eq("name","UPSC Civil Services Examination").maybeSingle();if(e)throw e;if(!exam)throw new Error("UPSC exam record not found.");examId=exam.id;
@@ -30,8 +30,11 @@ async function init(){
   let qs=[],offset=0;while(true){const {data,error}=await db.from("questions").select("id,topic_id").eq("exam_id",examId).range(offset,offset+999);if(error)throw error;const page=data||[];qs=qs.concat(page);if(page.length<1000)break;offset+=1000;}
   const counts={};qs.forEach(q=>{if(q.topic_id)counts[q.topic_id]=(counts[q.topic_id]||0)+1;});
   topics=topics.map(t=>({...t,count:counts[t.id]||0}));
-  $("subject").innerHTML='<option value="">All Subjects</option>'+subjects.map(s=>'<option value="'+s.id+'">'+safe(s.name)+'</option>').join("");
-  $("subject-count").textContent="Subjects: "+subjects.length;$("topic-count").textContent="Topics: "+topics.length;$("question-count").textContent="Questions: "+qs.length;
+  const activeSubjectIds=new Set(topics.filter(t=>t.count>0).map(t=>t.subject_id));
+  activeSubjects=subjects.filter(s=>activeSubjectIds.has(s.id));
+  const activeTopics=topics.filter(t=>t.count>0);
+  $("subject").innerHTML='<option value="">All Subjects</option>'+activeSubjects.map(s=>'<option value="'+s.id+'">'+safe(s.name)+'</option>').join("");
+  $("subject-count").textContent="Subjects: "+activeSubjects.length;$("topic-count").textContent="Topics: "+activeTopics.length;$("question-count").textContent="Questions: "+qs.length;
   renderTopics();
  }catch(e){console.error(e);$("topics").innerHTML='<div class="empty">Could not load topics: '+safe(e.message)+'</div>';}
 }
