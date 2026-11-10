@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--panel2:#1b2c50;--line:rgba(117,151,255,.22);--text:#f5f7ff;--muted:#aab8d5;--blue:#2677ff;--green:#35d69a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.wrap{width:min(1040px,92%);margin:auto;padding:28px 0 50px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:20px}.brand h1{font-size:19px;margin:0}.brand p{font-size:10px;color:var(--muted);margin:4px 0}.back{color:#c7d9f7;border:1px solid var(--line);padding:10px 13px;border-radius:10px;font-size:12px}.hero{padding:24px;border:1px solid #2869e5;border-radius:17px;background:radial-gradient(ellipse at 20% 0%,#1357b5 0%,transparent 65%),linear-gradient(110deg,#102a5b,#172c59);display:flex;align-items:center;gap:18px;margin-bottom:20px}.avatar{width:66px;height:66px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#50bfff,#4b6dff);font-size:25px;font-weight:800}.hero h2{font-size:23px;margin:0 0 6px}.hero p{font-size:12px;color:#d3e1ff;margin:0}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.card{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:16px;padding:21px;margin-bottom:18px}.card h3{font-size:16px;margin:0 0 17px}.card h3 i{color:#83baff;margin-right:9px}.field{margin:13px 0}.field label{display:block;font-size:11px;color:#c4d2ed;margin-bottom:7px}.field input,.field select{width:100%;background:#0b1732;border:1px solid #405b8a;border-radius:9px;padding:12px;color:white;font:inherit;font-size:13px}.help{font-size:10px;color:var(--muted);line-height:1.6;margin-top:6px}.btn{border:0;border-radius:9px;background:var(--blue);color:white;padding:11px 15px;font:700 12px Inter;cursor:pointer}.btn:disabled{opacity:.6;cursor:wait}.btn.secondary{background:transparent;border:1px solid #5477ac}.btn.danger{background:#682d42;border:1px solid #a84a65}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.status{font-size:11px;color:#9fe6c9;line-height:1.6;margin-top:12px;min-height:16px}.row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:12px}.row:last-child{border-bottom:0}.row span:first-child{color:var(--muted)}.plan{display:inline-block;padding:6px 10px;border-radius:20px;background:#234b85;color:#d9eaff;font-size:10px;font-weight:800;text-transform:uppercase}.note{font-size:11px;color:var(--muted);line-height:1.7}.security-action{padding:13px 0;border-bottom:1px solid var(--line)}.security-action:last-child{border:0}.security-action strong{display:block;font-size:12px;margin-bottom:5px}.security-action p{font-size:10px;color:var(--muted);line-height:1.6;margin:0 0 10px}.signed-out{max-width:460px;margin:12vh auto;text-align:center}.signed-out .card{padding:32px}.signed-out p{color:var(--muted);font-size:12px;line-height:1.6}footer{text-align:center;color:#8093b8;font-size:11px;margin-top:25px;line-height:1.8}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{width:94%;padding-top:17px}.hero{padding:18px}.hero h2{font-size:18px}.card{padding:17px}.top{align-items:flex-start}.back{white-space:nowrap}}
+</style>
+<style>a,a:link,a:visited,a:hover,a:focus,a:active,a *{text-decoration:none!important;text-decoration-line:none!important}u,ins{text-decoration:none!important;text-decoration-line:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="logo"><i class="fa-solid fa-bullseye"></i></div><div><h1>PYQ Radar</h1><p>Every Question Has a Direction.</p></div></div><a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Dashboard</a></header>
+<div id="loading" class="card">Loading your account…</div>
+<div id="signedOut" class="signed-out" style="display:none"><div class="card"><i class="fa-solid fa-user-lock" style="font-size:35px;color:#8db8ff"></i><h2>Sign in required</h2><p>Sign in to view and manage your PYQ Radar account.</p><a class="btn" href="login.html?next=my-account.html">Sign in</a></div></div>
+<main id="account" style="display:none">
+<section class="hero"><div class="avatar" id="avatar">A</div><div><h2 id="heroName">Aspirant</h2><p id="heroEmail">Your PYQ Radar account</p></div></section>
+<div class="grid">
+<div>
+<section class="card"><h3><i class="fa-solid fa-id-card"></i>Profile details</h3>
+<div class="field"><label for="displayName">Display name / Nickname</label><input id="displayName" maxlength="40" placeholder="Enter your display name"><div class="help">This name appears on your dashboard. You can use your preferred nickname.</div></div>
+<div class="field"><label for="fullName">Full name (optional)</label><input id="fullName" maxlength="60" placeholder="Enter your full name"></div>
+<div class="field"><label for="email">Registered email</label><input id="email" disabled></div>
+<div class="actions"><button class="btn" id="saveProfile"><i class="fa-solid fa-floppy-disk"></i> Save profile</button></div><div class="status" id="profileStatus" role="status"></div>
+</section>
+<section class="card"><h3><i class="fa-solid fa-sliders"></i>Study preferences</h3>
+<div class="field"><label for="goal">Daily study goal</label><select id="goal"><option value="2">2 hours</option><option value="3">3 hours</option><option value="4">4 hours</option><option value="5">5 hours</option><option value="6">6 hours</option><option value="7">7 hours</option><option value="8">8 hours</option><option value="10">10 hours</option><option value="12">12 hours</option></select></div>
+<div class="field"><label for="language">Preferred explanation language</label><select id="language"><option value="English">English</option><option value="Hinglish">Hinglish</option><option value="Odia">Odia</option></select></div>
+<p class="help">These preferences are saved to your account and can guide future learning features. They do not change existing question content.</p>
+<div class="actions"><button class="btn" id="savePrefs">Save preferences</button></div><div class="status" id="prefsStatus" role="status"></div>
+</section>
+</div>
+<div>
+<section class="card"><h3><i class="fa-solid fa-crown"></i>Subscription</h3>
+<div class="row"><span>Current plan</span><span class="plan" id="plan">Free</span></div>
+<div class="row"><span>Plan status</span><strong id="planStatus">Active</strong></div>
+<div class="row"><span>Valid until</span><strong id="expiry">—</strong></div>
+<p class="note" style="margin-top:13px">Your plan information is read from your account access settings. Payment does not automatically activate a plan.</p>
+<div class="actions"><a class="btn secondary" href="subscription.html">View plans</a></div>
+</section>
+<section class="card"><h3><i class="fa-solid fa-shield-halved"></i>Security & sign-in</h3>
+<div class="security-action"><strong>Reset password</strong><p>We’ll send a password reset link to your registered email address.</p><button class="btn secondary" id="resetPassword">Send reset link</button></div>
+<div class="security-action"><strong>Sign out</strong><p>Sign out of this browser session.</p><button class="btn danger" id="signOut">Sign out</button></div>
+<div class="status" id="securityStatus" role="status"></div>
+</section>
+<section class="card"><h3><i class="fa-solid fa-circle-info"></i>Account information</h3>
+<div class="row"><span>Member since</span><strong id="created">—</strong></div>
+<div class="row"><span>Account ID</span><strong id="accountId" style="font-size:10px">—</strong></div>
+<p class="note" style="margin-top:12px">Keep your sign-in details private. PYQ Radar will never ask you to share your password in chat or messages.</p>
+</section>
+</div>
+</div>
+</main>
+<footer>© 2026 PYQ Radar. All Rights Reserved.<br>Designed &amp; Developed by <strong>Satya Jigyansu</strong></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const db=window.supabase.createClient("https://fzepobjbcehirerwtnsz.supabase.co","sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW");
+const $=id=>document.getElementById(id);
+let currentUser=null;
+function initials(s){return (s||"A").trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"A"}
+function dateText(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}
+function showStatus(id,msg,isError=false){$(id).textContent=msg;$(id).style.color=isError?"#ffaaaa":"#9fe6c9"}
+async function load(){
+ const {data:{user},error}=await db.auth.getUser();
+ $("loading").style.display="none";
+ if(error||!user){$("signedOut").style.display="block";return}
+ currentUser=user;
+ const m=user.user_metadata||{},app=user.app_metadata||{};
+ const name=m.display_name||m.full_name||m.name||(user.email||"").split("@")[0]||"Aspirant";
+ $("account").style.display="block";$("heroName").textContent=name;$("heroEmail").textContent=user.email||"";
+ $("avatar").textContent=initials(name);$("displayName").value=m.display_name||name;$("fullName").value=m.full_name||"";
+ $("email").value=user.email||"";$("goal").value=String(m.daily_study_goal||4);$("language").value=m.preferred_language||"English";
+ const plan=String(app.subscription_plan||app.plan||"Free");$("plan").textContent=plan;
+ const exp=app.subscription_expires_at;const expired=exp&&new Date(exp).getTime()<Date.now();
+ $("planStatus").textContent=plan.toLowerCase()==="free"?"Free access":expired?"Expired":"Active";
+ $("expiry").textContent=exp?dateText(exp):"No expiry recorded";
+ $("created").textContent=dateText(user.created_at);$("accountId").textContent=user.id;
+}
+$("saveProfile").addEventListener("click",async()=>{
+ const displayName=$("displayName").value.trim(),fullName=$("fullName").value.trim();
+ if(!displayName){showStatus("profileStatus","Display name cannot be empty.",true);return}
+ $("saveProfile").disabled=true;showStatus("profileStatus","Saving profile…");
+ try{const {data,error}=await db.auth.updateUser({data:{display_name:displayName,full_name:fullName}});if(error)throw error;currentUser=data.user;$("heroName").textContent=displayName;$("avatar").textContent=initials(displayName);showStatus("profileStatus","Profile updated successfully.");}
+ catch(e){showStatus("profileStatus",e.message||"Could not update profile.",true)}
+ finally{$("saveProfile").disabled=false}
+});
+$("savePrefs").addEventListener("click",async()=>{
+ $("savePrefs").disabled=true;showStatus("prefsStatus","Saving preferences…");
+ try{const {error}=await db.auth.updateUser({data:{daily_study_goal:Number($("goal").value),preferred_language:$("language").value}});if(error)throw error;showStatus("prefsStatus","Study preferences saved to your account.");}
+ catch(e){showStatus("prefsStatus",e.message||"Could not save preferences.",true)}
+ finally{$("savePrefs").disabled=false}
+});
+$("resetPassword").addEventListener("click",async()=>{
+ $("resetPassword").disabled=true;showStatus("securityStatus","Requesting password reset…");
+ try{const {error}=await db.auth.resetPasswordForEmail(currentUser.email,{redirectTo:location.origin+"/login.html"});if(error)throw error;showStatus("securityStatus","If password reset is enabled, a reset email has been sent. Check Inbox and Spam.");}
+ catch(e){showStatus("securityStatus",e.message||"Could not request reset email.",true)}
+ finally{$("resetPassword").disabled=false}
+});
+$("signOut").addEventListener("click",async()=>{
+ $("signOut").disabled=true;showStatus("securityStatus","Signing out…");
+ const {error}=await db.auth.signOut();
+ if(error){showStatus("securityStatus",error.message,true);$("signOut").disabled=false;return}
+ location.replace("login.html");
+});
+load().catch(e=>{$("loading").textContent="Could not load account: "+e.message});
+</script>
+</body></html>
