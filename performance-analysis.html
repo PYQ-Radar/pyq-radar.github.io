@@ -26,7 +26,7 @@ async function init(){
  const meta=user.app_metadata||{};
  const plan=String(meta.subscription_plan||meta.plan||"").toLowerCase();
  const expiry=meta.subscription_expires_at?Date.parse(meta.subscription_expires_at):null;
- const active=["premium","pro"].includes(plan)&&(!expiry||Number.isFinite(expiry)&&expiry>Date.now());
+ const active=["premium","pro"].includes(plan)&&Number.isFinite(expiry)&&expiry>Date.now();
  if(!active){$("accountState").textContent="Premium access required";$("locked").classList.remove("hidden");$("lockReason").textContent=plan==="premium"||plan==="pro"?"Your subscription may have expired. Please contact support if you have already renewed.":"Your account does not have an active Premium or Pro entitlement.";return;}
  $("accountState").textContent=plan.toUpperCase()+" · Active";
  $("premium").classList.remove("hidden");
