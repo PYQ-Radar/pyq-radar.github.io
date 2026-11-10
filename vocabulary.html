@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Vocabulary | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--panel2:#19274c;--blue:#2677ff;--text:#f5f7ff;--muted:#aab8d5;--border:rgba(117,151,255,.22)}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.sidebar{width:270px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--border);padding:22px 15px;position:fixed;height:100vh;overflow-y:auto;z-index:10;transition:.25s}
+.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 25px}.logo-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:23px}.logo h2{font-size:21px}.logo p{font-size:10px;color:var(--muted);margin-top:4px}
+.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px 14px 7px}.nav-item{display:flex;align-items:center;gap:14px;padding:12px 14px;margin:4px 0;color:#dce6ff;border-radius:11px;text-decoration:none;font-size:13px;transition:.2s}.nav-item i{width:20px;color:#a9c3f7}.nav-item:hover,.nav-item.active{background:linear-gradient(100deg,#174fae,#174080);color:white}.sidebar-bottom{margin-top:24px;padding:17px;border:1px solid #5967dc;border-radius:14px;background:linear-gradient(135deg,#25335d,#32234d);text-align:center}.sidebar-bottom i{color:#ffca36;font-size:22px}.sidebar-bottom h4{margin:9px 0}.sidebar-bottom p{font-size:11px;color:#c3cce2;line-height:1.5}.pro-btn{margin-top:12px;background:#ffca35;color:#171c35;border:0;border-radius:9px;padding:9px 13px;font-size:11px;font-weight:800}
+.main{margin-left:270px;width:calc(100% - 270px);min-width:0}.topbar{height:72px;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:#101b38;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}.menu-btn{display:none;background:none;border:0;color:white;font-size:22px}.top-title{font-weight:700;font-size:14px;color:#dce7ff}.user{display:flex;align-items:center;gap:10px;font-size:13px}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#50bfff,#4b6dff)}
+.content{max-width:1450px;margin:auto;padding:24px}.hero{border:1px solid #2869e5;border-radius:17px;padding:25px 28px;background:radial-gradient(ellipse at 25% 0%,#1357b5 0%,transparent 60%),linear-gradient(110deg,#102a5b,#172c59 60%,#45305a);display:flex;align-items:center;justify-content:space-between;gap:18px}.hero h1{font-size:26px;margin-bottom:8px}.hero p{color:#d3e1ff;font-size:13px;line-height:1.6}.hero-icon{font-size:48px;color:#ffd35c;margin-right:20px}.hero-left{display:flex;align-items:center}.date-chip{padding:9px 13px;background:#ffffff16;border:1px solid #ffffff28;border-radius:10px;color:#e3edff;font-size:12px;white-space:nowrap}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:19px 0}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:1px solid var(--border);background:#152448;color:#dce7ff;padding:10px 14px;border-radius:10px;font-size:12px}.tab.active{background:#2168e8;border-color:#4387ff;color:white}.language-wrap{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:12px}.language{background:#1d2c52;border:1px solid var(--border);color:white;padding:10px;border-radius:9px;min-width:155px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:17px 2px 12px}.section-head h2{font-size:17px}.section-head p{font-size:11px;color:var(--muted);margin-top:5px}
+.word-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.word-card{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a477;border-radius:15px;padding:18px;min-width:0;transition:.2s}.word-card:hover{border-color:#658bff}.word-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.word-name{font-size:21px;font-weight:800;color:#fff}.pron{font-size:11px;color:#aebfe4;margin-top:5px}.word-no{font-size:10px;color:#90a8d7;background:#ffffff10;padding:6px 9px;border-radius:8px}.meaning{font-size:13px;line-height:1.65;color:#e5edff;margin-top:15px;min-height:42px}.meaning-label,.detail-label{font-size:10px;color:#ffcf42;text-transform:uppercase;letter-spacing:1px;font-weight:700}.synonyms{font-size:12px;line-height:1.6;color:#c5d5f4;margin-top:13px}.example{font-size:12px;line-height:1.65;color:#d6e2fb;background:#0d1934;border-left:3px solid #4387ff;padding:10px 12px;border-radius:0 8px 8px 0;margin-top:12px}.card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px}.save-btn,.speak-btn{border:1px solid var(--border);background:#1b2b50;color:#dce7ff;border-radius:8px;padding:8px 10px;font-size:11px}.save-btn.saved{color:#ffd35c;border-color:#b78b2f}.speak-btn{margin-left:auto}.empty{grid-column:1/-1;text-align:center;padding:35px 15px;color:var(--muted);background:var(--panel);border:1px solid var(--border);border-radius:14px}
+.panel{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a477;border-radius:15px;padding:18px;margin-top:18px}.panel h3{font-size:15px;margin-bottom:7px}.panel p{font-size:12px;color:var(--muted);line-height:1.6}.search-row{display:flex;gap:9px;margin-top:13px}.search-row input{flex:1;min-width:0;background:#0d1934;border:1px solid var(--border);border-radius:9px;padding:12px;color:white;outline:none}.primary{border:0;border-radius:9px;background:linear-gradient(90deg,#1766ee,#347dff);color:white;padding:11px 16px;font-size:12px;font-weight:700}.lookup-result{margin-top:14px;padding:13px;background:#0d1934;border-radius:9px;line-height:1.65;font-size:12px;display:none}.lookup-result strong{color:#ffcf42}.notice{font-size:11px;color:#91a5cc;margin-top:10px;line-height:1.5}
+footer{padding:22px;text-align:center;color:#8093b8;font-size:11px;border-top:1px solid var(--border);margin-top:28px}footer strong{color:#dce7ff}
+@media(max-width:950px){.sidebar{width:245px}.main{margin-left:245px;width:calc(100% - 245px)}.word-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.sidebar{transform:translateX(-100%);width:275px}.sidebar.open{transform:translateX(0);box-shadow:15px 0 40px #0009}.main{margin-left:0;width:100%}.topbar{height:64px;padding:10px 14px;gap:12px}.menu-btn{display:block}.top-title{margin-right:auto}.user span{display:none}.content{padding:14px 12px 22px}.hero{padding:19px 15px}.hero h1{font-size:19px}.hero p{font-size:11px}.hero-icon{font-size:34px;margin-right:12px}.date-chip{display:none}.toolbar{align-items:flex-start}.language-wrap{width:100%;justify-content:space-between}.language{flex:1}.word-grid{grid-template-columns:1fr}.word-card{padding:15px}.search-row{flex-direction:column}.search-row .primary{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
+ <div class="nav-label">MAIN MENU</div>
+ <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a>
+ <a class="nav-item" href="pyq-explorer.html"><i class="fa-solid fa-file-circle-question"></i>PYQ Explorer</a>
+ <a class="nav-item" href="mock-tests.html"><i class="fa-solid fa-clipboard-check"></i>Mock Tests</a>
+ <a class="nav-item" href="practice-by-topic.html"><i class="fa-solid fa-layer-group"></i>Practice by Topic</a>
+ <a class="nav-item active" href="vocabulary.html"><i class="fa-solid fa-book-open"></i>Vocabulary</a>
+ <a class="nav-item" href="index.html"><i class="fa-solid fa-newspaper"></i>Newsroom</a>
+ <div class="nav-label">MY STUDY SPACE</div>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-bookmark"></i>Bookmarks</a>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-list-check"></i>My Revision List</a>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-chart-pie"></i>Study Progress</a>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-chart-column"></i>Performance Analysis</a>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-bullseye"></i>Weak Topics</a>
+ <div class="nav-label">ACCOUNT</div>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-user"></i>My Account</a>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-gear"></i>Settings</a>
+ <a class="nav-item" href="subscription.html"><i class="fa-solid fa-circle-question"></i>Help &amp; Support</a>
+ <div class="sidebar-bottom"><i class="fa-solid fa-crown"></i><h4>PYQ Radar Premium</h4><p>Unlock detailed explanations and additional learning material.</p><button class="pro-btn" onclick="location.href='subscription.html'">View Subscription Plans →</button></div>
+</aside>
+<main class="main">
+<header class="topbar"><button class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button><div class="top-title">DAILY UPSC VOCABULARY</div><div class="user"><div class="avatar">A</div><span>Aspirant</span></div></header>
+<div class="content">
+<section class="hero"><div class="hero-left"><div class="hero-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>Build Your Vocabulary</h1><p>Five useful words every day to strengthen your reading and answer-writing skills.</p></div></div><div class="date-chip" id="today-date"></div></section>
+<div class="toolbar">
+ <div class="tabs"><button class="tab active" id="today-tab" onclick="showMode('today')"><i class="fa-solid fa-calendar-day"></i> Today's Words</button><button class="tab" id="saved-tab" onclick="showMode('saved')"><i class="fa-solid fa-bookmark"></i> Saved Words <span id="saved-count">(0)</span></button></div>
+ <label class="language-wrap">Meaning language <select class="language" id="language"><option value="en">English</option><option value="hi">Hindi</option><option value="or">Odia</option><option value="bn">Bengali</option><option value="ta">Tamil</option><option value="te">Telugu</option><option value="ml">Malayalam</option><option value="kn">Kannada</option><option value="mr">Marathi</option><option value="gu">Gujarati</option><option value="pa">Punjabi</option><option value="ur">Urdu</option><option value="as">Assamese</option><option value="fr">French</option><option value="es">Spanish</option><option value="de">German</option><option value="ar">Arabic</option><option value="zh">Chinese</option><option value="ja">Japanese</option><option value="ru">Russian</option><option value="pt">Portuguese</option><option value="ne">Nepali</option><option value="sa">Sanskrit</option></select></label>
+</div>
+<div class="section-head"><div><h2 id="list-title">Today's 5 Words</h2><p id="list-subtitle">Read the meaning, understand the context, and use the word.</p></div></div>
+<div class="word-grid" id="word-grid"></div>
+<section class="panel"><h3><i class="fa-solid fa-magnifying-glass" style="color:#72b5ff;margin-right:8px"></i>Look Up a Word</h3><p>Search an English word to see its dictionary meaning and pronunciation.</p><div class="search-row"><input id="lookup-input" placeholder="Enter an English word..." maxlength="60"><button class="primary" id="lookup-btn" onclick="lookupWord()">Search Word</button></div><div class="lookup-result" id="lookup-result"></div><div class="notice">Dictionary and translation features need an internet connection. Translation is provided by a free external service and may occasionally be unavailable.</div></section>
+<footer><strong>© 2026 All Rights Reserved.</strong><br><br>Designed &amp; Developed by <strong>Satya Jigyansu</strong><br>Built for Aspirants, Driven by Knowledge.</footer>
+</div>
+</main>
+</div>
+<script>
+"use strict";
+const words=[
+{word:"Pragmatic",pron:"/præɡˈmætɪk/",meaning:"Dealing with problems in a practical and realistic way rather than relying only on theory.",syn:"Practical, realistic, sensible",example:"A pragmatic policy balances economic growth with environmental protection."},
+{word:"Resilience",pron:"/rɪˈzɪliəns/",meaning:"The ability to recover quickly from difficulties and adapt to change.",syn:"Endurance, adaptability, toughness",example:"Institutional resilience is essential during economic and public-health crises."},
+{word:"Inevitable",pron:"/ɪnˈevɪtəbl/",meaning:"Certain to happen and impossible to avoid.",syn:"Unavoidable, certain, inescapable",example:"Some degree of structural change is inevitable during economic transformation."},
+{word:"Mitigate",pron:"/ˈmɪtɪɡeɪt/",meaning:"To make something harmful, serious, or painful less severe.",syn:"Alleviate, reduce, lessen",example:"Disaster preparedness can mitigate the impact of extreme weather events."},
+{word:"Consensus",pron:"/kənˈsensəs/",meaning:"A general agreement reached by a group, even if everyone does not fully agree.",syn:"Agreement, accord, common understanding",example:"Federal cooperation requires consensus between the Union and the States."},
+{word:"Inclusive",pron:"/ɪnˈkluːsɪv/",meaning:"Ensuring that all people or groups can participate and benefit.",syn:"Broad-based, participatory, comprehensive",example:"Inclusive development seeks to ensure that growth benefits every section of society."},
+{word:"Accountability",pron:"/əˌkaʊntəˈbɪləti/",meaning:"The obligation to explain actions and accept responsibility for them.",syn:"Responsibility, answerability, liability",example:"Social audits strengthen accountability in the delivery of welfare schemes."},
+{word:"Disparity",pron:"/dɪˈspærəti/",meaning:"A noticeable difference or inequality between people, groups, or situations.",syn:"Inequality, imbalance, gap",example:"Regional disparity can weaken balanced national development."},
+{word:"Sustainable",pron:"/səˈsteɪnəbl/",meaning:"Able to continue over time without exhausting resources or causing serious harm.",syn:"Viable, enduring, maintainable",example:"Sustainable agriculture protects soil health while supporting farmers' livelihoods."},
+{word:"Ubiquitous",pron:"/juːˈbɪkwɪtəs/",meaning:"Present, found, or seeming to be everywhere.",syn:"Omnipresent, widespread, pervasive",example:"Digital payments have become ubiquitous in many parts of the economy."},
+{word:"Efficacy",pron:"/ˈefɪkəsi/",meaning:"The ability of a policy, action, or system to produce the intended result.",syn:"Effectiveness, capability, efficiency",example:"The efficacy of a welfare programme depends on effective implementation."},
+{word:"Impetus",pron:"/ˈɪmpɪtəs/",meaning:"A force or event that makes something happen or develop more quickly.",syn:"Stimulus, catalyst, momentum",example:"Public investment can provide impetus to infrastructure development."},
+{word:"Precarious",pron:"/prɪˈkeəriəs/",meaning:"Uncertain, unstable, or likely to become dangerous or difficult.",syn:"Unstable, insecure, uncertain",example:"Informal workers often face precarious employment conditions."},
+{word:"Prudent",pron:"/ˈpruːdnt/",meaning:"Showing careful judgement and avoiding unnecessary risks.",syn:"Cautious, judicious, sensible",example:"Prudent fiscal management helps maintain macroeconomic stability."},
+{word:"Contentious",pron:"/kənˈtenʃəs/",meaning:"Likely to cause disagreement or argument.",syn:"Controversial, disputed, debatable",example:"Land acquisition can become contentious when affected communities are not consulted."},
+{word:"Robust",pron:"/rəʊˈbʌst/",meaning:"Strong, effective, and able to withstand pressure or change.",syn:"Resilient, sturdy, vigorous",example:"A robust public-health system is essential for crisis preparedness."},
+{word:"Pervasive",pron:"/pəˈveɪsɪv/",meaning:"Spread throughout every part of something; widespread.",syn:"Widespread, prevalent, extensive",example:"Pervasive malnutrition can affect educational and economic outcomes."},
+{word:"Scrutiny",pron:"/ˈskruːtəni/",meaning:"Close and careful examination of something.",syn:"Inspection, examination, investigation",example:"Parliamentary scrutiny improves transparency in public expenditure."},
+{word:"Ameliorate",pron:"/əˈmiːliəreɪt/",meaning:"To make a bad or difficult situation better.",syn:"Improve, alleviate, enhance",example:"Targeted interventions can ameliorate the hardships faced by vulnerable groups."},
+{word:"Conundrum",pron:"/kəˈnʌndrəm/",meaning:"A confusing and difficult problem that is hard to solve.",syn:"Puzzle, dilemma, predicament",example:"Balancing energy security and climate commitments remains a policy conundrum."},
+{word:"Benevolent",pron:"/bəˈnevələnt/",meaning:"Kind, helpful, and willing to do good for others.",syn:"Compassionate, charitable, kind-hearted",example:"A benevolent approach to welfare focuses on dignity and human well-being."},
+{word:"Cohesion",pron:"/kəʊˈhiːʒn/",meaning:"The state of being united and forming a connected whole.",syn:"Unity, solidarity, togetherness",example:"Social cohesion is strengthened by equal opportunity and mutual trust."},
+{word:"Deteriorate",pron:"/dɪˈtɪəriəreɪt/",meaning:"To become progressively worse in quality, condition, or value.",syn:"Worsen, decline, degrade",example:"Environmental quality may deteriorate when urban growth is poorly planned."},
+{word:"Envisage",pron:"/ɪnˈvɪzɪdʒ/",meaning:"To imagine or expect something as a possible future development.",syn:"Imagine, foresee, anticipate",example:"The policy envisages a greater role for local institutions."},
+{word:"Foster",pron:"/ˈfɒstə(r)/",meaning:"To encourage the development or growth of something.",syn:"Promote, nurture, encourage",example:"Educational reforms should foster critical thinking and scientific temper."},
+{word:"Impartial",pron:"/ɪmˈpɑːʃl/",meaning:"Treating all sides equally and fairly without favouring one.",syn:"Neutral, unbiased, objective",example:"An impartial civil service is vital for fair implementation of laws."},
+{word:"Legitimacy",pron:"/lɪˈdʒɪtɪməsi/",meaning:"The quality of being accepted as lawful, justified, or rightful.",syn:"Validity, lawfulness, authority",example:"Transparent elections contribute to the legitimacy of democratic institutions."},
+{word:"Substantiate",pron:"/səbˈstænʃieɪt/",meaning:"To support a claim or statement with evidence.",syn:"Verify, confirm, authenticate",example:"A good mains answer should substantiate arguments with relevant evidence."},
+{word:"Volatile",pron:"/ˈvɒlətaɪl/",meaning:"Likely to change suddenly and unpredictably, especially for the worse.",syn:"Unstable, fluctuating, unpredictable",example:"Volatile global prices can affect India's import bill and inflation."},
+{word:"Viable",pron:"/ˈvaɪəbl/",meaning:"Capable of working successfully or being sustained.",syn:"Feasible, workable, practical",example:"A viable solution must be economically sound and socially acceptable."}
+];
+const languages={en:"English",hi:"Hindi",or:"Odia",bn:"Bengali",ta:"Tamil",te:"Telugu",ml:"Malayalam",kn:"Kannada",mr:"Marathi",gu:"Gujarati",pa:"Punjabi",ur:"Urdu",as:"Assamese",fr:"French",es:"Spanish",de:"German",ar:"Arabic",zh:"Chinese",ja:"Japanese",ru:"Russian",pt:"Portuguese",ne:"Nepali",sa:"Sanskrit"};
+const $=id=>document.getElementById(id);
+let mode="today",translationCache={};
+function toggleMenu(){$("sidebar").classList.toggle("open")}
+function dayNumber(){const d=new Date();return Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(d.getFullYear(),0,1))/86400000)}
+function todaysWords(){const start=(dayNumber()*5)%words.length;return Array.from({length:5},(_,i)=>words[(start+i)%words.length])}
+function getSaved(){try{return JSON.parse(localStorage.getItem("pyqRadarSavedWords")||"[]")}catch(e){return []}}
+function setSaved(list){localStorage.setItem("pyqRadarSavedWords",JSON.stringify(list));$("saved-count").textContent="("+list.length+")"}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function translate(text,target){if(target==="en")return text;const key=target+"|"+text;if(translationCache[key])return translationCache[key];try{const url="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text)+"&langpair=en|"+target;const r=await fetch(url);const j=await r.json();const out=j?.responseData?.translatedText;if(out&&j.responseStatus===200){translationCache[key]=out;return out}}catch(e){}return "Translation temporarily unavailable. Please try again later."}
+function render(){
+ const all=mode==="today"?todaysWords():getSaved().map(w=>w);
+ $("list-title").textContent=mode==="today"?"Today's 5 Words":"Your Saved Words";
+ $("list-subtitle").textContent=mode==="today"?"Read the meaning, understand the context, and use the word.":"Your bookmarked vocabulary for quick revision.";
+ $("today-tab").classList.toggle("active",mode==="today");$("saved-tab").classList.toggle("active",mode==="saved");
+ const grid=$("word-grid");grid.innerHTML="";
+ if(!all.length){grid.innerHTML='<div class="empty"><i class="fa-regular fa-bookmark" style="font-size:26px;margin-bottom:10px"></i><br>No saved words yet. Bookmark a word to revise it later.</div>';return}
+ all.forEach((w,i)=>{
+  const saved=getSaved().some(x=>x.word===w.word);
+  const card=document.createElement("article");card.className="word-card";card.dataset.word=w.word;
+  card.innerHTML='<div class="word-top"><div><div class="word-name">'+escapeHtml(w.word)+'</div><div class="pron">'+escapeHtml(w.pron)+'</div></div><span class="word-no">WORD '+String(i+1).padStart(2,"0")+'</span></div><div class="meaning"><span class="meaning-label">Meaning</span><div class="meaning-text">'+escapeHtml(w.meaning)+'</div></div><div class="synonyms"><span class="detail-label">Synonyms:</span> '+escapeHtml(w.syn)+'</div><div class="example"><span class="detail-label">UPSC context:</span><br>'+escapeHtml(w.example)+'</div><div class="card-actions"><button class="save-btn '+(saved?"saved":"")+'" data-save="'+escapeHtml(w.word)+'"><i class="fa-'+(saved?"solid":"regular")+' fa-bookmark"></i> '+(saved?"Saved":"Save word")+'</button><button class="speak-btn" data-speak="'+escapeHtml(w.word)+'"><i class="fa-solid fa-volume-high"></i> Listen</button></div>';
+  grid.appendChild(card);
+ });
+ grid.querySelectorAll("[data-save]").forEach(b=>b.addEventListener("click",()=>toggleSave(b.dataset.save)));
+ grid.querySelectorAll("[data-speak]").forEach(b=>b.addEventListener("click",()=>{const w=all.find(x=>x.word===b.dataset.speak);if("speechSynthesis"in window){const u=new SpeechSynthesisUtterance(w.word+". "+w.meaning);u.lang="en-US";speechSynthesis.speak(u)}}));
+ applyLanguage();
+}
+function toggleSave(word){let s=getSaved();if(s.some(x=>x.word===word))s=s.filter(x=>x.word!==word);else{const w=words.find(x=>x.word===word);if(w)s.push(w)}setSaved(s);render()}
+function showMode(next){mode=next;render()}
+async function applyLanguage(){
+ const target=$("language").value;if(target==="en")return;
+ const nodes=[...document.querySelectorAll(".word-card")];
+ for(const card of nodes){const w=(mode==="today"?todaysWords():getSaved()).find(x=>x.word===card.dataset.word);if(!w)continue;const el=card.querySelector(".meaning-text");el.textContent="Translating…";el.textContent=await translate(w.meaning,target)}
+}
+async function lookupWord(){
+ const term=$("lookup-input").value.trim();const box=$("lookup-result");if(!term){box.style.display="block";box.textContent="Please enter a word.";return}
+ $("lookup-btn").disabled=true;$("lookup-btn").textContent="Searching…";box.style.display="block";box.textContent="Looking up the word…";
+ try{const r=await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/"+encodeURIComponent(term));if(!r.ok)throw new Error("Word not found");const data=await r.json();const entry=data[0],phon=entry.phonetic||entry.phonetics?.find(x=>x.text)?.text||"";
+ const defs=(entry.meanings||[]).flatMap(m=>(m.definitions||[]).slice(0,2).map(d=>({part:m.partOfSpeech,definition:d.definition,example:d.example}))).slice(0,4);
+ let html='<strong>'+escapeHtml(entry.word)+'</strong> '+escapeHtml(phon)+'<br>';defs.forEach(d=>{html+='<p style="margin-top:8px"><b>'+escapeHtml(d.part)+':</b> '+escapeHtml(d.definition)+(d.example?'<br><i>Example: '+escapeHtml(d.example)+'</i>':'')+'</p>'});box.innerHTML=html;
+ }catch(e){box.textContent="No definition found for this word. Check the spelling or try another word."}
+ finally{$("lookup-btn").disabled=false;$("lookup-btn").textContent="Search Word"}
+}
+$("language").addEventListener("change",applyLanguage);$("lookup-input").addEventListener("keydown",e=>{if(e.key==="Enter")lookupWord()});
+$("today-date").textContent=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+setSaved(getSaved());render();
+</script>
+</body>
+</html>
