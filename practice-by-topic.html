@@ -21,6 +21,9 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
 <section id="practice" class="panel hidden"><div class="section-head"><h3 id="selected-topic">Topic Practice</h3><span class="pill" id="q-counter">Question 1</span></div><div class="progress"><i id="topic-progress" style="width:0%"></i></div><div class="question-top" style="margin-top:13px"><span id="q-meta">UPSC Prelims</span><span id="q-status">Not attempted</span></div><div id="question" class="qtext"></div><div id="options"></div><div id="answer" class="answer"></div><div class="actions"><button class="btn secondary" id="prev">← Previous</button><div style="display:flex;gap:8px"><button class="btn secondary" id="bookmark-current">☆ Bookmark</button><button class="btn secondary" id="reveal">Reveal Answer</button><button class="btn" id="next">Next →</button></div></div><p class="note" style="margin-top:12px">Answer keys are checked securely after you choose to reveal them.</p></section>
 <div id="status" class="note"></div></div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(function(){try{const s=JSON.parse(localStorage.getItem("pyqRadarSettings")||"{}");const q={small:"14px",normal:"16px",large:"19px"};const o={small:"12px",normal:"14px",large:"16px"};const style=document.createElement("style");style.textContent=".qtext{font-size:"+(q[s.question_size]||q.normal)+"!important}.opt{font-size:"+(o[s.option_size]||o.normal)+"!important}"+(s.reduce_motion?"*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}":"");document.head.appendChild(style);}catch(e){}})();
+</script>
+<script>
 "use strict";
 const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
