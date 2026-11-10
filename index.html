@@ -514,9 +514,10 @@ function loadDailyVocabulary(){
  const choices = dailyVocabulary.filter(item=>item.word!==previous);
  const pool = choices.length ? choices : dailyVocabulary;
  const selected = pool[Math.floor(Math.random()*pool.length)];
- $("dailyWord").textContent = selected.word;
- $("dailyPronunciation").textContent = selected.pronunciation;
- $("dailyMeaning").innerHTML = "<b>Meaning:</b> " + escapeHtml(selected.meaning) +
+ /* Use direct DOM access here: the shared $ helper is declared later in this script. */
+ document.getElementById("dailyWord").textContent = selected.word;
+ document.getElementById("dailyPronunciation").textContent = selected.pronunciation;
+ document.getElementById("dailyMeaning").innerHTML = "<b>Meaning:</b> " + escapeHtml(selected.meaning) +
   "<br><br><b>Example:</b> " + escapeHtml(selected.example);
  localStorage.setItem("pyqRadarLastDashboardWord", selected.word);
 }
