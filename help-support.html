@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Help & Support | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--text:#f5f7ff;--muted:#aab8d5;--line:rgba(117,151,255,.22);--blue:#2677ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.wrap{width:min(1100px,94%);margin:auto;padding:25px 0 45px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:23px}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:20px}h1{font-size:20px;margin:0}.sub{font-size:10px;color:var(--muted);margin-top:4px}.back{color:#dce6ff;border:1px solid #344b78;padding:10px 13px;border-radius:9px;font-size:12px;text-decoration:none}
+.hero{padding:27px;border:1px solid #2869e5;border-radius:17px;background:radial-gradient(ellipse at 15% 0%,#1357b5,transparent 65%),linear-gradient(110deg,#102a5b,#172c59);margin-bottom:18px}.hero h2{font-size:24px;margin:0 0 8px}.hero p{font-size:12px;color:#d3e1ff;margin:0;line-height:1.7;max-width:700px}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(270px,.85fr);gap:17px}.card{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:15px;padding:20px;margin-bottom:16px}.card h3{font-size:15px;margin:0 0 14px}.card h3 i{color:#8db8ff;margin-right:8px}
+.searchbox{display:flex;gap:10px;background:#0b1732;border:1px solid #405b8a;border-radius:10px;padding:11px 13px;margin-bottom:13px}.searchbox input{background:transparent;border:0;outline:0;color:white;width:100%;font:inherit;font-size:12px}
+.faq{border-top:1px solid #ffffff15}.faq:first-of-type{border-top:0}.faq button{width:100%;display:flex;justify-content:space-between;gap:15px;align-items:center;text-align:left;background:none;border:0;color:#f5f7ff;padding:15px 0;font:600 12px Inter;cursor:pointer}.faq button i{color:#9dbfff;transition:.2s}.faq-answer{display:none;color:var(--muted);font-size:11px;line-height:1.75;padding:0 20px 15px 0}.faq.open .faq-answer{display:block}.faq.open button i{transform:rotate(180deg)}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick{display:flex;align-items:center;gap:10px;padding:13px;background:#0d1a37;border:1px solid #314a78;border-radius:10px;color:#eaf1ff;text-decoration:none;font-size:11px}.quick i{font-size:16px;color:#8db8ff;width:20px;text-align:center}.quick:hover{border-color:#5594ff;background:#14264b}
+.field{margin:12px 0}.field label{display:block;font-size:11px;color:#dce6ff;margin-bottom:7px}.field select,.field textarea,.field input{width:100%;background:#0b1732;color:white;border:1px solid #405b8a;border-radius:9px;padding:11px;font:inherit;font-size:11px;outline:none}.field textarea{min-height:110px;resize:vertical;line-height:1.6}.btn{border:0;border-radius:9px;background:linear-gradient(90deg,#1766ee,#347dff);color:white;padding:11px 16px;font:700 11px Inter;cursor:pointer}.btn.secondary{background:#1c2d51;border:1px solid #45618e}.hint{font-size:10px;color:var(--muted);line-height:1.7;margin:10px 0}.status{font-size:11px;color:#9fe6c9;margin-top:10px;min-height:16px}
+.note{background:#102b43;border:1px solid #246b82;border-radius:10px;padding:13px;color:#c9f2ff;font-size:10px;line-height:1.7}
+footer{text-align:center;color:#8093b8;font-size:11px;margin-top:22px;line-height:1.8}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding-top:17px}.hero{padding:20px}.hero h2{font-size:20px}.card{padding:16px}.links{grid-template-columns:1fr 1fr}.top{align-items:flex-start}.back{white-space:nowrap}}
+@media(max-width:420px){.links{grid-template-columns:1fr}}
+a,a:link,a:visited,a:hover,a:focus,a:active{text-decoration:none}
+</style></head><body><div class="wrap">
+<header class="top"><div class="brand"><div class="logo"><i class="fa-solid fa-bullseye"></i></div><div><h1>PYQ Radar</h1><p class="sub">Every Question Has a Direction.</p></div></div><a class="back" href="index.html"><i class="fa-solid fa-arrow-left"></i> Dashboard</a></header>
+<section class="hero"><h2><i class="fa-solid fa-circle-question"></i> Help & Support</h2><p>Find answers, troubleshoot common issues, and prepare a clear problem report. Choose a topic below or search the FAQs.</p></section>
+<div class="grid"><div>
+<section class="card"><h3><i class="fa-solid fa-magnifying-glass"></i>Frequently asked questions</h3>
+<div class="searchbox"><i class="fa-solid fa-search" style="color:#9dbfff"></i><input id="faqSearch" placeholder="Search login, mock test, bookmark, subscription..."></div>
+<div id="faqList">
+<div class="faq"><button type="button">I cannot log in to my account. <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Check that your email and password are correct and that your internet connection is working. If you forgot your password, open My Account and use “Send reset link”. Also check your Spam folder for authentication emails.</div></div>
+<div class="faq"><button type="button">I did not receive the sign-up confirmation email. <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Check Spam/Junk and make sure the email address was entered correctly. Wait a little before requesting another confirmation email. If it still does not arrive, try again later; email delivery depends on the authentication email service configuration.</div></div>
+<div class="faq"><button type="button">A page shows 404 or does not open. <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">A recent update may still be deploying. Refresh after a few minutes, check that the page address is correct, and try a hard refresh (Ctrl + Shift + R). If the issue continues, include the page URL in your problem report.</div></div>
+<div class="faq"><button type="button">My mock test has fewer questions than expected. <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">The test can only select eligible questions that have the required options and available answer data. Try another subject or topic if the selected pool is too small. The test setup should show the available question count before starting.</div></div>
+<div class="faq"><button type="button">When are mock-test answers checked? <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">The answer key is checked after you submit the test. Open Answer Review on the result screen to compare your selected answers with the correct answers.</div></div>
+<div class="faq"><button type="button">Why is Performance Analysis empty? <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Complete a mock test while signed in. New test attempts are saved to your account and then appear in Performance Analysis. Older attempts from before result saving was enabled may not be available.</div></div>
+<div class="faq"><button type="button">How do Bookmarks and My Revision List work? <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Bookmarks are saved questions you can revisit from the Bookmarks page. My Revision List is a separate place to organise questions for later revision. Sign in to access your saved study items.</div></div>
+<div class="faq"><button type="button">Why is a premium feature locked? <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Some features are available only on eligible plans. Visit Subscription Plans to review the current plan details. A payment does not automatically activate access; account access must be updated after verification.</div></div>
+<div class="faq"><button type="button">How do I change my name or study preferences? <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Open My Account to update your display name, daily study goal, and preferred explanation language. Use Settings to adjust available reading and mock-test preferences.</div></div>
+<div class="faq"><button type="button">My saved settings are not applying. <i class="fa-solid fa-chevron-down"></i></button><div class="faq-answer">Save your changes in Settings and open the same site in the same browser. Some reading preferences currently apply to Mock Tests and Practice by Topic; they are not yet applied across every page.</div></div>
+</div></section>
+<section class="card"><h3><i class="fa-solid fa-life-ring"></i>Still need help? Prepare a problem report</h3>
+<p class="hint">Fill in the details below. The button creates a report you can copy and share through your preferred contact channel. It does not submit a ticket or send your data to a server.</p>
+<div class="field"><label for="category">What do you need help with?</label><select id="category"><option>Login / Account</option><option>Question / Answer issue</option><option>Mock Test</option><option>Bookmarks / Revision</option><option>Performance / Weak Topics</option><option>Subscription / Access</option><option>Page not opening / Technical issue</option><option>Suggestion / Feedback</option><option>Other</option></select></div>
+<div class="field"><label for="pageUrl">Page URL (optional)</label><input id="pageUrl" placeholder="Paste the page address where the issue occurred"></div>
+<div class="field"><label for="details">Describe the issue</label><textarea id="details" maxlength="1200" placeholder="What happened? What did you expect? Include the exact error message if there is one."></textarea></div>
+<button class="btn" id="copyReport"><i class="fa-solid fa-copy"></i> Copy problem report</button><div class="status" id="reportStatus" role="status"></div>
+</section></div>
+<aside>
+<section class="card"><h3><i class="fa-solid fa-bolt"></i>Quick links</h3><div class="links">
+<a class="quick" href="login.html"><i class="fa-solid fa-right-to-bracket"></i>Sign in</a>
+<a class="quick" href="my-account.html"><i class="fa-solid fa-user"></i>My Account</a>
+<a class="quick" href="settings.html"><i class="fa-solid fa-gear"></i>Settings</a>
+<a class="quick" href="pyq-explorer.html"><i class="fa-solid fa-compass"></i>PYQ Explorer</a>
+<a class="quick" href="mock-tests.html"><i class="fa-solid fa-clipboard-check"></i>Mock Tests</a>
+<a class="quick" href="practice-by-topic.html"><i class="fa-solid fa-layer-group"></i>Topic Practice</a>
+<a class="quick" href="bookmarks.html"><i class="fa-solid fa-bookmark"></i>Bookmarks</a>
+<a class="quick" href="revision-list.html"><i class="fa-solid fa-list-check"></i>Revision List</a>
+<a class="quick" href="performance-analysis.html"><i class="fa-solid fa-chart-column"></i>Performance</a>
+<a class="quick" href="subscription.html"><i class="fa-solid fa-crown"></i>Plans</a>
+</div></section>
+<section class="card"><h3><i class="fa-solid fa-wrench"></i>Basic troubleshooting</h3>
+<p class="hint"><b>1. Refresh:</b> Press Ctrl + Shift + R to reload the page without using the cached version.</p>
+<p class="hint"><b>2. Check connection:</b> Open another website to confirm your internet is working.</p>
+<p class="hint"><b>3. Sign in again:</b> If account data does not load, sign out and sign in again.</p>
+<p class="hint"><b>4. Try another browser:</b> This helps identify browser-specific problems.</p>
+<p class="hint"><b>5. Share useful details:</b> Include the page URL, device/browser, and exact error text in your report. Never share your password or verification codes.</p>
+</section>
+<div class="note"><i class="fa-solid fa-shield-halved"></i> <b>Account safety:</b> Never share your password, one-time verification code, or private account credentials in a problem report.</div>
+</aside></div>
+<footer>© 2026 PYQ Radar. All Rights Reserved.<br>Designed &amp; Developed by <strong>Satya Jigyansu</strong></footer>
+</div>
+<script>
+document.querySelectorAll(".faq button").forEach(button=>button.addEventListener("click",()=>button.parentElement.classList.toggle("open")));
+document.getElementById("faqSearch").addEventListener("input",e=>{
+ const term=e.target.value.trim().toLowerCase();
+ document.querySelectorAll(".faq").forEach(item=>{item.style.display=item.textContent.toLowerCase().includes(term)?"block":"none"});
+});
+document.getElementById("copyReport").addEventListener("click",async()=>{
+ const category=document.getElementById("category").value;
+ const page=document.getElementById("pageUrl").value.trim()||"Not provided";
+ const details=document.getElementById("details").value.trim();
+ const status=document.getElementById("reportStatus");
+ if(!details){status.textContent="Please describe the issue before copying.";status.style.color="#ffaaaa";return}
+ const report="PYQ Radar — Problem Report\nCategory: "+category+"\nPage: "+page+"\nBrowser/device: "+navigator.userAgent+"\nDate: "+new Date().toLocaleString()+"\nDetails: "+details;
+ try{await navigator.clipboard.writeText(report);status.textContent="Report copied. You can now paste it into your message.";status.style.color="#9fe6c9"}
+ catch(e){status.textContent="Clipboard access is unavailable in this browser. Please select and copy the report details manually.";status.style.color="#ffcf80"}
+});
+</script></body></html>
