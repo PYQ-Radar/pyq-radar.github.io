@@ -95,11 +95,15 @@ async function init(){
  $("accountState").textContent=plan.toUpperCase()+" · Active";$("report").classList.remove("hidden");
  const {data:rows,error:loadError}=await db.from("mock_test_attempts").select("topic_breakdown,completed_at").eq("user_id",user.id).order("completed_at",{ascending:false}).limit(100);
  if(loadError){$("weakList").textContent="Could not load topic history: "+loadError.message;return;}
+ const [{data:topicMetaRows,error:topicMetaError},{data:subjectMetaRows,error:subjectMetaError}]=await Promise.all([db.from("topics").select("id,name,subject_id"),db.from("subjects").select("id,name")]);
+ if(topicMetaError||subjectMetaError){$("weakList").textContent="Could not load topic names: "+(topicMetaError||subjectMetaError).message;return;}
+ const topicMeta=Object.fromEntries((topicMetaRows||[]).map(t=>[t.id,t]));
+ const subjectMeta=Object.fromEntries((subjectMetaRows||[]).map(s=>[s.id,s.name]));
  attemptsForTrend=rows||[];
  const topics={};
  (rows||[]).forEach(row=>(row.topic_breakdown||[]).forEach(t=>{
   if(!t.topic_id)return;
-  if(!topics[t.topic_id])topics[t.topic_id]={topic_id:t.topic_id,topic_name:t.topic_name||"Unclassified",subject_name:t.subject_name||"Unclassified",correct:0,incorrect:0,unanswered:0,last_seen:row.completed_at};
+  if(!topics[t.topic_id]){const meta=topicMeta[t.topic_id];const sid=t.subject_id||meta?.subject_id||null;topics[t.topic_id]={topic_id:t.topic_id,subject_id:sid,topic_name:meta?.name||t.topic_name||"Topic",subject_name:subjectMeta[sid]||t.subject_name||"Subject",correct:0,incorrect:0,unanswered:0,last_seen:row.completed_at};}
   topics[t.topic_id].correct+=Number(t.correct||0);topics[t.topic_id].incorrect+=Number(t.incorrect||0);topics[t.topic_id].unanswered+=Number(t.unanswered||0);
   if(!topics[t.topic_id].last_seen||new Date(row.completed_at)>new Date(topics[t.topic_id].last_seen))topics[t.topic_id].last_seen=row.completed_at;
  }));
