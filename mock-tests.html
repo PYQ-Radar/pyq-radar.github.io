@@ -170,6 +170,13 @@ async function finishTest(auto){
     if(!grouped[sid])grouped[sid]={subject_id:r.q.subject_id||null,subject_name:r.q.subjects?.name||"Unclassified",correct:0,incorrect:0,unanswered:0};
     grouped[sid][r.status]++;
    });
+   const topicGrouped={};
+   reviewRows.forEach(r=>{
+    const tid=r.q.topic_id;
+    if(!tid)return;
+    if(!topicGrouped[tid])topicGrouped[tid]={topic_id:tid,topic_name:r.q.topics?.name||"Unclassified",subject_id:r.q.subject_id||null,subject_name:r.q.subjects?.name||"Unclassified",correct:0,incorrect:0,unanswered:0};
+    topicGrouped[tid][r.status]++;
+   });
    const attemptedCount=correct+wrong;
    const attemptRow={
     user_id:user.id,test_mode:mode,
@@ -179,7 +186,8 @@ async function finishTest(auto){
     unanswered_count:unanswered,score:Number(score.toFixed(2)),
     accuracy:attemptedCount?Number((correct/attemptedCount*100).toFixed(2)):0,
     duration_seconds:Math.max(0,testDurationSeconds-seconds),
-    subject_breakdown:Object.values(grouped)
+    subject_breakdown:Object.values(grouped),
+    topic_breakdown:Object.values(topicGrouped)
    };
    const {error:saveError}=await db.from("mock_test_attempts").insert(attemptRow);
    if(saveError){console.error("Could not save mock-test attempt:",saveError);$("status").textContent="Result calculated, but history could not be saved: "+saveError.message;}
