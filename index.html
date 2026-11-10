@@ -305,8 +305,8 @@ footer strong{color:#dce7ff}
  </div>
  <div class="user">
   <i class="fa-regular fa-bell" style="font-size:21px;color:#c4d4f7"></i>
-  <div class="avatar">A</div>
-  <span>Aspirant <i class="fa-solid fa-chevron-down"></i></span>
+  <div class="avatar" id="userAvatar">A</div>
+  <span id="userDisplayName" title="Click to edit your name" style="cursor:pointer">Aspirant <i class="fa-solid fa-chevron-down"></i></span>
  </div>
 </header>
 
@@ -316,7 +316,7 @@ footer strong{color:#dce7ff}
  <div class="hero-left">
   <div class="trophy"><i class="fa-solid fa-trophy"></i></div>
   <div>
-   <h1>Welcome back, Aspirant!</h1>
+   <h1>Welcome back, <span id="welcomeName">Aspirant</span>!</h1>
    <p>Let's aim higher together. Your preparation journey is on track!</p>
   </div>
  </div>
@@ -512,6 +512,32 @@ const $=id=>document.getElementById(id);
 function setText(id,value){
  $(id).textContent=value??"";
 }
+
+async function loadAccountName(){
+ try{
+  const {data:{user},error}=await supabaseClient.auth.getUser();
+  if(error) throw error;
+  if(!user) return;
+  const meta=user.user_metadata||{};
+  const fallback=(user.email||"").split("@")[0].replace(/[._-]+/g," ").trim();
+  const name=meta.full_name||meta.name||fallback||"Aspirant";
+  $("userDisplayName").textContent=name;
+  $("welcomeName").textContent=name;
+  $("userAvatar").textContent=name.split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"A";
+ }catch(e){console.warn("Could not load profile name:",e.message)}
+}
+$("userDisplayName").addEventListener("click",async()=>{
+ const current=$("userDisplayName").textContent.trim();
+ const entered=prompt("What name should PYQ Radar display?",current);
+ if(entered===null||!entered.trim()) return;
+ const name=entered.trim().slice(0,60);
+ const {error}=await supabaseClient.auth.updateUser({data:{full_name:name}});
+ if(error){alert("Name could not be saved: "+error.message);return}
+ $("userDisplayName").textContent=name;
+ $("welcomeName").textContent=name;
+ $("userAvatar").textContent=name.split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"A";
+});
+loadAccountName();
 
 function escapeHtml(value){
  return String(value??"").replace(/[&<>"']/g,c=>({
