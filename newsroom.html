@@ -11,7 +11,11 @@
 @media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.sidebar{transform:translateX(-100%);width:275px;transition:.2s}.sidebar.open{transform:translateX(0);box-shadow:15px 0 40px #0009}.main{margin:0;width:100%}.menu{display:block}.topbar{padding:10px 14px;gap:12px}.top-title{margin-right:auto}.content{padding:14px 12px}.hero{padding:20px 16px;display:block}.hero h1{font-size:21px}.hero-actions{margin-top:15px}.grid{grid-template-columns:1fr}.section-head{align-items:start;flex-direction:column}}
 /* Remove link underlines */
 a, a:hover, a:focus, a:active { text-decoration: none !important; }
-</style></head>
+</style><style>/* PYQ Radar: global no-underline override */
+a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
+u, ins { text-decoration: none !important; text-decoration-line: none !important; }
+</style>
+</head>
 <body><div class="app">
 <aside class="sidebar" id="sidebar"><div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
 <div class="nav-label">MAIN MENU</div>
