@@ -7,8 +7,8 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <style>
 :root{--bg:#080f25;--panel:#121e3e;--text:#f5f7ff;--muted:#aab8d5;--line:rgba(117,151,255,.22)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.sidebar{width:270px;position:fixed;inset:0 auto 0 0;padding:23px 15px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--line);overflow:auto}.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 26px}.logo-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:22px}.logo h2{font-size:20px;margin:0}.logo p{font-size:10px;color:var(--muted);margin:4px 0}.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px 13px 7px}.nav-item{display:flex;gap:14px;align-items:center;padding:11px 14px;margin:4px 0;border-radius:11px;color:#dce6ff;font-size:13px;text-decoration:none}.nav-item i{width:20px;color:#a9c3f7}.nav-item:hover,.nav-item.active{background:linear-gradient(100deg,#174fae,#174080);color:#fff}.main{margin-left:270px;min-height:100vh}.topbar{height:76px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:#101b38;border-bottom:1px solid var(--line)}.topbar small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.back{color:#dce8ff;border:1px solid #4387ff;border-radius:9px;padding:9px 13px;text-decoration:none;font-size:12px}.content{padding:25px;max-width:1450px;margin:auto}.heading h1{font-size:26px;margin:0 0 7px}.heading p{font-size:13px;color:var(--muted);margin:0;line-height:1.7}.panel{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:15px;padding:19px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#0d1935;border:1px solid #344a77;border-radius:12px;padding:16px}.stat small{color:var(--muted);font-size:11px}.stat b{display:block;font-size:25px;margin-top:8px}.topic-row{display:grid;grid-template-columns:minmax(130px,1.2fr) minmax(110px,1fr) 70px auto auto;gap:13px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.topic-row:last-child{border:0}.topic-name b{display:block;font-size:13px}.topic-name small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.track{height:9px;background:#09152e;border-radius:20px;overflow:hidden}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#e2a64d,#e56c76)}.accuracy{text-align:right;font-weight:800;font-size:13px}.status{font-size:10px;padding:6px 9px;border-radius:20px;background:#4a3037;color:#ffb6bd;white-space:nowrap}.status.watch{background:#3c3827;color:#ffdc91}.status.good{background:#153f3a;color:#8be7c5}.practice{display:inline-block;padding:8px 10px;border:1px solid #527bb8;border-radius:8px;color:#e5efff;text-decoration:none;font-size:10px;white-space:nowrap}.empty{padding:28px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}.note{font-size:11px;color:var(--muted);line-height:1.7}.lock{text-align:center;padding:30px}.lock i{font-size:34px;color:#ffd36e}.btn{display:inline-block;margin-top:12px;padding:11px 17px;border-radius:9px;background:linear-gradient(90deg,#1766ee,#347dff);color:white;text-decoration:none;font-size:12px;font-weight:700}.hidden{display:none!important}footer{text-align:center;color:#8093b8;font-size:11px;padding:25px;border-top:1px solid var(--line);margin-top:24px}
-@media(max-width:900px){.sidebar{width:220px}.main{margin-left:220px}.topic-row{grid-template-columns:1fr 1fr}.topic-row .practice{justify-self:start}}@media(max-width:650px){.sidebar{display:none}.main{margin:0}.content{padding:15px}.topbar{padding:0 15px}.stats{grid-template-columns:1fr}.topic-row{grid-template-columns:1fr auto;gap:9px}.topic-row .track{grid-column:1/2}.topic-row .accuracy{grid-column:2;grid-row:2}.topic-row .status,.topic-row .practice{grid-column:auto}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.sidebar{width:270px;position:fixed;inset:0 auto 0 0;padding:23px 15px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--line);overflow:auto}.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 26px}.logo-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:22px}.logo h2{font-size:20px;margin:0}.logo p{font-size:10px;color:var(--muted);margin:4px 0}.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px 13px 7px}.nav-item{display:flex;gap:14px;align-items:center;padding:11px 14px;margin:4px 0;border-radius:11px;color:#dce6ff;font-size:13px;text-decoration:none}.nav-item i{width:20px;color:#a9c3f7}.nav-item:hover,.nav-item.active{background:linear-gradient(100deg,#174fae,#174080);color:#fff}.main{margin-left:270px;min-height:100vh}.topbar{height:76px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:#101b38;border-bottom:1px solid var(--line)}.topbar small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.back{color:#dce8ff;border:1px solid #4387ff;border-radius:9px;padding:9px 13px;text-decoration:none;font-size:12px}.content{padding:25px;max-width:1450px;margin:auto}.heading h1{font-size:26px;margin:0 0 7px}.heading p{font-size:13px;color:var(--muted);margin:0;line-height:1.7}.panel{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:15px;padding:19px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#0d1935;border:1px solid #344a77;border-radius:12px;padding:16px}.stat small{color:var(--muted);font-size:11px}.stat b{display:block;font-size:25px;margin-top:8px}.filters{display:grid;grid-template-columns:1fr 1fr;gap:12px}.filters label{font-size:11px;color:var(--muted)}.filters select{display:block;width:100%;margin-top:7px;background:#0d1935;border:1px solid #344a77;border-radius:9px;color:white;padding:11px}.trend-chart{display:flex;align-items:end;gap:8px;min-height:150px;padding:12px 4px 0;border-bottom:1px solid var(--line);overflow-x:auto}.trend-col{min-width:42px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:140px;gap:6px}.trend-bar{width:20px;min-height:3px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#65b9ff,#286bfa)}.trend-col small{font-size:9px;color:var(--muted);white-space:nowrap}.trend-col b{font-size:10px;color:#dce8ff}.topic-row{display:grid;grid-template-columns:minmax(130px,1.2fr) minmax(110px,1fr) 70px auto auto;gap:13px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.topic-row:last-child{border:0}.topic-name b{display:block;font-size:13px}.topic-name small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.track{height:9px;background:#09152e;border-radius:20px;overflow:hidden}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#e2a64d,#e56c76)}.accuracy{text-align:right;font-weight:800;font-size:13px}.status{font-size:10px;padding:6px 9px;border-radius:20px;background:#4a3037;color:#ffb6bd;white-space:nowrap}.status.watch{background:#3c3827;color:#ffdc91}.status.good{background:#153f3a;color:#8be7c5}.practice{display:inline-block;padding:8px 10px;border:1px solid #527bb8;border-radius:8px;color:#e5efff;text-decoration:none;font-size:10px;white-space:nowrap}.empty{padding:28px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}.note{font-size:11px;color:var(--muted);line-height:1.7}.lock{text-align:center;padding:30px}.lock i{font-size:34px;color:#ffd36e}.btn{display:inline-block;margin-top:12px;padding:11px 17px;border-radius:9px;background:linear-gradient(90deg,#1766ee,#347dff);color:white;text-decoration:none;font-size:12px;font-weight:700}.hidden{display:none!important}footer{text-align:center;color:#8093b8;font-size:11px;padding:25px;border-top:1px solid var(--line);margin-top:24px}
+@media(max-width:900px){.sidebar{width:220px}.main{margin-left:220px}.topic-row{grid-template-columns:1fr 1fr}.topic-row .practice{justify-self:start}}@media(max-width:650px){.filters{grid-template-columns:1fr}.sidebar{display:none}.main{margin:0}.content{padding:15px}.topbar{padding:0 15px}.stats{grid-template-columns:1fr}.topic-row{grid-template-columns:1fr auto;gap:9px}.topic-row .track{grid-column:1/2}.topic-row .accuracy{grid-column:2;grid-row:2}.topic-row .status,.topic-row .practice{grid-column:auto}}
 </style>
 <style>/* PYQ Radar: global no-underline override */
 a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
@@ -34,6 +34,8 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
 <div class="stat"><small>Topics to improve</small><b id="weakCount">0</b></div>
 <div class="stat"><small>Questions attempted</small><b id="attempted">0</b></div>
 </div>
+<section class="panel"><h2 style="font-size:17px;margin:0 0 6px">Performance filters</h2><div class="filters"><label>Subject<select id="subjectFilter"><option value="">All subjects</option></select></label><label>Sort by<select id="sortFilter"><option value="priority">Priority (weakest first)</option><option value="accuracy">Accuracy (lowest first)</option><option value="attempts">Most attempted</option><option value="recent">Recently practised</option></select></label></div></section>
+<section class="panel"><h2 style="font-size:17px;margin:0 0 6px">Improvement trend</h2><p class="note">Your topic accuracy across recent saved mock tests. A point appears when a test includes that topic.</p><div id="trendChart" class="trend-chart"><div class="empty">Trend will appear after new mock tests.</div></div></section>
 <section class="panel"><h2 style="font-size:17px;margin:0 0 6px">Topics needing attention</h2><p class="note">A topic is marked weak when you have attempted at least 3 questions and your accuracy is below 60%.</p><div id="weakList"><div class="empty">Loading your topic report…</div></div></section>
 <section class="panel"><h2 style="font-size:17px;margin:0 0 6px">All tracked topics</h2><p class="note">Topics with fewer than 3 attempts are marked “Build data” rather than being judged too early.</p><div id="allList"><div class="empty">Loading your topic report…</div></div></section>
 <p class="note" id="dataNote"></p>
@@ -46,11 +48,44 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
 const db=window.supabase.createClient("https://fzepobjbcehirerwtnsz.supabase.co","sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW");
 const $=id=>document.getElementById(id);
 const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let allTopics=[];
+let attemptsForTrend=[];
 function topicCard(t){
  const n=t.correct+t.incorrect,accuracy=n?100*t.correct/n:0;
  const status=n<3?'<span class="status watch">BUILD DATA</span>':accuracy<60?'<span class="status">NEEDS PRACTICE</span>':'<span class="status good">ON TRACK</span>';
  return '<div class="topic-row"><div class="topic-name"><b>'+safe(t.topic_name)+'</b><small>'+safe(t.subject_name)+' · '+n+' attempted · '+t.correct+' correct</small></div><div class="track"><div class="fill" style="width:'+Math.max(0,Math.min(100,accuracy))+'%"></div></div><div class="accuracy">'+(n?accuracy.toFixed(1)+'%':'—')+'</div>'+status+'<a class="practice" href="practice-by-topic.html?topic='+encodeURIComponent(t.topic_id)+'">Practise topic</a></div>';
 }
+function renderTrend(){
+ const topicId=$("subjectFilter").value?null:null;
+ const selected=attemptsForTrend.slice().reverse();
+ if(!selected.length){$("trendChart").innerHTML='<div class="empty">Complete new mock tests to build your improvement trend.</div>';return;}
+ const bars=selected.map((row,i)=>{
+  const arr=row.topic_breakdown||[];
+  const chosen=arr.filter(t=>allTopics.some(x=>x.topic_id===t.topic_id));
+  const correct=chosen.reduce((n,t)=>n+Number(t.correct||0),0),wrong=chosen.reduce((n,t)=>n+Number(t.incorrect||0),0),total=correct+wrong;
+  const pct=total?Math.round(correct/total*100):0;
+  return '<div class="trend-col" title="Test '+(i+1)+': '+pct+'%"><b>'+pct+'%</b><div class="trend-bar" style="height:'+Math.max(4,pct)+'%"></div><small>'+new Date(row.completed_at).toLocaleDateString(undefined,{month:"short",day:"numeric"})+'</small></div>';
+ }).join("");
+ $("trendChart").innerHTML=bars||'<div class="empty">No topic data in recent attempts.</div>';
+}
+function renderLists(){
+ const subject=$("subjectFilter").value,sort=$("sortFilter").value;
+ let list=allTopics.filter(t=>!subject||t.subject_id===subject);
+ list.sort((a,b)=>{
+  const an=a.correct+a.incorrect,bn=b.correct+b.incorrect,aa=an?a.correct/an:0,ba=bn?b.correct/bn:0;
+  const aw=an>=3&&aa<.6,bw=bn>=3&&ba<.6;
+  if(sort==="accuracy")return aa-ba;
+  if(sort==="attempts")return bn-an;
+  if(sort==="recent")return new Date(b.last_seen||0)-new Date(a.last_seen||0);
+  return Number(bw)-Number(aw)||aa-ba||bn-an;
+ });
+ const weak=list.filter(t=>t.correct+t.incorrect>=3&&t.correct/(t.correct+t.incorrect)<.6);
+ $("tracked").textContent=list.length;$("weakCount").textContent=weak.length;$("attempted").textContent=list.reduce((n,t)=>n+t.correct+t.incorrect,0);
+ $("weakList").innerHTML=weak.length?weak.map(topicCard).join(""):'<div class="empty">No weak topics for this subject yet. Complete more mock tests; topics with at least 3 attempted questions are assessed automatically.</div>';
+ $("allList").innerHTML=list.length?list.map(topicCard).join(""):'<div class="empty">No topic-level history for this subject yet.</div>';
+}
+$("subjectFilter").addEventListener("change",renderLists);
+$("sortFilter").addEventListener("change",renderLists);
 async function init(){
  const {data:{user},error}=await db.auth.getUser();
  if(error||!user){$("accountState").textContent="Sign in required";$("locked").classList.remove("hidden");$("locked").querySelector("p").textContent="Please sign in with an account that has an active paid plan.";return;}
@@ -60,6 +95,7 @@ async function init(){
  $("accountState").textContent=plan.toUpperCase()+" · Active";$("report").classList.remove("hidden");
  const {data:rows,error:loadError}=await db.from("mock_test_attempts").select("topic_breakdown,completed_at").eq("user_id",user.id).order("completed_at",{ascending:false}).limit(100);
  if(loadError){$("weakList").textContent="Could not load topic history: "+loadError.message;return;}
+ attemptsForTrend=rows||[];
  const topics={};
  (rows||[]).forEach(row=>(row.topic_breakdown||[]).forEach(t=>{
   if(!t.topic_id)return;
@@ -73,10 +109,10 @@ async function init(){
   return Number(bw)-Number(aw)||aa-ba||bn-an;
  });
  const weak=list.filter(t=>t.correct+t.incorrect>=3&&t.correct/(t.correct+t.incorrect)<.6);
- const attempted=list.reduce((n,t)=>n+t.correct+t.incorrect,0);
- $("tracked").textContent=list.length;$("weakCount").textContent=weak.length;$("attempted").textContent=attempted;
- $("weakList").innerHTML=weak.length?weak.map(topicCard).join(""):'<div class="empty">No weak topics identified yet. Complete more mock tests; topics with at least 3 attempted questions are assessed automatically.</div>';
- $("allList").innerHTML=list.length?list.map(topicCard).join(""):'<div class="empty">No topic-level history yet. Complete a new mock test while signed in to start building your report.</div>';
+ allTopics=Object.values(topics);
+ const subjects=[...new Map(allTopics.map(t=>[t.subject_id,t.subject_name])).entries()].filter(x=>x[0]);
+ $("subjectFilter").innerHTML='<option value="">All subjects</option>'+subjects.map(([id,name])=>'<option value="'+safe(id)+'">'+safe(name)+'</option>').join("");
+ renderLists();renderTrend();
  $("dataNote").textContent="Based on your 100 most recent saved mock tests. Older attempts saved before topic tracking was added do not contain topic-level data.";
 }
 init().catch(e=>{$("accountState").textContent="Could not load report";$("weakList").textContent=e.message||"Please refresh and try again.";});
