@@ -43,6 +43,9 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
 </div></main></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+(function(){try{const s=JSON.parse(localStorage.getItem("pyqRadarSettings")||"{}");const q={small:"14px",normal:"16px",large:"19px"};const o={small:"12px",normal:"14px",large:"16px"};const style=document.createElement("style");style.textContent="#qtext{font-size:"+(q[s.question_size]||q.normal)+"!important}#options .opt{font-size:"+(o[s.option_size]||o.normal)+"!important}"+(s.reduce_motion?"*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}":"");document.head.appendChild(style);window.pyqRadarSettings=s;}catch(e){window.pyqRadarSettings={};}})();
+</script>
+<script>
 "use strict";
 const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
@@ -142,7 +145,7 @@ function startTimer(){clearInterval(tick);updateTimer();tick=setInterval(()=>{se
 function updateTimer(){const m=Math.floor(Math.max(0,seconds)/60),s=Math.max(0,seconds)%60;$("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");}
 $("prev").addEventListener("click",()=>{if(current>0){current--;renderQuestion();renderPalette();}});
 $("next").addEventListener("click",()=>{if(current<questions.length-1){current++;renderQuestion();renderPalette();}else{const first=questions.findIndex(q=>!answers[q.id]);if(first>=0){current=first;renderQuestion();renderPalette();}else if(confirm("All questions are answered. Submit your test?"))finishTest(false);}});
-$("submit").addEventListener("click",()=>{const unanswered=questions.filter(q=>!answers[q.id]).length;if(confirm("Submit test? "+unanswered+" question(s) are unanswered."))finishTest(false);});
+$("submit").addEventListener("click",()=>{const unanswered=questions.filter(q=>!answers[q.id]).length;const ask=window.pyqRadarSettings?.confirm_submit!==false;if(!ask||confirm("Submit test? "+unanswered+" question(s) are unanswered."))finishTest(false);});
 async function finishTest(auto){
  if(submitted)return;submitted=true;clearInterval(tick);$("submit").disabled=true;$("status").textContent="Checking your answers…";
  try{
