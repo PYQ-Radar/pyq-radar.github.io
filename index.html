@@ -889,7 +889,7 @@ async function showAnswer(){
 
  }catch(err){
   console.error("Answer reveal error:",err);
-  box.textContent="Answer load nahi ho paaya. Kripya thodi der baad dobara try karein.";
+  box.textContent="Could not load the answer. Please try again.";
   box.style.display="block";
   answerVisible=true;
   btn.innerHTML='<i class="fa-solid fa-eye-slash"></i> Hide Answer';
