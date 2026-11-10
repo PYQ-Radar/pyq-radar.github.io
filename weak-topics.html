@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Weak Topics | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--text:#f5f7ff;--muted:#aab8d5;--line:rgba(117,151,255,.22)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.sidebar{width:270px;position:fixed;inset:0 auto 0 0;padding:23px 15px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--line);overflow:auto}.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 26px}.logo-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:22px}.logo h2{font-size:20px;margin:0}.logo p{font-size:10px;color:var(--muted);margin:4px 0}.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px 13px 7px}.nav-item{display:flex;gap:14px;align-items:center;padding:11px 14px;margin:4px 0;border-radius:11px;color:#dce6ff;font-size:13px;text-decoration:none}.nav-item i{width:20px;color:#a9c3f7}.nav-item:hover,.nav-item.active{background:linear-gradient(100deg,#174fae,#174080);color:#fff}.main{margin-left:270px;min-height:100vh}.topbar{height:76px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:#101b38;border-bottom:1px solid var(--line)}.topbar small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.back{color:#dce8ff;border:1px solid #4387ff;border-radius:9px;padding:9px 13px;text-decoration:none;font-size:12px}.content{padding:25px;max-width:1450px;margin:auto}.heading h1{font-size:26px;margin:0 0 7px}.heading p{font-size:13px;color:var(--muted);margin:0;line-height:1.7}.panel{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a466;border-radius:15px;padding:19px;margin:18px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#0d1935;border:1px solid #344a77;border-radius:12px;padding:16px}.stat small{color:var(--muted);font-size:11px}.stat b{display:block;font-size:25px;margin-top:8px}.topic-row{display:grid;grid-template-columns:minmax(130px,1.2fr) minmax(110px,1fr) 90px auto;gap:13px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line)}.topic-row:last-child{border:0}.topic-name b{display:block;font-size:13px}.topic-name small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.track{height:9px;background:#09152e;border-radius:20px;overflow:hidden}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#e2a64d,#e56c76)}.accuracy{text-align:right;font-weight:800;font-size:13px}.status{font-size:10px;padding:6px 9px;border-radius:20px;background:#4a3037;color:#ffb6bd;white-space:nowrap}.status.watch{background:#3c3827;color:#ffdc91}.status.good{background:#153f3a;color:#8be7c5}.practice{display:inline-block;padding:8px 10px;border:1px solid #527bb8;border-radius:8px;color:#e5efff;text-decoration:none;font-size:10px;white-space:nowrap}.empty{padding:28px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}.note{font-size:11px;color:var(--muted);line-height:1.7}.lock{text-align:center;padding:30px}.lock i{font-size:34px;color:#ffd36e}.btn{display:inline-block;margin-top:12px;padding:11px 17px;border-radius:9px;background:linear-gradient(90deg,#1766ee,#347dff);color:white;text-decoration:none;font-size:12px;font-weight:700}.hidden{display:none!important}footer{text-align:center;color:#8093b8;font-size:11px;padding:25px;border-top:1px solid var(--line);margin-top:24px}
+@media(max-width:900px){.sidebar{width:220px}.main{margin-left:220px}.topic-row{grid-template-columns:1fr 1fr}.topic-row .practice{justify-self:start}}@media(max-width:650px){.sidebar{display:none}.main{margin:0}.content{padding:15px}.topbar{padding:0 15px}.stats{grid-template-columns:1fr}.topic-row{grid-template-columns:1fr auto;gap:9px}.topic-row .track{grid-column:1/2}.topic-row .accuracy{grid-column:2;grid-row:2}.topic-row .status,.topic-row .practice{grid-column:auto}}
+</style>
+<style>/* PYQ Radar: global no-underline override */
+a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
+u, ins { text-decoration: none !important; text-decoration-line: none !important; }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
+<div class="nav-label">MAIN MENU</div>
+<a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a><a class="nav-item" href="pyq-explorer.html"><i class="fa-solid fa-file-circle-question"></i>PYQ Explorer</a><a class="nav-item" href="mock-tests.html"><i class="fa-solid fa-clipboard-check"></i>Mock Tests</a><a class="nav-item" href="practice-by-topic.html"><i class="fa-solid fa-layer-group"></i>Practice by Topic</a><a class="nav-item" href="vocabulary.html"><i class="fa-solid fa-book-open"></i>Vocabulary</a><a class="nav-item" href="newsroom.html"><i class="fa-solid fa-newspaper"></i>Newsroom</a>
+<div class="nav-label">MY STUDY SPACE</div>
+<a class="nav-item" href="bookmarks.html"><i class="fa-solid fa-bookmark"></i>Bookmarks</a><a class="nav-item" href="revision-list.html"><i class="fa-solid fa-list-check"></i>My Revision List</a><a class="nav-item" href="study-progress.html"><i class="fa-solid fa-chart-pie"></i>Study Progress</a><a class="nav-item" href="performance-analysis.html"><i class="fa-solid fa-chart-column"></i>Performance Analysis</a><a class="nav-item active" href="weak-topics.html"><i class="fa-solid fa-bullseye"></i>Weak Topics</a>
+<div class="nav-label">ACCOUNT</div><a class="nav-item" href="subscription.html"><i class="fa-solid fa-crown"></i>Subscription Plans</a>
+</aside>
+<main class="main"><header class="topbar"><div><b>Weak Topics</b><small id="accountState">Checking subscription…</small></div><a class="back" href="index.html">← Dashboard</a></header>
+<div class="content">
+<div class="heading"><h1><i class="fa-solid fa-bullseye" style="color:#ffbd72"></i> Your Improvement Radar</h1><p>Topics are ranked using your saved mock-test answers. Accuracy is calculated from questions with a confirmed answer key.</p></div>
+<section id="locked" class="panel lock hidden"><i class="fa-solid fa-lock"></i><h2>Weak Topics · Paid Feature</h2><p class="note">Weak Topics is included in Basic, Premium and Pro plans. Upgrade to unlock your personal topic report.</p><a class="btn" href="subscription.html">View Plans</a></section>
+<section id="report" class="hidden">
+<div class="stats">
+<div class="stat"><small>Topics tracked</small><b id="tracked">0</b></div>
+<div class="stat"><small>Topics to improve</small><b id="weakCount">0</b></div>
+<div class="stat"><small>Questions attempted</small><b id="attempted">0</b></div>
+</div>
+<section class="panel"><h2 style="font-size:17px;margin:0 0 6px">Topics needing attention</h2><p class="note">A topic is marked weak when you have attempted at least 3 questions and your accuracy is below 60%.</p><div id="weakList"><div class="empty">Loading your topic report…</div></div></section>
+<section class="panel"><h2 style="font-size:17px;margin:0 0 6px">All tracked topics</h2><p class="note">Topics with fewer than 3 attempts are marked “Build data” rather than being judged too early.</p><div id="allList"><div class="empty">Loading your topic report…</div></div></section>
+<p class="note" id="dataNote"></p>
+</section>
+<footer>© 2026 PYQ Radar. Created by <strong>Satya Jigyansu</strong>.</footer>
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+const db=window.supabase.createClient("https://fzepobjbcehirerwtnsz.supabase.co","sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW");
+const $=id=>document.getElementById(id);
+const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function topicCard(t){
+ const n=t.correct+t.incorrect,accuracy=n?100*t.correct/n:0;
+ const status=n<3?'<span class="status watch">BUILD DATA</span>':accuracy<60?'<span class="status">NEEDS PRACTICE</span>':'<span class="status good">ON TRACK</span>';
+ return '<div class="topic-row"><div class="topic-name"><b>'+safe(t.topic_name)+'</b><small>'+safe(t.subject_name)+' · '+n+' attempted · '+t.correct+' correct</small></div><div class="track"><div class="fill" style="width:'+Math.max(0,Math.min(100,accuracy))+'%"></div></div><div class="accuracy">'+(n?accuracy.toFixed(1)+'%':'—')+'</div>'+status+'<a class="practice" href="practice-by-topic.html?topic='+encodeURIComponent(t.topic_id)+'">Practise topic</a></div>';
+}
+async function init(){
+ const {data:{user},error}=await db.auth.getUser();
+ if(error||!user){$("accountState").textContent="Sign in required";$("locked").classList.remove("hidden");$("locked").querySelector("p").textContent="Please sign in with an account that has an active paid plan.";return;}
+ const meta=user.app_metadata||{},plan=String(meta.subscription_plan||meta.plan||"").toLowerCase(),expiry=meta.subscription_expires_at?Date.parse(meta.subscription_expires_at):null;
+ const active=["basic","premium","pro"].includes(plan)&&Number.isFinite(expiry)&&expiry>Date.now();
+ if(!active){$("accountState").textContent="Paid plan required";$("locked").classList.remove("hidden");return;}
+ $("accountState").textContent=plan.toUpperCase()+" · Active";$("report").classList.remove("hidden");
+ const {data:rows,error:loadError}=await db.from("mock_test_attempts").select("topic_breakdown,completed_at").eq("user_id",user.id).order("completed_at",{ascending:false}).limit(100);
+ if(loadError){$("weakList").textContent="Could not load topic history: "+loadError.message;return;}
+ const topics={};
+ (rows||[]).forEach(row=>(row.topic_breakdown||[]).forEach(t=>{
+  if(!t.topic_id)return;
+  if(!topics[t.topic_id])topics[t.topic_id]={topic_id:t.topic_id,topic_name:t.topic_name||"Unclassified",subject_name:t.subject_name||"Unclassified",correct:0,incorrect:0,unanswered:0,last_seen:row.completed_at};
+  topics[t.topic_id].correct+=Number(t.correct||0);topics[t.topic_id].incorrect+=Number(t.incorrect||0);topics[t.topic_id].unanswered+=Number(t.unanswered||0);
+  if(!topics[t.topic_id].last_seen||new Date(row.completed_at)>new Date(topics[t.topic_id].last_seen))topics[t.topic_id].last_seen=row.completed_at;
+ }));
+ const list=Object.values(topics).sort((a,b)=>{
+  const an=a.correct+a.incorrect,bn=b.correct+b.incorrect,aa=an?a.correct/an:0,ba=bn?b.correct/bn:0;
+  const aw=an>=3&&aa<.6,bw=bn>=3&&ba<.6;
+  return Number(bw)-Number(aw)||aa-ba||bn-an;
+ });
+ const weak=list.filter(t=>t.correct+t.incorrect>=3&&t.correct/(t.correct+t.incorrect)<.6);
+ const attempted=list.reduce((n,t)=>n+t.correct+t.incorrect,0);
+ $("tracked").textContent=list.length;$("weakCount").textContent=weak.length;$("attempted").textContent=attempted;
+ $("weakList").innerHTML=weak.length?weak.map(topicCard).join(""):'<div class="empty">No weak topics identified yet. Complete more mock tests; topics with at least 3 attempted questions are assessed automatically.</div>';
+ $("allList").innerHTML=list.length?list.map(topicCard).join(""):'<div class="empty">No topic-level history yet. Complete a new mock test while signed in to start building your report.</div>';
+ $("dataNote").textContent="Based on your 100 most recent saved mock tests. Older attempts saved before topic tracking was added do not contain topic-level data.";
+}
+init().catch(e=>{$("accountState").textContent="Could not load report";$("weakList").textContent=e.message||"Please refresh and try again.";});
+</script></body></html>
