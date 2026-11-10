@@ -43,7 +43,7 @@ button{cursor:pointer}
 .tag{background:#243a64;color:#d9e7ff;border:1px solid #405b8a;border-radius:7px;padding:5px 8px;font-size:10px}
 .tag.verified{background:#123f38;border-color:#1f765e;color:#a8f4d5}
 .q-text{padding:12px 17px 14px;font-size:14px;line-height:1.7;color:#f4f7ff}
-.q-actions{display:flex;gap:8px;padding:0 17px 15px;align-items:center}
+.q-actions{display:flex;gap:8px;padding:0 17px 15px;align-items:center;flex-wrap:wrap}.bookmark-btn{border-radius:9px;padding:9px 13px;font-size:11px;background:#172b50;border:1px solid #526d9c;color:#dce8ff;cursor:pointer}.bookmark-btn.saved{background:#3b2d16;border-color:#b78a32;color:#ffe3a0}
 .primary-btn,.secondary-btn{border-radius:9px;padding:9px 13px;font-size:11px}
 .primary-btn{background:linear-gradient(90deg,#1766ee,#347dff);border:0;color:white}
 .secondary-btn{background:transparent;border:1px solid #4387ff;color:#dce8ff}
@@ -76,7 +76,7 @@ button{cursor:pointer}
  <div class="nav-item"><i class="fa-solid fa-book-open"></i>Vocabulary</div>
  <div class="nav-item"><i class="fa-solid fa-newspaper"></i>Newsroom</div>
  <div class="nav-label">MY STUDY SPACE</div>
- <div class="nav-item"><i class="fa-solid fa-bookmark"></i>Bookmarks</div>
+ <a class="nav-item" href="bookmarks.html"><i class="fa-solid fa-bookmark"></i>Bookmarks</a>
  <div class="nav-item"><i class="fa-solid fa-list-check"></i>My Revision List</div>
  <div class="nav-item"><i class="fa-solid fa-chart-pie"></i>Study Progress</div>
  <div class="nav-item"><i class="fa-solid fa-chart-column"></i>Performance Analysis</div>
@@ -110,10 +110,12 @@ const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const PAGE_SIZE=15;
-let examId=null,page=0,totalRows=0,searchTimer=null,allMeta=[],subjectRows=[],topicRows=[];
+let examId=null,page=0,totalRows=0,searchTimer=null,allMeta=[],subjectRows=[],topicRows=[],currentUser=null,bookmarkIds=new Set();
 const el=id=>document.getElementById(id);
 function safe(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function setStatus(message){el("result-summary").textContent=message;}
+async function loadUserBookmarks(){const {data:{session}}=await db.auth.getSession();currentUser=session?.user||null;bookmarkIds=new Set();if(currentUser){const {data,error}=await db.from("bookmarks").select("question_id").eq("user_id",currentUser.id);if(error)throw error;(data||[]).forEach(x=>bookmarkIds.add(x.question_id));}}
+async function toggleBookmark(id,button){const {data:{session}}=await db.auth.getSession();if(!session){location.href="login.html?next=bookmarks.html";return;}currentUser=session.user;button.disabled=true;try{if(bookmarkIds.has(id)){const {error}=await db.from("bookmarks").delete().eq("user_id",currentUser.id).eq("question_id",id);if(error)throw error;bookmarkIds.delete(id);button.textContent="☆ Bookmark";button.classList.remove("saved");}else{const {error}=await db.from("bookmarks").insert({user_id:currentUser.id,question_id:id});if(error)throw error;bookmarkIds.add(id);button.textContent="★ Saved";button.classList.add("saved");}}catch(e){alert("Bookmark could not be updated: "+e.message)}finally{button.disabled=false;}}
 async function loadFilterData(){
  const {data:exam,error:examError}=await db.from("exams").select("id,name").eq("name","UPSC Civil Services Examination").maybeSingle();
  if(examError) throw examError;
@@ -163,7 +165,7 @@ function questionCard(q,index){
  return '<article class="question-card" data-id="'+q.id+'">'+
   '<div class="q-meta"><span class="tag">'+safe(q.year||"Year N/A")+'</span><span class="tag">'+safe(q.paper||"Prelims")+'</span><span class="tag">'+safe(subject)+'</span><span class="tag">'+safe(topic)+'</span><span class="tag '+(verified?"verified":"")+'">'+(verified?"Verified":"Under review")+'</span></div>'+
   '<div class="q-text"><b>Q'+(page*PAGE_SIZE+index+1)+'.</b> '+safe(q.question_text)+'</div>'+
-  '<div class="q-actions"><button class="primary-btn practice-btn" data-id="'+q.id+'"><i class="fa-solid fa-pen-to-square"></i> Practise Question</button></div>'+
+  '<div class="q-actions"><button class="primary-btn practice-btn" data-id="'+q.id+'"><i class="fa-solid fa-pen-to-square"></i> Practise Question</button><button class="bookmark-btn '+(bookmarkIds.has(q.id)?"saved":"")+'" data-id="'+q.id+'">'+(bookmarkIds.has(q.id)?"★ Saved":"☆ Bookmark")+'</button></div>'+
   '<div class="practice-area" id="practice-'+q.id+'"><div class="loading">Loading options…</div></div>'+
  '</article>';
 }
@@ -178,7 +180,7 @@ async function loadQuestions(){
    el("question-list").innerHTML='<div class="empty"><i class="fa-regular fa-folder-open"></i><p style="margin-top:9px">No questions found. Try changing your filters.</p></div>';
   }else{
    el("question-list").innerHTML=data.map(questionCard).join("");
-   el("question-list").querySelectorAll(".practice-btn").forEach(btn=>btn.addEventListener("click",()=>togglePractice(btn.dataset.id,btn)));
+   el("question-list").querySelectorAll(".practice-btn").forEach(btn=>btn.addEventListener("click",()=>togglePractice(btn.dataset.id,btn)));\n   el("question-list").querySelectorAll(".bookmark-btn").forEach(btn=>btn.addEventListener("click",()=>toggleBookmark(btn.dataset.id,btn)));
   }
   const first=totalRows?page*PAGE_SIZE+1:0,last=Math.min((page+1)*PAGE_SIZE,totalRows);
   setStatus("Showing "+first+"–"+last+" of "+totalRows.toLocaleString("en-IN")+" questions");
@@ -236,7 +238,7 @@ el("topic-filter").addEventListener("change",applyFilters);
 el("reset-filters").addEventListener("click",()=>{el("search").value="";el("year-filter").value="";el("subject-filter").value="";updateTopicOptions();el("topic-filter").value="";applyFilters();});
 el("prev-page").addEventListener("click",()=>{if(page>0){page--;loadQuestions();}});
 el("next-page").addEventListener("click",()=>{if((page+1)*PAGE_SIZE<totalRows){page++;loadQuestions();}});
-(async()=>{try{await loadFilterData();await loadQuestions();}catch(err){console.error(err);el("question-list").innerHTML='<div class="error">PYQ Explorer could not connect to the question database: '+safe(err.message)+'</div>';setStatus("Connection error");}})();
+(async()=>{try{await loadUserBookmarks();await loadFilterData();await loadQuestions();}catch(err){console.error(err);el("question-list").innerHTML='<div class="error">PYQ Explorer could not connect to the question database: '+safe(err.message)+'</div>';setStatus("Connection error");}})();
 </script>
 </body>
 </html>
