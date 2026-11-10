@@ -180,7 +180,8 @@ async function loadQuestions(){
    el("question-list").innerHTML='<div class="empty"><i class="fa-regular fa-folder-open"></i><p style="margin-top:9px">No questions found. Try changing your filters.</p></div>';
   }else{
    el("question-list").innerHTML=data.map(questionCard).join("");
-   el("question-list").querySelectorAll(".practice-btn").forEach(btn=>btn.addEventListener("click",()=>togglePractice(btn.dataset.id,btn)));\n   el("question-list").querySelectorAll(".bookmark-btn").forEach(btn=>btn.addEventListener("click",()=>toggleBookmark(btn.dataset.id,btn)));
+   el("question-list").querySelectorAll(".practice-btn").forEach(btn=>btn.addEventListener("click",()=>togglePractice(btn.dataset.id,btn)));
+   el("question-list").querySelectorAll(".bookmark-btn").forEach(btn=>btn.addEventListener("click",()=>toggleBookmark(btn.dataset.id,btn)));
   }
   const first=totalRows?page*PAGE_SIZE+1:0,last=Math.min((page+1)*PAGE_SIZE,totalRows);
   setStatus("Showing "+first+"–"+last+" of "+totalRows.toLocaleString("en-IN")+" questions");
