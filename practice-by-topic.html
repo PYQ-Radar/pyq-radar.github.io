@@ -43,6 +43,8 @@ async function init(){
   $("subject").innerHTML='<option value="">All Subjects</option>'+activeSubjects.map(s=>'<option value="'+s.id+'">'+safe(s.name)+'</option>').join("");
   $("subject-count").textContent="Subjects: "+activeSubjects.length;$("topic-count").textContent="Topics: "+activeTopics.length;$("question-count").textContent="Questions: "+qs.length;
   renderTopics();
+  const requestedTopic=new URLSearchParams(window.location.search).get("topic");
+  if(requestedTopic&&activeTopics.some(t=>t.id===requestedTopic))await loadTopic(requestedTopic);
  }catch(e){console.error(e);$("topics").innerHTML='<div class="empty">Could not load topics: '+safe(e.message)+'</div>';}
 }
 function renderTopics(){
