@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Revision List | PYQ Radar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#080f25;--panel:#121e3e;--text:#f5f7ff;--muted:#aab8d5;--border:rgba(117,151,255,.22);--blue:#2677ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:linear-gradient(180deg,#101c3a,#0b1530);border-right:1px solid var(--border);padding:22px 15px;position:fixed;height:100vh;overflow:auto;z-index:5}
+.logo{display:flex;align-items:center;gap:12px;padding:4px 9px 25px}.logo-icon{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff659f,#6e59ff,#32c8ff);font-size:20px}.logo h2{font-size:19px;margin:0}.logo p{font-size:10px;color:var(--muted);margin:4px 0}
+.nav-label{font-size:10px;color:#7185ae;letter-spacing:2px;padding:14px}.nav-item{display:flex;gap:12px;align-items:center;padding:12px 14px;margin:4px 0;color:#dce6ff;border-radius:10px;text-decoration:none;font-size:13px}.nav-item i{width:18px;color:#a9c3f7}.nav-item.active,.nav-item:hover{background:linear-gradient(100deg,#174fae,#174080)}
+.main{margin-left:260px;width:calc(100% - 260px);min-width:0}.topbar{height:68px;padding:14px 25px;display:flex;justify-content:space-between;align-items:center;background:#101b38;border-bottom:1px solid var(--border)}.topbar small{color:var(--muted);font-size:11px}
+.content{max-width:1300px;margin:auto;padding:25px}.hero{background:radial-gradient(ellipse at 20% 0%,#1357b5 0%,transparent 60%),linear-gradient(110deg,#102a5b,#172c59 65%,#45305a);border:1px solid #2869e5;border-radius:16px;padding:23px 25px;margin-bottom:18px}.hero h1{font-size:25px;margin:0 0 7px}.hero p{font-size:12px;color:#d3e1ff;margin:0;line-height:1.6}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:15px 0 20px}.stat{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid var(--border);border-radius:12px;padding:15px}.stat span{font-size:11px;color:var(--muted)}.stat b{display:block;font-size:23px;margin-top:6px}
+.panel{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a477;border-radius:14px;padding:18px;margin-bottom:17px}.panel h2{font-size:16px;margin:0 0 14px}.form-grid{display:grid;grid-template-columns:1.1fr 1.1fr 1fr 1fr auto;gap:10px;align-items:end}.field label{display:block;font-size:10px;color:var(--muted);margin:0 0 7px 2px;text-transform:uppercase;letter-spacing:.8px}.field input,.field select,.toolbar input,.toolbar select{width:100%;height:42px;background:#0d1935;border:1px solid #344a77;border-radius:9px;color:#f4f7ff;padding:0 11px;outline:none;font:inherit;font-size:12px}.field input:focus,.field select:focus,.toolbar input:focus,.toolbar select:focus{border-color:#4387ff}
+.btn{border:1px solid #ffffff30;background:#ffffff12;color:white;border-radius:9px;padding:10px 13px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}.btn.primary{background:linear-gradient(90deg,#1766ee,#347dff);border-color:#2677ff}.btn.success{border-color:#237b62;color:#aaf3d8}.btn.warn{border-color:#a17b35;color:#ffe1a0}.btn.danger{border-color:#9e5162;color:#ffc4d0}.btn:disabled{opacity:.5;cursor:wait}
+.toolbar{display:grid;grid-template-columns:1fr 190px;gap:10px;margin:16px 0}.list{display:grid;gap:11px}.task{background:linear-gradient(145deg,#19274c,#121e3d);border:1px solid #4e58a477;border-radius:13px;padding:16px;display:flex;justify-content:space-between;gap:15px;align-items:center}.task.overdue{border-color:#a75c67}.task.completed{opacity:.72}.task h3{font-size:14px;margin:0 0 7px}.meta{display:flex;gap:7px;flex-wrap:wrap}.tag{background:#243a64;border:1px solid #405b8a;border-radius:7px;padding:5px 8px;font-size:10px;color:#d9e7ff}.tag.today{background:#493d19;border-color:#92732c;color:#ffe3a0}.tag.late{background:#4b2430;border-color:#9b4b60;color:#ffc4d0}.tag.done{background:#123f38;border-color:#1f765e;color:#a8f4d5}.actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.empty,.message{padding:28px;text-align:center;color:var(--muted);background:#121e3e;border:1px dashed #405b8a;border-radius:13px;font-size:12px;line-height:1.7}.error{color:#ffb4c0}.hidden{display:none!important}
+@media(max-width:1050px){.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid .btn{height:42px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.sidebar{display:none}.main{margin:0;width:100%}.content{padding:15px 12px}.hero h1{font-size:21px}.topbar{padding:12px 14px}.form-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.task{align-items:flex-start;flex-direction:column}.actions{justify-content:flex-start}.stats{gap:8px}.stat{padding:12px}.stat b{font-size:20px}}
+</style></head>
+<body><div class="app">
+<aside class="sidebar"><div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
+<div class="nav-label">MAIN MENU</div>
+<a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Dashboard</a>
+<a class="nav-item" href="pyq-explorer.html"><i class="fa-solid fa-file-circle-question"></i>PYQ Explorer</a>
+<a class="nav-item" href="mock-tests.html"><i class="fa-solid fa-clipboard-check"></i>Mock Tests</a>
+<a class="nav-item" href="practice-by-topic.html"><i class="fa-solid fa-layer-group"></i>Practice by Topic</a>
+<a class="nav-item" href="vocabulary.html"><i class="fa-solid fa-book-open"></i>Vocabulary</a>
+<a class="nav-item" href="newsroom.html"><i class="fa-solid fa-newspaper"></i>Newsroom</a>
+<div class="nav-label">MY STUDY SPACE</div>
+<a class="nav-item" href="bookmarks.html"><i class="fa-solid fa-bookmark"></i>Bookmarks</a>
+<a class="nav-item active" href="revision-list.html"><i class="fa-solid fa-list-check"></i>My Revision List</a>
+<a class="nav-item" href="subscription.html"><i class="fa-solid fa-chart-pie"></i>Study Progress</a>
+<a class="nav-item" href="subscription.html"><i class="fa-solid fa-chart-column"></i>Performance Analysis</a>
+<a class="nav-item" href="subscription.html"><i class="fa-solid fa-bullseye"></i>Weak Topics</a>
+<div class="nav-label">ACCOUNT</div><a class="nav-item" href="subscription.html"><i class="fa-solid fa-gear"></i>Settings</a></aside>
+<main class="main"><header class="topbar"><div><b>My Revision List</b><br><small id="account">Checking account…</small></div><button class="btn" id="signout">Sign out</button></header>
+<div class="content"><section class="hero"><h1><i class="fa-solid fa-list-check"></i> Revision Planner</h1><p>Plan topic-wise revisions, track what is due today, and keep overdue topics visible until you revise them.</p></section>
+<div id="authPrompt" class="message hidden"><i class="fa-solid fa-lock"></i><h3 style="color:white;margin:8px">Sign in to manage your revision list</h3>Your revision schedule is private to your account.<br><a class="btn primary" href="login.html?next=revision-list.html" style="display:inline-block;text-decoration:none;margin-top:12px">Sign in / Create account</a></div>
+<div id="mainContent" class="hidden">
+<div class="stats"><div class="stat"><span>Total topics</span><b id="total">0</b></div><div class="stat"><span>Due today</span><b id="today">0</b></div><div class="stat"><span>Overdue</span><b id="overdue">0</b></div><div class="stat"><span>Completed</span><b id="completed">0</b></div></div>
+<section class="panel"><h2><i class="fa-solid fa-plus-circle"></i> Add a topic to revise</h2><form id="addForm" class="form-grid">
+<div class="field"><label for="subject">Subject</label><select id="subject" required><option value="">Choose subject</option></select></div>
+<div class="field"><label for="topic">Topic (optional)</label><select id="topic"><option value="">Entire subject</option></select></div>
+<div class="field"><label for="revisionDate">First revision date</label><input type="date" id="revisionDate" required></div>
+<div class="field"><label for="interval">Repeat after</label><select id="interval"><option value="1">1 day</option><option value="3">3 days</option><option value="7" selected>7 days</option><option value="15">15 days</option><option value="30">30 days</option></select></div>
+<button class="btn primary" id="addBtn" type="submit"><i class="fa-solid fa-plus"></i> Add to list</button>
+</form><p id="formMessage" class="message hidden" style="margin-top:12px;padding:10px;text-align:left"></p></section>
+<div class="toolbar"><input id="search" placeholder="Search subject or topic…"><select id="filter"><option value="all">All revisions</option><option value="today">Due today</option><option value="overdue">Overdue</option><option value="upcoming">Upcoming</option><option value="completed">Completed</option></select></div>
+<div class="message hidden" id="listMessage"></div><div id="taskList" class="list"></div>
+</div></div></main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+"use strict";
+const db=window.supabase.createClient("https://fzepobjbcehirerwtnsz.supabase.co","sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW");
+const $=id=>document.getElementById(id),safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const todayISO=()=>{const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+let user=null,subjects=[],topics=[],tasks=[];
+function dateLabel(v){return new Date(v+"T00:00:00").toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})}
+function topicLabel(t){return t.topic_id?(topics.find(x=>x.id===t.topic_id)?.name||"Topic"):"Entire subject"}
+async function start(){
+ const {data:{session},error}=await db.auth.getSession();if(error)throw error;user=session?.user||null;
+ if(!user){$("account").textContent="Not signed in";$("authPrompt").classList.remove("hidden");return}
+ $("account").textContent=user.email||"Signed in";$("mainContent").classList.remove("hidden");$("revisionDate").value=todayISO();
+ const [s,t]=await Promise.all([db.from("subjects").select("id,name").order("name"),db.from("topics").select("id,name,subject_id").order("name")]);
+ if(s.error)throw s.error;if(t.error)throw t.error;subjects=s.data||[];topics=t.data||[];
+ $("subject").innerHTML='<option value="">Choose subject</option>'+subjects.map(x=>'<option value="'+x.id+'">'+safe(x.name)+'</option>').join("");
+ updateTopicOptions();await loadTasks();
+}
+function updateTopicOptions(){const sid=$("subject").value;const list=topics.filter(t=>t.subject_id===sid);$("topic").innerHTML='<option value="">Entire subject</option>'+list.map(x=>'<option value="'+x.id+'">'+safe(x.name)+'</option>').join("");}
+async function loadTasks(){
+ $("taskList").innerHTML='<div class="message">Loading your revision schedule…</div>';
+ const {data,error}=await db.from("revision_tasks").select("id,user_id,subject_id,topic_id,revision_date,revision_interval,status,created_at").eq("user_id",user.id).order("revision_date",{ascending:true});
+ if(error)throw error;tasks=data||[];render();
+}
+function render(){
+ const today=todayISO(),pending=tasks.filter(x=>x.status!=="Completed"),late=pending.filter(x=>x.revision_date<today),due=pending.filter(x=>x.revision_date===today),done=tasks.filter(x=>x.status==="Completed");
+ $("total").textContent=tasks.length;$("today").textContent=due.length;$("overdue").textContent=late.length;$("completed").textContent=done.length;
+ const term=$("search").value.trim().toLowerCase(),filter=$("filter").value;
+ const list=tasks.filter(x=>{const sn=subjects.find(s=>s.id===x.subject_id)?.name||"Subject",tn=topicLabel(x);const match=(!term||(sn+" "+tn).toLowerCase().includes(term));const status=x.status==="Completed"?"completed":x.revision_date<today?"overdue":x.revision_date===today?"today":"upcoming";return match&&(filter==="all"||filter===status)});
+ $("listMessage").classList.toggle("hidden",tasks.length>0);
+ $("listMessage").textContent=tasks.length?"":"Your revision list is empty. Add a subject or topic above to get started.";
+ $("taskList").innerHTML=list.length?list.map(x=>{const sn=subjects.find(s=>s.id===x.subject_id)?.name||"Subject";const status=x.status==="Completed"?"completed":x.revision_date<today?"overdue":x.revision_date===today?"today":"upcoming";const label=status==="completed"?"Completed":status==="overdue"?"Overdue":status==="today"?"Due today":"Upcoming";return '<article class="task '+(status==="overdue"?"overdue":"")+' '+(status==="completed"?"completed":"")+'"><div><h3>'+safe(sn)+' · '+safe(topicLabel(x))+'</h3><div class="meta"><span class="tag '+(status==="completed"?"done":status==="overdue"?"late":status==="today"?"today":"")+'">'+label+'</span><span class="tag">Date: '+dateLabel(x.revision_date)+'</span><span class="tag">Repeat: '+(x.revision_interval||7)+' days</span></div></div><div class="actions">'+(status!=="completed"?'<button class="btn success complete" data-id="'+x.id+'"><i class="fa-solid fa-check"></i> Mark revised</button><button class="btn warn postpone" data-id="'+x.id+'" data-days="1">+1 day</button><button class="btn warn postpone" data-id="'+x.id+'" data-days="7">+7 days</button>':'<button class="btn" disabled><i class="fa-solid fa-check-double"></i> Completed</button>')+'<button class="btn danger delete" data-id="'+x.id+'"><i class="fa-solid fa-trash"></i></button></div></article>'}).join(""):tasks.length?'<div class="message">No revisions match this filter.</div>':"";
+ document.querySelectorAll(".complete").forEach(b=>b.onclick=()=>completeTask(b.dataset.id));document.querySelectorAll(".postpone").forEach(b=>b.onclick=()=>postponeTask(b.dataset.id,Number(b.dataset.days)));document.querySelectorAll(".delete").forEach(b=>b.onclick=()=>deleteTask(b.dataset.id));
+}
+async function addTask(e){e.preventDefault();const sid=$("subject").value,tid=$("topic").value,date=$("revisionDate").value,interval=Number($("interval").value);if(!sid||!date)return;const btn=$("addBtn");btn.disabled=true;showFormMessage("Saving…");try{const {error}=await db.from("revision_tasks").insert({user_id:user.id,subject_id:sid,topic_id:tid||null,revision_date:date,revision_interval:interval,status:"Pending"});if(error)throw error;$("addForm").reset();$("revisionDate").value=todayISO();$("interval").value="7";updateTopicOptions();showFormMessage("Added to your revision list.");await loadTasks()}catch(e){showFormMessage("Could not add revision: "+e.message,true)}finally{btn.disabled=false}}
+function showFormMessage(msg,isError=false){const el=$("formMessage");el.textContent=msg;el.classList.remove("hidden");el.classList.toggle("error",isError)}
+async function updateTask(id,patch){const {error}=await db.from("revision_tasks").update(patch).eq("id",id).eq("user_id",user.id);if(error)throw error;await loadTasks()}
+async function completeTask(id){try{await updateTask(id,{status:"Completed"})}catch(e){alert("Could not update revision: "+e.message)}}
+async function postponeTask(id,days){const d=new Date(todayISO()+"T00:00:00");d.setDate(d.getDate()+days);const next=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);try{await updateTask(id,{revision_date:next,status:"Pending"})}catch(e){alert("Could not reschedule: "+e.message)}}
+async function deleteTask(id){if(!confirm("Delete this revision task?"))return;try{const {error}=await db.from("revision_tasks").delete().eq("id",id).eq("user_id",user.id);if(error)throw error;tasks=tasks.filter(x=>x.id!==id);render()}catch(e){alert("Could not delete revision: "+e.message)}}
+$("subject").addEventListener("change",updateTopicOptions);$("addForm").addEventListener("submit",addTask);$("search").addEventListener("input",render);$("filter").addEventListener("change",render);$("signout").onclick=async()=>{await db.auth.signOut();location.href="login.html"};
+start().catch(e=>{$("taskList").innerHTML='<div class="message error">Could not load Revision List: '+safe(e.message)+'</div>'});
+</script></body></html>
