@@ -395,12 +395,10 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
    <div class="vocab-content">
     <div class="word-row">
      <div class="bulb"><i class="fa-solid fa-lightbulb"></i></div>
-     <div><div class="word">Pragmatic</div><div class="pronunciation">/prægˈmætɪk/</div></div>
+     <div><div class="word" id="dailyWord">Loading...</div><div class="pronunciation" id="dailyPronunciation"></div></div>
     </div>
-    <div class="meaning">
-     <b>Meaning:</b> Practical and realistic rather than idealistic.
-     <br><br>
-     <b>Example:</b> A pragmatic approach helps in solving complex problems.
+    <div class="meaning" id="dailyMeaning" aria-live="polite">
+     <b>Meaning:</b> Loading today's vocabulary...
     </div>
    </div>
   </div>
@@ -481,6 +479,49 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
 function toggleMenu(){
  document.getElementById("sidebar").classList.toggle("open");
 }
+
+/* DAILY VOCABULARY — choose a different UPSC-relevant word on every page load */
+const dailyVocabulary = [
+ {word:"Pragmatic",pronunciation:"/prægˈmætɪk/",meaning:"Practical and realistic rather than idealistic.",example:"A pragmatic approach can help resolve complex policy challenges."},
+ {word:"Alleviate",pronunciation:"/əˈliːvieɪt/",meaning:"To make a problem, pain, or difficulty less severe.",example:"Targeted welfare schemes aim to alleviate rural distress."},
+ {word:"Ameliorate",pronunciation:"/əˈmiːliəreɪt/",meaning:"To improve a difficult or unsatisfactory situation.",example:"Institutional reforms can ameliorate governance challenges."},
+ {word:"Arbitrary",pronunciation:"/ˈɑːrbɪtreri/",meaning:"Based on personal choice rather than a clear rule or reason.",example:"The rule seeks to prevent arbitrary use of administrative power."},
+ {word:"Benevolent",pronunciation:"/bəˈnevələnt/",meaning:"Kind, generous, and intended to do good.",example:"A benevolent state works to protect vulnerable citizens."},
+ {word:"Coherent",pronunciation:"/koʊˈhɪrənt/",meaning:"Logical, consistent, and easy to understand.",example:"A coherent policy framework improves implementation."},
+ {word:"Conundrum",pronunciation:"/kəˈnʌndrəm/",meaning:"A confusing and difficult problem.",example:"Balancing growth with environmental protection remains a conundrum."},
+ {word:"Discrepancy",pronunciation:"/dɪˈskrepənsi/",meaning:"A difference between two things that should match.",example:"The audit identified a discrepancy in the reported figures."},
+ {word:"Efficacy",pronunciation:"/ˈefɪkəsi/",meaning:"The ability to produce the intended result.",example:"The efficacy of a public programme must be evaluated."},
+ {word:"Empirical",pronunciation:"/ɪmˈpɪrɪkəl/",meaning:"Based on observation, experience, or measurable evidence.",example:"Empirical evidence should guide public policy."},
+ {word:"Equitable",pronunciation:"/ˈekwɪtəbl/",meaning:"Fair and impartial, considering different needs.",example:"Equitable access to education supports social justice."},
+ {word:"Exacerbate",pronunciation:"/ɪɡˈzæsərbeɪt/",meaning:"To make an existing problem or situation worse.",example:"Poor planning may exacerbate urban congestion."},
+ {word:"Feasible",pronunciation:"/ˈfiːzəbl/",meaning:"Possible and practical to do successfully.",example:"The committee proposed a feasible reform strategy."},
+ {word:"Foster",pronunciation:"/ˈfɑːstər/",meaning:"To encourage the development of something.",example:"Cooperative federalism can foster balanced development."},
+ {word:"Impetus",pronunciation:"/ˈɪmpɪtəs/",meaning:"A force or event that makes something happen faster.",example:"The new legislation provided impetus to institutional reform."},
+ {word:"Inherent",pronunciation:"/ɪnˈhɪrənt/",meaning:"Existing as a natural or essential part of something.",example:"Accountability is inherent in a democratic system."},
+ {word:"Mitigate",pronunciation:"/ˈmɪtɪɡeɪt/",meaning:"To reduce the harmful effects or seriousness of something.",example:"Early warning systems help mitigate disaster risks."},
+ {word:"Nuance",pronunciation:"/ˈnuːɑːns/",meaning:"A small but important difference in meaning or interpretation.",example:"A good answer recognises the nuance in constitutional provisions."},
+ {word:"Pervasive",pronunciation:"/pərˈveɪsɪv/",meaning:"Present or spreading throughout a place or group.",example:"Digital technology has become pervasive in public services."},
+ {word:"Resilience",pronunciation:"/rɪˈzɪliəns/",meaning:"The ability to recover quickly from difficulty or change.",example:"Climate-resilient agriculture is vital for vulnerable regions."},
+ {word:"Scrutiny",pronunciation:"/ˈskruːtəni/",meaning:"Careful and detailed examination.",example:"Parliamentary scrutiny strengthens executive accountability."},
+ {word:"Sustainable",pronunciation:"/səˈsteɪnəbl/",meaning:"Able to continue over time without exhausting resources.",example:"Sustainable development balances present and future needs."},
+ {word:"Tenet",pronunciation:"/ˈtenɪt/",meaning:"A principle or belief considered important.",example:"Equality is a core tenet of the Constitution."},
+ {word:"Ubiquitous",pronunciation:"/juːˈbɪkwɪtəs/",meaning:"Present or found almost everywhere.",example:"Mobile connectivity is now ubiquitous in many parts of India."},
+ {word:"Viable",pronunciation:"/ˈvaɪəbl/",meaning:"Capable of working successfully or being maintained.",example:"The proposal offers a viable alternative to the existing system."}
+];
+
+function loadDailyVocabulary(){
+ const previous = localStorage.getItem("pyqRadarLastDashboardWord") || "";
+ const choices = dailyVocabulary.filter(item=>item.word!==previous);
+ const pool = choices.length ? choices : dailyVocabulary;
+ const selected = pool[Math.floor(Math.random()*pool.length)];
+ $("dailyWord").textContent = selected.word;
+ $("dailyPronunciation").textContent = selected.pronunciation;
+ $("dailyMeaning").innerHTML = "<b>Meaning:</b> " + escapeHtml(selected.meaning) +
+  "<br><br><b>Example:</b> " + escapeHtml(selected.example);
+ localStorage.setItem("pyqRadarLastDashboardWord", selected.word);
+}
+
+loadDailyVocabulary();
 
 /* DAILY QUOTES */
 const quotes=[
