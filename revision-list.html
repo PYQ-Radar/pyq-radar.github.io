@@ -21,7 +21,11 @@
 @media(max-width:760px){.sidebar{display:none}.main{margin:0;width:100%}.content{padding:15px 12px}.hero h1{font-size:21px}.topbar{padding:12px 14px}.form-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.task{align-items:flex-start;flex-direction:column}.actions{justify-content:flex-start}.stats{gap:8px}.stat{padding:12px}.stat b{font-size:20px}}
 /* Remove link underlines */
 a, a:hover, a:focus, a:active { text-decoration: none !important; }
-</style></head>
+</style><style>/* PYQ Radar: global no-underline override */
+a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
+u, ins { text-decoration: none !important; text-decoration-line: none !important; }
+</style>
+</head>
 <body><div class="app">
 <aside class="sidebar"><div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
 <div class="nav-label">MAIN MENU</div>
