@@ -132,6 +132,17 @@ button{font-family:inherit;cursor:pointer}
 .dashboard-grid>.panel:first-child .panel-head>div{display:flex;flex-wrap:nowrap;gap:8px;align-items:center;margin-left:auto}
 .dashboard-grid>.panel:first-child .panel-head .outline-btn{white-space:nowrap;flex:0 0 auto}
 
+
+.match-list-table{border:1px solid #51418a;border-radius:12px;overflow:hidden;background:#110d20;display:block;width:100%}
+.match-list-head,.match-list-row{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)}
+.match-list-head{background:#21163a;color:#d9b7ff;font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.35px}
+.match-list-head>span{padding:12px 15px}
+.match-list-head>span+span,.match-list-row>.match-list-cell+ .match-list-cell{border-left:1px solid #39295f}
+.match-list-row{border-top:1px solid #302344}
+.match-list-cell{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;padding:12px 15px;color:#e7e1f2;font-size:14px;line-height:1.55;min-width:0}
+.match-list-cell b{color:#c7a0ff;font-weight:800}
+@media(max-width:560px){.match-list-head>span,.match-list-cell{padding:10px 8px;font-size:11px}.match-list-cell{grid-template-columns:19px minmax(0,1fr);gap:5px}.match-list-head{font-size:10px}.match-list-head,.match-list-row{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}}
+
 /* DASHBOARD */
 .dashboard-grid{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(280px,1fr);gap:18px}
 .panel{
@@ -811,6 +822,31 @@ function formatQuestionMarkup(raw){
  const romanRe=/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g;
  const roman=[...content.matchAll(romanRe)];
  let intro="",items=[],secondaryPrompt="",secondaryItems=[];
+ // Render match-the-following questions as a two-column List-I / List-II table.
+ const headings=[...source.matchAll(/List\\s*[-–]?\\s*(II|I)\\b(?:\\s*\\([^)]*\\))?/gi)];
+ const firstList=headings.find(x=>x[1].toUpperCase()==="I");
+ const secondList=headings.find(x=>x[1].toUpperCase()==="II");
+ if(firstList&&secondList&&secondList.index>firstList.index){
+   const leftHeader=firstList[0].trim();
+   const rightHeader=secondList[0].trim();
+   const leftRaw=source.slice(firstList.index+firstList[0].length,secondList.index).trim();
+   let rightRaw=source.slice(secondList.index+secondList[0].length).trim();
+   const codeAt=rightRaw.search(/\\b(?:Codes?|Select the correct answer|Choose the correct answer|Select the answer)\\b/i);
+   let matchEnding="";
+   if(codeAt>=0){matchEnding=rightRaw.slice(codeAt).trim();rightRaw=rightRaw.slice(0,codeAt).trim();}
+   const readMatchItems=(raw,pattern)=>{const marks=[...raw.matchAll(pattern)];return marks.map((m,i)=>({label:m[2],text:raw.slice(m.index+m[0].length-(m[1]||"").length,i+1<marks.length?marks[i+1].index:raw.length).trim()})).filter(x=>x.text);};
+   const leftItems=readMatchItems(leftRaw,/(^|\\s)(IV|III|II|I|[A-D])[.)]\\s+/g);
+   const rightItems=readMatchItems(rightRaw,/(^|\\s)([1-4]|[A-D])[.)]\\s+/g);
+   if(leftItems.length>=2&&rightItems.length>=2){
+     const left=leftItems.map((x,i)=>({label:String.fromCharCode(65+i),text:x.text}));
+     const right=rightItems.map((x,i)=>({label:String(i+1),text:x.text}));
+     const prompt=source.slice(0,firstList.index).trim();
+     const renderCell=(x)=>'<div class="match-list-cell"><b>'+escapeHtml(x.label)+'</b><span>'+escapeHtml(x.text)+'</span></div>';
+     const rows=Array.from({length:Math.max(left.length,right.length)},(_,i)=>'<div class="match-list-row">'+(left[i]?renderCell(left[i]):'<div class="match-list-cell"></div>')+(right[i]?renderCell(right[i]):'<div class="match-list-cell"></div>')+'</div>').join("");
+     return '<div class="formatted-question match-question">'+(prompt?'<div class="question-main">'+escapeHtml(prompt)+'</div>':'')+'<div class="match-list-table"><div class="match-list-head"><span>'+escapeHtml(leftHeader)+'</span><span>'+escapeHtml(rightHeader)+'</span></div>'+rows+'</div>'+(matchEnding?'<div class="question-instruction">'+escapeHtml(matchEnding)+'</div>':'')+'</div>';
+   }
+ }
+
  // Handle UNESCO heritage-site list questions whose source text lost line breaks/numbers.
  const heritagePrompt=content.match(/\s*(Which of the above are included in the World Heritage List of UNESCO\?)\s*$/i);
  if(heritagePrompt){
