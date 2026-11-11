@@ -150,7 +150,7 @@ function formatQuestionMarkup(raw){
    intro=content.slice(0,first).trim();
    const body=content.slice(first);
    const parts=[...body.matchAll(/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g)];
-   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"" ).length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
    const last=items.length-1;
    const promptRe=/\s+(Which of the following (?:information|evidence|statements|options)[^?]{0,180}\?)\s*/i;
    const prompt=items[last]?.text.match(promptRe);
@@ -179,7 +179,17 @@ function formatQuestionMarkup(raw){
  return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+
    renderItems(items)+(secondaryPrompt?'<div class="question-instruction">'+safe(secondaryPrompt)+'</div>'+renderItems(secondaryItems):'')+
    (ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
-}function renderPalette(){$("palette").innerHTML=questions.map((q,i)=>'<button class="'+(i===current?"current ":"")+(answers[q.id]?"done":"")+'" data-i="'+i+'">'+(i+1)+'</button>').join("");$("palette").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{current=Number(b.dataset.i);renderQuestion();renderPalette();}));}
+}
+
+function renderQuestion(){
+ const q=questions[current];$("progress").textContent="Question "+(current+1)+" of "+questions.length;
+ $("qmeta").textContent=(q.year||"Year N/A")+" · "+(q.subjects?.name||"UPSC")+" · "+(q.topics?.name||"General");
+ $("qtext").innerHTML=formatQuestionMarkup(q.question_text);
+ $("options").innerHTML=(optionMap[q.id]||[]).map(o=>'<label class="opt '+(answers[q.id]===o.option_key?"chosen":"")+'"><input type="radio" name="answer" value="'+safe(o.option_key)+'" '+(answers[q.id]===o.option_key?"checked":"")+'><span><b>'+safe(o.option_key)+'.</b> '+safe(o.option_text)+'</span></label>').join("");
+ $("options").querySelectorAll("input").forEach(input=>input.addEventListener("change",()=>{answers[q.id]=input.value;renderPalette();renderQuestion();}));
+ $("prev").disabled=current===0;$("next").textContent=current===questions.length-1?"Review answers":"Next →";
+}
+function renderPalette(){$("palette").innerHTML=questions.map((q,i)=>'<button class="'+(i===current?"current ":"")+(answers[q.id]?"done":"")+'" data-i="'+i+'">'+(i+1)+'</button>').join("");$("palette").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{current=Number(b.dataset.i);renderQuestion();renderPalette();}));}
 function renderAnswerReview(){const counts={all:reviewRows.length,correct:0,incorrect:0,unanswered:0};reviewRows.forEach(r=>counts[r.status]++);const labels=[["all","All",counts.all],["incorrect","Incorrect",counts.incorrect],["correct","Correct",counts.correct],["unanswered","Unanswered",counts.unanswered]];$("review").innerHTML='<div class="review-toolbar">'+labels.map(([k,l,n])=>'<button class="review-filter '+(reviewFilter===k?"active":"") +'" data-filter="'+k+'">'+l+' · '+n+'</button>').join("")+'</div>'+reviewRows.filter(r=>reviewFilter==="all"||r.status===reviewFilter).map(r=>{const q=r.q,opts=optionMap[q.id]||[],statusLabel=r.status==="correct"?"CORRECT":r.status==="incorrect"?"INCORRECT":"NOT ANSWERED",statusClass=r.status==="correct"?"status-correct":r.status==="incorrect"?"status-wrong":"status-open";return '<details class="review-card"><summary><span class="review-status '+statusClass+'">'+statusLabel+'</span><span class="review-q"><b>Q'+(r.i+1)+'.</b> '+formatQuestionMarkup(q.question_text)+'<div class="review-meta">'+safe(q.subjects?.name||"UPSC")+' · '+safe(q.topics?.name||"General")+' · '+safe(q.year||"Year N/A")+'</div></span><i class="fa-solid fa-chevron-down"></i></summary><div class="review-body"><div class="review-answer">'+(r.chosen?'Your answer: <b>'+safe(r.chosen)+'</b>':'Your answer: <b>Not answered</b>')+(r.valid?' &nbsp;·&nbsp; Correct answer: <b class="correct">'+safe(r.key)+'</b>':' &nbsp;·&nbsp; <b>Official answer unavailable / needs review</b>')+'</div>'+opts.map(o=>{const isRight=r.valid&&o.option_key===r.key,isUser=o.option_key===r.chosen;return '<div class="review-option '+(isRight?"right-pick ": "")+(isUser&&!isRight?"user-pick":"")+'">'+(isRight?"✓ ":isUser?"Your choice · ":"") +'<b>'+safe(o.option_key)+'.</b> '+safe(o.option_text)+'</div>';}).join("")+(r.explanation?'<div class="review-explanation"><b>Explanation</b><br>'+safe(r.explanation)+'</div>':'<div class="review-meta" style="margin-top:10px">Explanation is not available for this question yet.</div>')+'</div></details>';}).join("")||'<div class="empty">No questions in this filter.</div>';}
 $("review").addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(b){reviewFilter=b.dataset.filter;renderAnswerReview();}});
 function startTimer(){clearInterval(tick);updateTimer();tick=setInterval(()=>{seconds--;updateTimer();if(seconds<=0){clearInterval(tick);finishTest(true);}},1000);}
