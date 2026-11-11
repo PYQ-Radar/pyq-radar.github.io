@@ -633,12 +633,24 @@ function applyCountdownTarget(settings){
  if(dateLabel)dateLabel.textContent=(valid?parsed.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"}):date);
  updatePrelimsCountdown();
 }
-async function loadPersonalCountdown(){
+function readLocalCountdownSettings(){
  try{
-  const {data:{user}}=await supabaseClient.auth.getUser();
-  if(user)applyCountdownTarget(user.user_metadata?.pyq_radar_settings||{});
-  else applyCountdownTarget(DEFAULT_TARGET);
- }catch(error){applyCountdownTarget(DEFAULT_TARGET);}
+  const saved=JSON.parse(localStorage.getItem("pyqRadarSettings")||"{}");
+  return saved&&typeof saved==="object"?saved:{};
+ }catch(error){return {}}
+}
+async function loadPersonalCountdown(){
+ const localSettings=readLocalCountdownSettings();
+ try{
+  const {data:{user},error}=await supabaseClient.auth.getUser();
+  if(error)throw error;
+  const accountSettings=user?.user_metadata?.pyq_radar_settings||{};
+  // Account settings take priority; local settings keep the dashboard in sync
+  // immediately on the same browser if the auth profile has not refreshed yet.
+  applyCountdownTarget({...localSettings,...accountSettings});
+ }catch(error){
+  applyCountdownTarget(localSettings);
+ }
 }
 function updatePrelimsCountdown(){
  const target=activeCountdownTarget||DEFAULT_TARGET;
