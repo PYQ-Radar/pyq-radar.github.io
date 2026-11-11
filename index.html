@@ -742,7 +742,7 @@ function formatQuestionMarkup(raw){
    intro=content.slice(0,first).trim();
    const body=content.slice(first);
    const parts=[...body.matchAll(/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g)];
-   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"" ).length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
    const last=items.length-1;
    const promptRe=/\s+(Which of the following (?:information|evidence|statements|options)[^?]{0,180}\?)\s*/i;
    const prompt=items[last]?.text.match(promptRe);
@@ -771,7 +771,25 @@ function formatQuestionMarkup(raw){
  return '<div class="formatted-question">'+(intro?'<div class="question-main">'+escapeHtml(intro)+'</div>':'')+
    renderItems(items)+(secondaryPrompt?'<div class="question-instruction">'+escapeHtml(secondaryPrompt)+'</div>'+renderItems(secondaryItems):'')+
    (ending?'<div class="question-instruction">'+escapeHtml(ending)+'</div>':'')+'</div>';
-}async function renderQuestion(){
+}
+
+function renderEmpty(searchTerm){
+ setFeedStatus("NO RESULTS");
+
+ $("pyq-question").innerHTML=formatQuestionMarkup(searchTerm
+  ?"No questions match this search."
+  :"No questions are currently available.");
+
+ $("pyq-options").innerHTML='<p class="muted-note">Try another search or select Reload Questions.</p>';
+
+ setText("pyq-exam","PYQ RADAR");
+ setText("pyq-year","—");
+ setText("pyq-subject","All Subjects");
+ setText("question-note","No question is currently loaded.");
+}
+
+/* DISPLAY QUESTION */
+async function renderQuestion(){
  const q=questionRows[currentIndex];
  if(!q) return;
 
