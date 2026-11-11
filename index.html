@@ -537,26 +537,70 @@ function loadDailyVocabulary(){
 
 loadDailyVocabulary();
 
-/* DAILY QUOTES */
+/* DAILY QUOTES — fresh UPSC-focused thought each day */
 const quotes=[
- '"Dream big, Prepare well, Achieve more."',
- '"Consistency is the bridge between goals and achievement."',
- '"Small progress every day leads to big results."',
- '"Discipline today, success tomorrow."',
- '"Your preparation creates your possibilities."'
+ "A clear concept is worth more than a page of memorised facts.",
+ "Every PYQ is a clue to how the examination thinks.",
+ "Do not measure preparation by hours alone; measure what you understood.",
+ "Consistency turns an ordinary study day into long-term progress.",
+ "Revise until you can explain the idea without looking at your notes.",
+ "A mistake analysed today becomes an advantage in the next test.",
+ "Strong basics make difficult questions easier to approach.",
+ "Read to understand, revise to retain, practise to apply.",
+ "One focused session can move you further than a distracted day.",
+ "The syllabus gives direction; PYQs show where to pay attention.",
+ "Do not fear difficult questions; use them to find gaps in understanding.",
+ "Progress is often quiet: one concept, one revision, one day at a time.",
+ "A good aspirant does not just collect facts; they connect ideas.",
+ "Your notes become useful when your revision makes them familiar.",
+ "Accuracy grows when you slow down and read every statement carefully.",
+ "Treat every mock test as feedback, not as a judgement.",
+ "Build understanding first; speed follows with practice.",
+ "The best shortcut is a strong foundation.",
+ "A disciplined routine leaves less room for last-minute panic.",
+ "Learn the reason behind an answer, not just the answer itself.",
+ "A topic is not complete until you can revise it confidently.",
+ "Small daily targets create dependable momentum.",
+ "Curiosity makes learning deeper and revision easier.",
+ "Use current affairs to connect the static syllabus with the real world.",
+ "Elimination works best when concepts are clear.",
+ "Do not chase every source; master the sources you have chosen.",
+ "A calm mind reads questions more accurately.",
+ "Turn weak areas into your next study priority.",
+ "Every revision makes important information easier to retrieve.",
+ "Think in concepts, connect in themes, and answer with clarity.",
+ "Preparation is a process of improving your understanding every day.",
+ "The quality of your attention matters more than the length of your study list.",
+ "A difficult topic becomes manageable when broken into smaller ideas.",
+ "Analyse why an option is wrong as carefully as why one is right.",
+ "Keep your preparation steady even when results take time.",
+ "Good answers begin with clear thinking.",
+ "A map, a timeline, and a concept link can make facts memorable.",
+ "Learn actively: question, recall, connect, and revise.",
+ "Do not let one difficult test define your preparation.",
+ "The habit of revision is the habit of remembering.",
+ "Make today's study useful for tomorrow's recall.",
+ "Read the question twice; careless reading can undo good preparation.",
+ "Your strongest resource is the understanding you build yourself.",
+ "Stay patient with the process and honest about your progress.",
+ "Each PYQ solved thoughtfully sharpens your exam sense.",
+ "Clarity beats cramming when a question tests multiple concepts.",
+ "A focused beginning is better than a perfect plan postponed.",
+ "Keep showing up; mastery is built through repeated effort.",
+ "Study with purpose, revise with discipline, and practise with honesty.",
+ "The next improvement starts with the topic you find difficult today."
 ];
 
-let quoteIndex=0;
-
-setInterval(()=>{
- quoteIndex=(quoteIndex+1)%quotes.length;
- const q=document.getElementById("quote");
- q.style.opacity=0;
- setTimeout(()=>{
-  q.textContent=quotes[quoteIndex];
-  q.style.opacity=1;
- },350);
-},5000);
+const quoteElement=document.getElementById("quote");
+if(quoteElement){
+ const now=new Date();
+ const startOfYear=new Date(now.getFullYear(),0,0);
+ const dayOfYear=Math.floor((now-startOfYear)/86400000);
+ const quoteIndex=(dayOfYear-1)%quotes.length;
+ quoteElement.style.opacity=0;
+ quoteElement.textContent='"'+quotes[quoteIndex]+'"';
+ requestAnimationFrame(()=>{quoteElement.style.transition="opacity .35s ease";quoteElement.style.opacity=1;});
+}
 
 /* SIDEBAR VISUAL SELECTION */
 document.querySelectorAll(".nav-item").forEach(item=>{
