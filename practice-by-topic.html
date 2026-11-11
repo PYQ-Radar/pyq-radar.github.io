@@ -98,7 +98,7 @@ function formatQuestionMarkup(raw){
    intro=content.slice(0,first).trim();
    const body=content.slice(first);
    const parts=[...body.matchAll(/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g)];
-   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"" ).length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
    const last=items.length-1;
    const promptRe=/\s+(Which of the following (?:information|evidence|statements|options)[^?]{0,180}\?)\s*/i;
    const prompt=items[last]?.text.match(promptRe);
@@ -127,7 +127,19 @@ function formatQuestionMarkup(raw){
  return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+
    renderItems(items)+(secondaryPrompt?'<div class="question-instruction">'+safe(secondaryPrompt)+'</div>'+renderItems(secondaryItems):'')+
    (ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
-}function showStoredAnswer(){const q=questions[index],r=revealed[q.id];if(!r)return;$("answer").style.display="block";$("answer").innerHTML=r.html;$("options").querySelectorAll(".opt").forEach(el=>{const key=el.dataset.key;if(key===r.key)el.classList.add("right");else if(key===selected[q.id])el.classList.add("wrong");});}
+}
+
+async function renderQuestion(){
+ const q=questions[index];if(!q)return;
+ $("q-counter").textContent="Question "+(index+1)+" of "+questions.length;$("topic-progress").style.width=((index+1)/questions.length*100)+"%";
+ $("q-meta").textContent=(q.year||"Year N/A")+" · "+(q.paper||"UPSC Prelims");$("q-status").textContent=attempted.has(q.id)?"Attempted":"Not attempted";$("question").innerHTML=formatQuestionMarkup(q.question_text);
+ $("answer").style.display="none";$("answer").innerHTML="";$("reveal").disabled=!!revealed[q.id];$("prev").disabled=index===0;$("next").disabled=index===questions.length-1;
+ const {data:opts,error}=await db.from("question_options").select("option_key,option_text").eq("question_id",q.id).order("option_key");if(error)throw error;
+ $("options").innerHTML=(opts||[]).map(o=>'<label class="opt '+(selected[q.id]===o.option_key?"selected":"")+'" data-key="'+safe(o.option_key)+'"><input type="radio" name="answer" '+(selected[q.id]===o.option_key?"checked":"")+'><span><b>'+safe(o.option_key)+'.</b> '+safe(o.option_text)+'</span></label>').join("");
+ $("options").querySelectorAll(".opt").forEach(el=>el.addEventListener("click",()=>{selected[q.id]=el.dataset.key;attempted.add(q.id);renderQuestion();}));
+ if(revealed[q.id])showStoredAnswer();
+}
+function showStoredAnswer(){const q=questions[index],r=revealed[q.id];if(!r)return;$("answer").style.display="block";$("answer").innerHTML=r.html;$("options").querySelectorAll(".opt").forEach(el=>{const key=el.dataset.key;if(key===r.key)el.classList.add("right");else if(key===selected[q.id])el.classList.add("wrong");});}
 async function revealAnswer(){
  const q=questions[index];if(!q)return;$("reveal").disabled=true;$("reveal").textContent="Checking…";
  try{const {data,error}=await db.rpc("reveal_question_answer",{question_id:q.id});if(error)throw error;const r=Array.isArray(data)?data[0]:data;const key=r?.correct_option||"";
