@@ -436,9 +436,9 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
   </div>
 
   <div class="panel exam-countdown-panel">
-   <div class="panel-head"><h3><i class="fa-solid fa-hourglass-half"></i>UPSC CSE 2027 Countdown</h3></div>
+   <div class="panel-head"><h3><i class="fa-solid fa-hourglass-half"></i><span id="countdown-title">UPSC CSE 2027 Countdown</span></h3></div>
    <div class="countdown-body">
-    <div class="countdown-date"><i class="fa-regular fa-calendar-check"></i> Prelims · 23 May 2027</div>
+    <div class="countdown-date"><i class="fa-regular fa-calendar-check"></i><span id="countdown-date-label">Prelims · 23 May 2027</span></div>
     <div class="countdown-grid" aria-label="Time remaining until UPSC CSE 2027 Prelims">
      <div class="countdown-unit"><strong id="cd-days">—</strong><span>Days</span></div>
      <div class="countdown-unit"><strong id="cd-hours">—</strong><span>Hours</span></div>
@@ -618,20 +618,47 @@ if(quoteElement){
  requestAnimationFrame(()=>{quoteElement.style.transition="opacity .35s ease";quoteElement.style.opacity=1;});
 }
 
-/* UPSC CSE 2027 PRELIMS COUNTDOWN */
+/* PERSONAL TARGET COUNTDOWN — synced from account settings */
+const DEFAULT_TARGET={label:"UPSC CSE 2027 Prelims",date:"2027-05-23"};
+let activeCountdownTarget={...DEFAULT_TARGET};
+function applyCountdownTarget(settings){
+ const label=(settings?.target_countdown_label||DEFAULT_TARGET.label).trim()||DEFAULT_TARGET.label;
+ const date=settings?.target_countdown_date||DEFAULT_TARGET.date;
+ activeCountdownTarget={label,date};
+ const parsed=new Date(date+"T00:00:00");
+ const valid=!Number.isNaN(parsed.getTime());
+ const title=document.getElementById("countdown-title");
+ const dateLabel=document.getElementById("countdown-date-label");
+ if(title)title.textContent=label+" Countdown";
+ if(dateLabel)dateLabel.textContent=(valid?parsed.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"}):date);
+ updatePrelimsCountdown();
+}
+async function loadPersonalCountdown(){
+ try{
+  const {data:{user}}=await supabaseClient.auth.getUser();
+  if(user)applyCountdownTarget(user.user_metadata?.pyq_radar_settings||{});
+  else applyCountdownTarget(DEFAULT_TARGET);
+ }catch(error){applyCountdownTarget(DEFAULT_TARGET);}
+}
 function updatePrelimsCountdown(){
- const examDate=new Date("2027-05-23T00:00:00+05:30").getTime();
+ const target=activeCountdownTarget||DEFAULT_TARGET;
+ const examDate=new Date(target.date+"T00:00:00").getTime();
  const remaining=examDate-Date.now();
  const status=document.getElementById("countdown-status");
+ if(!Number.isFinite(examDate)){
+  if(status)status.textContent="Choose a valid target date in Settings.";
+  return;
+ }
  if(remaining<=0){
   ["cd-days","cd-hours","cd-minutes","cd-seconds"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent="00";});
-  if(status)status.textContent=remaining>-86400000?"All the best! UPSC Prelims is today.":"The scheduled Prelims date has passed. Check UPSC for updates.";
+  if(status)status.textContent=remaining>-86400000?"Your target date is today. All the best!":"Your target date has passed. Update it in Settings for your next goal.";
   return;
  }
  const units={days:Math.floor(remaining/86400000),hours:Math.floor((remaining%86400000)/3600000),minutes:Math.floor((remaining%3600000)/60000),seconds:Math.floor((remaining%60000)/1000)};
  Object.entries(units).forEach(([unit,value])=>{const el=document.getElementById("cd-"+unit);if(el)el.textContent=String(value).padStart(2,"0");});
 }
-updatePrelimsCountdown();
+applyCountdownTarget(DEFAULT_TARGET);
+loadPersonalCountdown();
 setInterval(updatePrelimsCountdown,1000);
 
 /* SIDEBAR VISUAL SELECTION */
