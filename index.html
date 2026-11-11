@@ -125,6 +125,13 @@ button{font-family:inherit;cursor:pointer}
 .map-shortcuts .stat:nth-child(4){background:linear-gradient(120deg,#68452b,#3d3045)}
 .map-shortcuts .stat:hover{transform:translateY(-4px);border-color:#8bb8ff80}
 
+/* Keep the practice controls attached to the PYQ panel, never the right-side countdown */
+.dashboard-grid>.panel:first-child{order:1;min-width:0}
+.dashboard-grid>.right-col{order:2;min-width:0}
+.dashboard-grid>.panel:first-child .panel-head{flex-wrap:wrap;gap:12px}
+.dashboard-grid>.panel:first-child .panel-head>div{display:flex;flex-wrap:nowrap;gap:8px;align-items:center;margin-left:auto}
+.dashboard-grid>.panel:first-child .panel-head .outline-btn{white-space:nowrap;flex:0 0 auto}
+
 /* DASHBOARD */
 .dashboard-grid{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(280px,1fr);gap:18px}
 .panel{
@@ -647,7 +654,8 @@ let searchTimer=null;
 const $=id=>document.getElementById(id);
 
 function setText(id,value){
- $(id).textContent=value??"";
+ const element=$(id);
+ if(element) element.textContent=value??"";
 }
 
 function applyDisplayName(name){
