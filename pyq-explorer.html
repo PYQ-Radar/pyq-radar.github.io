@@ -189,8 +189,15 @@ function formatQuestionMarkup(raw){
  let intro="",items=[],secondaryPrompt="",secondaryItems=[];
  // Render match-the-following questions as a two-column List-I / List-II table.
  const headings=[...source.matchAll(/List\s*[-–]?\s*(II|I)\b(?:\s*\([^)]*\))?/gi)];
- const firstList=headings.find(x=>x[1].toUpperCase()==="I");
- const secondList=headings.find(x=>x[1].toUpperCase()==="II");
+ let firstList=null,secondList=null;
+ for(let h=0;h<headings.length-1;h++){
+   if(headings[h][1].toUpperCase()!=="I")continue;
+   const next=headings.slice(h+1).find(x=>x[1].toUpperCase()==="II");
+   if(!next)continue;
+   const candidate=source.slice(headings[h].index+headings[h][0].length,next.index);
+   const labels=[...candidate.matchAll(/(^|\s)(IV|III|II|I|[A-D])[.)]\s+/g)];
+   if(labels.length>=2){firstList=headings[h];secondList=next;break;}
+ }
  if(firstList&&secondList&&secondList.index>firstList.index){
    const leftHeader=firstList[0].trim();
    const rightHeader=secondList[0].trim();
