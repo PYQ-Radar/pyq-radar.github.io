@@ -745,7 +745,7 @@ function formatQuestionMarkup(raw){
  const roman=[...content.matchAll(romanRe)];
  let intro="",items=[],secondaryPrompt="",secondaryItems=[];
  // Handle UNESCO heritage-site list questions whose source text lost line breaks/numbers.
- const heritagePrompt=content.match(/\\s*(Which of the above are included in the World Heritage List of UNESCO\\?)\\s*$/i);
+ const heritagePrompt=content.match(/\s*(Which of the above are included in the World Heritage List of UNESCO\?)\s*$/i);
  if(heritagePrompt){
    const head=content.slice(0,heritagePrompt.index).trim();
    const colonAt=head.indexOf(":");
