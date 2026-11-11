@@ -7,6 +7,8 @@
 </style><style>/* PYQ Radar: global no-underline override */
 a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
 u, ins { text-decoration: none !important; text-decoration-line: none !important; }
+/* Structured UPSC question layout */
+.formatted-question{display:grid;gap:12px;line-height:1.7}.question-main{padding:13px 15px;border-left:4px solid #5b9cff;border-radius:8px;background:#172d53;color:#f0f5ff;font-weight:650}.statement-list{display:grid;gap:8px}.statement-item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;padding:11px 13px;border:1px solid #386b78;border-radius:9px;background:#102f3c;color:#dff8f4}.statement-label{color:#69dfc5}.question-instruction{padding:11px 14px;border-left:4px solid #d9a84b;border-radius:8px;background:#3b3020;color:#ffe5b2;font-weight:700}.q-text .formatted-question,.question .formatted-question,.review-q .formatted-question{margin-top:7px}.q-text .question-main,.question .question-main,.review-q .question-main{font-size:13px}.q-text .statement-item,.question .statement-item,.review-q .statement-item{font-size:12px}.q-text .question-instruction,.question .question-instruction,.review-q .question-instruction{font-size:12px}#qtext .question-main,#question .question-main{font-size:15px}#qtext .statement-item,#question .statement-item{font-size:13px}#qtext .question-instruction,#question .question-instruction{font-size:13px}.search-result .formatted-question{gap:6px}.search-result .question-main,.search-result .statement-item,.search-result .question-instruction{font-size:11px;padding:7px 9px}@media(max-width:600px){.statement-item{grid-template-columns:30px minmax(0,1fr);gap:7px;padding:9px}.formatted-question{gap:9px}}
 </style>
 </head><body>
 <aside class="sidebar"><div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
@@ -74,14 +76,28 @@ async function searchQuestions(){
   if(error)throw error;
   const rows=data||[];
   $("search-status").textContent=rows.length?("Found "+rows.length+(rows.length===100?" results (showing first 100).":" matching questions.")):"No matching questions found.";
-  $("search-results").innerHTML=rows.map((q,i)=>{const sub=subjects.find(s=>s.id===q.subject_id)?.name||"Subject";const top=topics.find(t=>t.id===q.topic_id)?.name||"Topic";return '<button class="search-result" data-search-index="'+i+'"><span>'+safe(q.question_text)+'</span><small>'+(q.year||"Year N/A")+' · '+safe(sub)+' · '+safe(top)+'</small></button>';}).join("");
+  $("search-results").innerHTML=rows.map((q,i)=>{const sub=subjects.find(s=>s.id===q.subject_id)?.name||"Subject";const top=topics.find(t=>t.id===q.topic_id)?.name||"Topic";return '<button class="search-result" data-search-index="'+i+'"><span>'+formatQuestionMarkup(q.question_text)+'</span><small>'+(q.year||"Year N/A")+' · '+safe(sub)+' · '+safe(top)+'</small></button>';}).join("");
   $("search-results").querySelectorAll("[data-search-index]").forEach(b=>b.addEventListener("click",()=>{questions=rows;index=Number(b.dataset.searchIndex);activeTopic={name:"Search Results"};selected={};revealed={};attempted=new Set();$("practice").classList.remove("hidden");renderQuestion();$("practice").scrollIntoView({behavior:"smooth",block:"start"});}));
  }catch(e){$("search-status").textContent="Search failed: "+e.message;}
+}
+function formatQuestionMarkup(raw){
+ const source=String(raw||"Question text missing.").trim();
+ const marker=/(^|\\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\\.\\s+/g;
+ const matches=[...source.matchAll(marker)];
+ if(matches.length<2)return '<div class="formatted-question"><div class="question-main">'+safe(source)+'</div></div>';
+ const first=matches[0].index+(matches[0][1]||"").length;
+ const intro=source.slice(0,first).trim(),body=source.slice(first);
+ const parts=[...body.matchAll(/(^|\\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\\.\\s+/g)];
+ const statements=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+ const tail=/\\s+(Which of the statements|Which of the following|Which one of the following|How many of the above|How many statements|Select the correct|Choose the correct|Which of the above|What is the correct|Which pair|Which pairs|Which option)/i;
+ let ending="";const last=statements.length-1;const hit=statements[last].text.match(tail);
+ if(hit&&hit.index>0){ending=statements[last].text.slice(hit.index).trim();statements[last].text=statements[last].text.slice(0,hit.index).trim();}
+ return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+'<div class="statement-list">'+statements.map(x=>'<div class="statement-item"><b class="statement-label">'+safe(x.label)+'.</b><span>'+safe(x.text)+'</span></div>').join("")+'</div>'+(ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
 }
 async function renderQuestion(){
  const q=questions[index];if(!q)return;
  $("q-counter").textContent="Question "+(index+1)+" of "+questions.length;$("topic-progress").style.width=((index+1)/questions.length*100)+"%";
- $("q-meta").textContent=(q.year||"Year N/A")+" · "+(q.paper||"UPSC Prelims");$("q-status").textContent=attempted.has(q.id)?"Attempted":"Not attempted";$("question").textContent=q.question_text;
+ $("q-meta").textContent=(q.year||"Year N/A")+" · "+(q.paper||"UPSC Prelims");$("q-status").textContent=attempted.has(q.id)?"Attempted":"Not attempted";$("question").innerHTML=formatQuestionMarkup(q.question_text);
  $("answer").style.display="none";$("answer").innerHTML="";$("reveal").disabled=!!revealed[q.id];$("prev").disabled=index===0;$("next").disabled=index===questions.length-1;
  const {data:opts,error}=await db.from("question_options").select("option_key,option_text").eq("question_id",q.id).order("option_key");if(error)throw error;
  $("options").innerHTML=(opts||[]).map(o=>'<label class="opt '+(selected[q.id]===o.option_key?"selected":"")+'" data-key="'+safe(o.option_key)+'"><input type="radio" name="answer" '+(selected[q.id]===o.option_key?"checked":"")+'><span><b>'+safe(o.option_key)+'.</b> '+safe(o.option_text)+'</span></label>').join("");
