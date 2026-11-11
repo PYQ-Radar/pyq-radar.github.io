@@ -16,12 +16,11 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
 <article class="plan featured"><span class="ribbon">MOST POPULAR</span><h2>Premium</h2><div class="desc">For learners who want explanations in more depth.</div><div class="prices"><div class="price"><span>Monthly</span><strong>₹29 <small>/ month</small></strong></div><div class="price"><span>6 Months</span><strong>₹149 <small>/ 6 months</small></strong></div><div class="price"><span>Yearly</span><strong>₹299 <small>/ year</small></strong></div></div><ul class="features"><li><i class="fa-solid fa-check"></i>All Basic plan features</li><li><i class="fa-solid fa-check"></i>English + Hinglish explanations</li><li><i class="fa-solid fa-check"></i>Detailed explanations</li><li><i class="fa-solid fa-check"></i>Explanation of all four options</li><li><i class="fa-solid fa-check"></i>Advanced Performance Analysis</li><li><i class="fa-solid fa-check"></i>Detailed subject-wise performance insights</li></ul><button class="choose" type="button" data-plan="Premium">Select Premium</button></article>
 <article class="plan"><h2>Pro</h2><div class="desc">For aspirants who want additional conceptual learning.</div><div class="prices"><div class="price"><span>Monthly</span><strong>₹59 <small>/ month</small></strong></div><div class="price"><span>6 Months</span><strong>₹299 <small>/ 6 months</small></strong></div><div class="price"><span>Yearly</span><strong>₹599 <small>/ year</small></strong></div></div><ul class="features"><li><i class="fa-solid fa-check"></i>All Premium plan features</li><li><i class="fa-solid fa-check"></i>More detailed conceptual explanations</li><li><i class="fa-solid fa-check"></i>Related concepts and examples</li><li><i class="fa-solid fa-check"></i>Additional UPSC-focused learning material</li><li><i class="fa-solid fa-check"></i>All Premium analytics features</li></ul><button class="choose" type="button" data-plan="Pro">Select Pro</button></article>
 </section>
-<section class="checkout" id="checkout" aria-live="polite"><h2>Selected plan</h2><p>Review your plan and duration below. You can change either selection before continuing.</p><div class="summary"><strong id="selectedName">Basic · Monthly</strong><strong id="selectedPrice">₹9</strong></div><p class="safe-note">Choose an available payment method at secure checkout. On mobile, supported UPI apps such as PhonePe, Google Pay and Paytm may appear; on desktop, a UPI QR option may be shown. Your plan activates only after the server verifies a successful payment.</p><button class="checkout-btn" id="payNow" type="button" style="border:0;cursor:pointer">Continue to secure payment</button><p id="paymentStatus" role="status" aria-live="polite"></p></section>
+<section class="checkout" id="checkout" aria-live="polite"><h2>Selected plan</h2><p>Review your plan and duration below. You can change either selection before continuing.</p><div class="summary"><strong id="selectedName">Basic · Monthly</strong><strong id="selectedPrice">₹9</strong></div><div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,280px);gap:22px;align-items:center;margin:18px 0"><div><p>Scan this existing PYQ Radar support QR using PhonePe, Paytm, Google Pay or another UPI app. Pay the exact amount shown above.</p><p class="safe-note">Submit the UPI transaction reference only after the payment is successful. Your subscription stays pending until the payment is checked.</p></div><div style="background:#fff;border-radius:14px;padding:12px;text-align:center"><img src="https://i.ibb.co/wZSk0KjM/Whats-App-Image-2026-11-10-at-4-23-23-AM.jpg" alt="PYQ Radar UPI QR code" style="display:block;width:100%;max-width:250px;margin:auto;object-fit:contain"><small style="color:#25334a;font-weight:700">SCAN TO PAY</small></div></div><label for="upiReference" style="display:block;font-size:12px;margin:12px 0 6px;color:#dbe8fb">UPI transaction reference / UTR</label><input id="upiReference" type="text" maxlength="40" autocomplete="off" placeholder="Enter transaction reference" style="width:100%;padding:12px;border-radius:9px;border:1px solid #496184;background:#0b1b33;color:#fff"><button class="checkout-btn" id="payNow" type="button" style="border:0;cursor:pointer;margin-top:12px">Submit payment for verification</button><p id="paymentStatus" role="status" aria-live="polite"></p></section>
 <p class="note">Prices and plan benefits are proposed launch offers. Paid explanations and other subscription benefits will become available only after they are implemented. No subscription is activated by viewing this page.</p>
 <section class="payment"><i class="fa-solid fa-shield-halved"></i><h2>Secure payment verification</h2><p>Payments are verified securely on the server. Never share OTPs, UPI PINs, or payment credentials with anyone.</p></section>
 <footer>© 2026 PYQ Radar. All Rights Reserved.<br>Designed &amp; Developed by <strong style="color:#fff;font-weight:800;text-shadow:0 0 9px rgba(90,145,255,.35);letter-spacing:.25px">Satya Jigyansu</strong><br>Built for Aspirants, Driven by Knowledge.</footer>
 </div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 const SUPABASE_URL="https://fzepobjbcehirerwtnsz.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW";
@@ -30,40 +29,31 @@ const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHA
  const plans={Basic:{Monthly:9,"6 Months":49,Yearly:89},Premium:{Monthly:29,"6 Months":149,Yearly:299},Pro:{Monthly:59,"6 Months":299,Yearly:599}};
  let plan="Basic",duration="Monthly",busy=false;
  const checkout=document.getElementById("checkout"),name=document.getElementById("selectedName"),price=document.getElementById("selectedPrice");
- const payButton=document.getElementById("payNow"),status=document.getElementById("paymentStatus");
+ const payButton=document.getElementById("payNow"),status=document.getElementById("paymentStatus"),reference=document.getElementById("upiReference");
  function setStatus(message,isError=false){status.textContent=message;status.style.color=isError?"#ffb4b4":"#9fe4c9";}
  function render(){
   name.textContent=plan+" · "+duration;price.textContent="₹"+plans[plan][duration];
   document.querySelectorAll(".plan").forEach(card=>{const title=card.querySelector("h2")?.textContent.trim();card.style.borderColor=title===plan?"#77a5ff":"";const btn=card.querySelector(".choose");if(btn){btn.classList.toggle("active",title===plan);btn.textContent=title===plan?"Selected ✓":"Select "+title;}});
+  document.querySelectorAll(".price").forEach(x=>x.classList.remove("selected"));
+  const card=[...document.querySelectorAll(".plan")].find(x=>x.querySelector("h2")?.textContent.trim()===plan);
+  [...(card?.querySelectorAll(".price")||[])].find(x=>x.querySelector("span")?.textContent.trim()===duration)?.classList.add("selected");
  }
  document.querySelectorAll(".choose").forEach(btn=>btn.addEventListener("click",()=>{plan=btn.dataset.plan;checkout.classList.add("show");render();checkout.scrollIntoView({behavior:"smooth",block:"nearest"});}));
- document.querySelectorAll(".price").forEach(row=>{const label=row.querySelector("span")?.textContent.trim();if(!["Monthly","6 Months","Yearly"].includes(label))return;row.setAttribute("role","button");row.setAttribute("tabindex","0");const choose=()=>{duration=label;document.querySelectorAll(".price").forEach(x=>x.classList.remove("selected"));const card=[...document.querySelectorAll(".plan")].find(x=>x.querySelector("h2")?.textContent.trim()===plan);[...(card?.querySelectorAll(".price")||[])].find(x=>x.querySelector("span")?.textContent.trim()===duration)?.classList.add("selected");if(checkout.classList.contains("show"))render();};row.addEventListener("click",choose);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();choose();}});});
+ document.querySelectorAll(".price").forEach(row=>{const label=row.querySelector("span")?.textContent.trim();if(!["Monthly","6 Months","Yearly"].includes(label))return;row.setAttribute("role","button");row.setAttribute("tabindex","0");const choose=()=>{duration=label;if(checkout.classList.contains("show"))render();};row.addEventListener("click",choose);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();choose();}});});
  payButton.addEventListener("click",async()=>{
   if(busy)return;
-  busy=true;payButton.disabled=true;payButton.style.opacity=".65";setStatus("Checking your account and preparing secure checkout...");
+  const utr=reference.value.trim();
+  if(!/^[A-Za-z0-9-]{6,40}$/.test(utr)){setStatus("Enter a valid UPI transaction reference (6–40 letters/numbers).",true);reference.focus();return;}
+  busy=true;payButton.disabled=true;payButton.style.opacity=".65";setStatus("Submitting your payment details...");
   try{
    const {data:{user},error:userError}=await supabaseClient.auth.getUser();
-   if(userError||!user){setStatus("Please sign in before purchasing a plan.",true);window.location.href="login.html?redirect=subscription.html";return;}
-   if(typeof window.Razorpay!=="function"){throw new Error("Secure checkout could not load. Please refresh and try again.");}
-   const {data:order,error:orderError}=await supabaseClient.functions.invoke("razorpay-checkout",{body:{action:"create_order",plan,duration}});
-   if(orderError||!order?.order_id||!order?.key_id){throw new Error(order?.error||orderError?.message||"Payment checkout is not configured yet. No payment has been taken.");}
-   const options={
-    key:order.key_id,amount:order.amount,currency:order.currency, name:order.name,description:order.description,
-    order_id:order.order_id,prefill:{email:user.email||""},theme:{color:"#2677ff"},
-    handler:async function(response){
-     setStatus("Payment received by checkout. Verifying securely...");
-     const {data:verification,error:verifyError}=await supabaseClient.functions.invoke("razorpay-checkout",{body:{action:"verify_payment",razorpay_order_id:response.razorpay_order_id,razorpay_payment_id:response.razorpay_payment_id,razorpay_signature:response.razorpay_signature}});
-     if(verifyError||!verification?.success){setStatus(verification?.error||verifyError?.message||"Payment could not be verified. Do not pay again yet; contact support with your payment ID.",true);return;}
-     setStatus("Payment verified. "+verification.plan+" plan is active until "+new Date(verification.expires_at).toLocaleDateString("en-IN")+".");
-     payButton.textContent="Payment successful ✓";
-     setTimeout(()=>window.location.href="my-account.html",1800);
-    },
-    modal:{ondismiss:function(){setStatus("Checkout closed. No subscription was activated.");}}
-   };
-   const rzp=new window.Razorpay(options);
-   rzp.on("payment.failed",function(){setStatus("Payment failed or was not completed. Your plan has not been activated.",true);});
-   rzp.open();
-  }catch(error){setStatus(error.message||"Unable to start checkout. Please try again.",true);}
+   if(userError||!user){setStatus("Please sign in before submitting a payment request.",true);window.location.href="login.html?redirect=subscription.html";return;}
+   const amount=Math.round(plans[plan][duration]*100);
+   const {error}=await supabaseClient.from("subscription_payment_requests").insert({user_id:user.id,plan,duration,amount_paise:amount,utr,status:"pending"});
+   if(error){if(error.code==="23505")throw new Error("This transaction reference has already been submitted.");throw error;}
+   setStatus("Payment request submitted. Your plan will activate after the payment is verified. Please do not pay again.");
+   payButton.textContent="Request submitted ✓";reference.value="";reference.disabled=true;
+  }catch(error){setStatus(error.message||"Could not submit the request. Please try again.",true);}
   finally{busy=false;payButton.disabled=false;payButton.style.opacity="1";}
  });
  render();
