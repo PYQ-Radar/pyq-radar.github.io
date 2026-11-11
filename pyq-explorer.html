@@ -68,6 +68,16 @@ button{cursor:pointer}
 a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
 u, ins { text-decoration: none !important; text-decoration-line: none !important; }
 /* Structured UPSC question layout */
+
+.match-list-table{border:1px solid #51418a;border-radius:12px;overflow:hidden;background:#110d20;display:block;width:100%}
+.match-list-head,.match-list-row{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)}
+.match-list-head{background:#21163a;color:#d9b7ff;font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.35px}
+.match-list-head>span{padding:12px 15px}
+.match-list-head>span+span,.match-list-row>.match-list-cell+ .match-list-cell{border-left:1px solid #39295f}
+.match-list-row{border-top:1px solid #302344}
+.match-list-cell{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;padding:12px 15px;color:#e7e1f2;font-size:14px;line-height:1.55;min-width:0}
+.match-list-cell b{color:#c7a0ff;font-weight:800}
+@media(max-width:560px){.match-list-head>span,.match-list-cell{padding:10px 8px;font-size:11px}.match-list-cell{grid-template-columns:19px minmax(0,1fr);gap:5px}.match-list-head{font-size:10px}.match-list-head,.match-list-row{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}}
 .formatted-question{display:grid;gap:12px;line-height:1.7}.question-main{padding:13px 15px;border-left:4px solid #5b9cff;border-radius:8px;background:#172d53;color:#f0f5ff;font-weight:650}.statement-list{display:grid;gap:8px}.statement-item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;padding:11px 13px;border:1px solid #386b78;border-radius:9px;background:#102f3c;color:#dff8f4}.statement-label{color:#69dfc5}.question-instruction{padding:11px 14px;border-left:4px solid #d9a84b;border-radius:8px;background:#3b3020;color:#ffe5b2;font-weight:700}.q-text .formatted-question,.question .formatted-question,.review-q .formatted-question{margin-top:7px}.q-text .question-main,.question .question-main,.review-q .question-main{font-size:13px}.q-text .statement-item,.question .statement-item,.review-q .statement-item{font-size:12px}.q-text .question-instruction,.question .question-instruction,.review-q .question-instruction{font-size:12px}#qtext .question-main,#question .question-main{font-size:15px}#qtext .statement-item,#question .statement-item{font-size:13px}#qtext .question-instruction,#question .question-instruction{font-size:13px}.search-result .formatted-question{gap:6px}.search-result .question-main,.search-result .statement-item,.search-result .question-instruction{font-size:11px;padding:7px 9px}@media(max-width:600px){.statement-item{grid-template-columns:30px minmax(0,1fr);gap:7px;padding:9px}.formatted-question{gap:9px}}
 
 /* Keep sidebar navigation links clean: no underlines in any state */
@@ -177,6 +187,31 @@ function formatQuestionMarkup(raw){
  const romanRe=/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g;
  const roman=[...content.matchAll(romanRe)];
  let intro="",items=[],secondaryPrompt="",secondaryItems=[];
+ // Render match-the-following questions as a two-column List-I / List-II table.
+ const headings=[...source.matchAll(/List\\s*[-–]?\\s*(II|I)\\b(?:\\s*\\([^)]*\\))?/gi)];
+ const firstList=headings.find(x=>x[1].toUpperCase()==="I");
+ const secondList=headings.find(x=>x[1].toUpperCase()==="II");
+ if(firstList&&secondList&&secondList.index>firstList.index){
+   const leftHeader=firstList[0].trim();
+   const rightHeader=secondList[0].trim();
+   const leftRaw=source.slice(firstList.index+firstList[0].length,secondList.index).trim();
+   let rightRaw=source.slice(secondList.index+secondList[0].length).trim();
+   const codeAt=rightRaw.search(/\\b(?:Codes?|Select the correct answer|Choose the correct answer|Select the answer)\\b/i);
+   let matchEnding="";
+   if(codeAt>=0){matchEnding=rightRaw.slice(codeAt).trim();rightRaw=rightRaw.slice(0,codeAt).trim();}
+   const readMatchItems=(raw,pattern)=>{const marks=[...raw.matchAll(pattern)];return marks.map((m,i)=>({label:m[2],text:raw.slice(m.index+m[0].length-(m[1]||"").length,i+1<marks.length?marks[i+1].index:raw.length).trim()})).filter(x=>x.text);};
+   const leftItems=readMatchItems(leftRaw,/(^|\\s)(IV|III|II|I|[A-D])[.)]\\s+/g);
+   const rightItems=readMatchItems(rightRaw,/(^|\\s)([1-4]|[A-D])[.)]\\s+/g);
+   if(leftItems.length>=2&&rightItems.length>=2){
+     const left=leftItems.map((x,i)=>({label:String.fromCharCode(65+i),text:x.text}));
+     const right=rightItems.map((x,i)=>({label:String(i+1),text:x.text}));
+     const prompt=source.slice(0,firstList.index).trim();
+     const renderCell=(x)=>'<div class="match-list-cell"><b>'+safe(x.label)+'</b><span>'+safe(x.text)+'</span></div>';
+     const rows=Array.from({length:Math.max(left.length,right.length)},(_,i)=>'<div class="match-list-row">'+(left[i]?renderCell(left[i]):'<div class="match-list-cell"></div>')+(right[i]?renderCell(right[i]):'<div class="match-list-cell"></div>')+'</div>').join("");
+     return '<div class="formatted-question match-question">'+(prompt?'<div class="question-main">'+safe(prompt)+'</div>':'')+'<div class="match-list-table"><div class="match-list-head"><span>'+safe(leftHeader)+'</span><span>'+safe(rightHeader)+'</span></div>'+rows+'</div>'+(matchEnding?'<div class="question-instruction">'+safe(matchEnding)+'</div>':'')+'</div>';
+   }
+ }
+
  if(roman.length>=2){
    const first=roman[0].index+(roman[0][1]||"").length;
    intro=content.slice(0,first).trim();
