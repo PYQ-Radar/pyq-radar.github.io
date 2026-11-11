@@ -744,7 +744,36 @@ function formatQuestionMarkup(raw){
  const romanRe=/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g;
  const roman=[...content.matchAll(romanRe)];
  let intro="",items=[],secondaryPrompt="",secondaryItems=[];
- if(roman.length>=2){
+ // Handle UNESCO heritage-site list questions whose source text lost line breaks/numbers.
+ const heritagePrompt=content.match(/\\s*(Which of the above are included in the World Heritage List of UNESCO\\?)\\s*$/i);
+ if(heritagePrompt){
+   const head=content.slice(0,heritagePrompt.index).trim();
+   const colonAt=head.indexOf(":");
+   if(colonAt>=0){
+     intro=head.slice(0,colonAt+1).trim();
+     const listText=head.slice(colonAt+1).trim();
+     const knownSites=[
+       "Champaner - Pavagadh Archaeological Park",
+       "Chhatrapati Shivaji Railway Station, Mumbai",
+       "Mamallapuram",
+       "Sun Temple (Konark Temple)"
+     ];
+     let remaining=listText;
+     const found=[];
+     for(const site of knownSites){
+       const at=remaining.toLowerCase().indexOf(site.toLowerCase());
+       if(at>=0){found.push({at,text:site});}
+     }
+     found.sort((a,b)=>a.at-b.at);
+     if(found.length===knownSites.length){
+       items=found.map((x,i)=>({label:String(i+1),text:x.text}));
+       ending=heritagePrompt[1].trim();
+       content="";
+     }
+   }
+ }
+
+ if(items.length){ /* structured list detected above */ } else if(roman.length>=2){
    const first=roman[0].index+(roman[0][1]||"").length;
    intro=content.slice(0,first).trim();
    const body=content.slice(first);
