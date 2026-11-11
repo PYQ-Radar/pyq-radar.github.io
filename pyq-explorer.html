@@ -62,6 +62,7 @@ button{cursor:pointer}
 @media(max-width:1050px){.filters{grid-template-columns:repeat(2,minmax(0,1fr))}.reset-btn{align-self:end}}
 @media(max-width:760px){.sidebar{display:none}.main{margin-left:0;width:100%}.topbar{height:65px;padding:10px 14px}.content{padding:17px 12px}.page-head{align-items:flex-start;flex-direction:column}.page-head h1{font-size:22px}.filters{grid-template-columns:1fr 1fr;padding:12px}.field:first-child{grid-column:1/-1}.reset-btn{width:100%}.q-text{font-size:13px}.top-title{font-size:14px}}
 @media(max-width:420px){.filters{grid-template-columns:1fr}.field:first-child{grid-column:auto}.q-actions{flex-wrap:wrap}}
+.question-main{font-size:15px;line-height:1.7;letter-spacing:.05px}.statement-list{display:grid;gap:9px;margin:8px 0}.statement-item{grid-template-columns:34px minmax(0,1fr);align-items:start;padding:12px 14px;border-radius:10px;background:#102f3c;border:1px solid #386b78;color:#e4f7f4;line-height:1.65}.statement-label{color:#69dfc5;font-weight:800}.question-instruction{margin-top:9px;padding:12px 14px;border-left:4px solid #d9a84b;border-radius:9px;background:#3b3020;color:#ffe5b2;font-weight:700;line-height:1.6}.option,.opt{border:1px solid #c2d5f6;box-shadow:0 2px 7px rgba(4,16,40,.12);transition:background .18s,border-color .18s}.option:hover,.opt:hover{border-color:#6da2ff}.option b,.opt b{color:#245db7;font-weight:800}
 </style>
 <style>/* PYQ Radar: global no-underline override */
 a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
@@ -168,20 +169,38 @@ function buildQuery(){
  return q.order("year",{ascending:false}).order("created_at",{ascending:false}).range(page*PAGE_SIZE,(page+1)*PAGE_SIZE-1);
 }
 function formatQuestionMarkup(raw){
- const source=String(raw||"Question text missing.").trim();
- const marker=/(^|\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\.\s+/g;
- const matches=[...source.matchAll(marker)];
- if(matches.length<2)return '<div class="formatted-question"><div class="question-main">'+safe(source)+'</div></div>';
- const first=matches[0].index+(matches[0][1]||"").length;
- const intro=source.slice(0,first).trim(),body=source.slice(first);
- const parts=[...body.matchAll(/(^|\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\.\s+/g)];
- const statements=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
- const tail=/\s+(Which of the statements|Which of the following|Which one of the following|How many of the above|How many statements|Select the correct|Choose the correct|Which of the above|What is the correct|Which pair|Which pairs|Which option)/i;
- let ending="";const last=statements.length-1;const hit=statements[last].text.match(tail);
- if(hit&&hit.index>0){ending=statements[last].text.slice(hit.index).trim();statements[last].text=statements[last].text.slice(0,hit.index).trim();}
- return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+'<div class="statement-list">'+statements.map(x=>'<div class="statement-item"><b class="statement-label">'+safe(x.label)+'.</b><span>'+safe(x.text)+'</span></div>').join("")+'</div>'+(ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
-}
-function questionCard(q,index){
+ const source=String(raw||"Question text missing.").replace(/\u00a0/g," ").replace(/[ \t]+/g," ").trim();
+ if(!source)return '<div class="formatted-question"><div class="question-main">Question text missing.</div></div>';
+ const tailRe=/(?:Select (?:the )?(?:answer|correct answer) using the code given below|Choose the correct answer using the code given below|Which of the statements given above (?:is|are) correct|How many of the statements given above are correct)\s*[:?]?\s*$/i;
+ let ending="";let content=source;const tail=content.match(tailRe);
+ if(tail){ending=tail[0].trim().replace(/\s+/g," ");content=content.slice(0,tail.index).trim();}
+ const romanRe=/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g;
+ const roman=[...content.matchAll(romanRe)];
+ let intro="",items=[];
+ if(roman.length>=2){
+   const first=roman[0].index+(roman[0][1]||"").length;
+   intro=content.slice(0,first).trim();
+   const body=content.slice(first);
+   const parts=[...body.matchAll(/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g)];
+   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+ }else{
+   const colon=content.match(/^(?:Consider|Examine|Study|Read|Given)\s+.{4,180}?:\s*/i);
+   let body=content;
+   if(colon){intro=colon[0].replace(/\s*$/,"").trim();body=content.slice(colon[0].length).trim();}
+   else{
+     const qmark=content.indexOf("?");
+     if(qmark>=0&&content.slice(qmark+1).trim()){intro=content.slice(0,qmark+1).trim();body=content.slice(qmark+1).trim();}
+   }
+   const chunks=body.split(/(?<=[.!?])\s+(?=[A-Z0-9“‘"'])/).map(x=>x.trim()).filter(Boolean);
+   if(chunks.length>=2||ending){
+     items=chunks.map((text,i)=>({label:String(i+1),text:text.replace(/^\s*(?:\d+|[a-j]|[ivx]+)[.)]\s*/i,"").trim()}));
+   }
+ }
+ if(items.length===0)return '<div class="formatted-question"><div class="question-main">'+safe(source)+'</div></div>';
+ return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+
+   '<div class="statement-list">'+items.map(x=>'<div class="statement-item"><b class="statement-label">'+safe(x.label)+'.</b><span>'+safe(x.text)+'</span></div>').join("")+'</div>'+
+   (ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
+}function questionCard(q,index){
  const subject=q.subjects?.name||"Subject not assigned";
  const topic=q.topics?.name||"Topic not assigned";
  const verified=q.is_verified===true;
