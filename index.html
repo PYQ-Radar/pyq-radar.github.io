@@ -182,17 +182,17 @@ button{font-family:inherit;cursor:pointer}
 .meaning{line-height:1.6;font-size:14px;margin-top:15px}
 .meaning b{color:#ffcf42}
 .language{background:#1d2c52;border:1px solid var(--border);color:white;padding:8px;border-radius:9px;max-width:125px}
-.quick-stats{padding:17px 20px}
-.quick-content{display:flex;align-items:center;justify-content:space-around;padding:10px 0}
-.progress-ring{
- width:95px;height:95px;border-radius:50%;display:grid;place-items:center;
- background:conic-gradient(#19d58b 0 72%,#283a63 72% 100%);position:relative
-}
-.progress-ring:before{content:"";position:absolute;inset:10px;border-radius:50%;background:#19274c}
-.progress-ring span{position:relative;font-size:20px;font-weight:800}
-.quick-numbers{font-size:14px;line-height:2.1}
-.quick-numbers i{margin-right:8px}
+.countdown-body{padding:18px 17px 15px}
+.countdown-date{font-size:12px;color:#b9c9e8;margin-bottom:15px;display:flex;align-items:center;gap:7px}
+.countdown-date i{color:#75baff}
+.countdown-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.countdown-unit{min-width:0;text-align:center;padding:12px 4px 10px;border:1px solid #45649a88;border-radius:11px;background:linear-gradient(155deg,#213966,#172748)}
+.countdown-unit strong{display:block;font-size:clamp(19px,2.1vw,27px);font-weight:800;line-height:1.2;color:#fff; font-variant-numeric:tabular-nums}
+.countdown-unit span{display:block;font-size:10px;color:#b9c9e8;margin-top:6px;text-transform:uppercase;letter-spacing:.5px}
+.countdown-note{font-size:12px;line-height:1.5;color:#c2d3f2;text-align:center;margin:14px 0 8px}
 .report-btn{width:100%;margin-top:12px;padding:10px;border:1px solid #428aff;border-radius:10px;background:transparent;color:white}
+.countdown-disclaimer{display:block;text-align:center;color:#8499bf;font-size:10px;line-height:1.4;margin-top:11px}
+@media(max-width:760px){.countdown-body{padding:15px 13px}.countdown-unit{padding:11px 2px}.countdown-unit strong{font-size:22px}.countdown-unit span{font-size:9px}}
 
 /* LOWER CARDS */
 .lower-grid{display:grid;grid-template-columns:1fr 1.2fr 1.15fr;gap:17px;margin-top:18px}
@@ -416,20 +416,19 @@ u, ins { text-decoration: none !important; text-decoration-line: none !important
    </div>
   </div>
 
-  <div class="panel">
-   <div class="panel-head"><h3><i class="fa-solid fa-chart-simple"></i>Quick Stats</h3></div>
-   <div class="quick-stats">
-    <div class="quick-content">
-     <div style="text-align:center">
-      <div class="progress-ring"><span>—</span></div>
-      <small>Database feed</small>
-     </div>
-     <div class="quick-numbers">
-      <div><i class="fa-solid fa-circle-check" style="color:#31d98b"></i>Verified: <b id="quick-verified">—</b></div>
-      <div><i class="fa-solid fa-circle-question" style="color:#ffcf42"></i>Review: <b id="quick-review">—</b></div>
-     </div>
+  <div class="panel exam-countdown-panel">
+   <div class="panel-head"><h3><i class="fa-solid fa-hourglass-half"></i>UPSC CSE 2027 Countdown</h3></div>
+   <div class="countdown-body">
+    <div class="countdown-date"><i class="fa-regular fa-calendar-check"></i> Prelims · 23 May 2027</div>
+    <div class="countdown-grid" aria-label="Time remaining until UPSC CSE 2027 Prelims">
+     <div class="countdown-unit"><strong id="cd-days">—</strong><span>Days</span></div>
+     <div class="countdown-unit"><strong id="cd-hours">—</strong><span>Hours</span></div>
+     <div class="countdown-unit"><strong id="cd-minutes">—</strong><span>Minutes</span></div>
+     <div class="countdown-unit"><strong id="cd-seconds">—</strong><span>Seconds</span></div>
     </div>
-    <button class="report-btn" id="reload-btn">Reload Questions <i class="fa-solid fa-rotate"></i></button>
+    <p class="countdown-note" id="countdown-status">Your preparation journey, one focused day at a time.</p>
+    <button class="report-btn" id="reload-btn">Refresh Questions <i class="fa-solid fa-rotate"></i></button>
+    <small class="countdown-disclaimer">As per UPSC Annual Calendar 2027 · Date may be revised by UPSC</small>
    </div>
   </div>
  </div>
@@ -601,6 +600,22 @@ if(quoteElement){
  quoteElement.textContent='"'+quotes[quoteIndex]+'"';
  requestAnimationFrame(()=>{quoteElement.style.transition="opacity .35s ease";quoteElement.style.opacity=1;});
 }
+
+/* UPSC CSE 2027 PRELIMS COUNTDOWN */
+function updatePrelimsCountdown(){
+ const examDate=new Date("2027-05-23T00:00:00+05:30").getTime();
+ const remaining=examDate-Date.now();
+ const status=document.getElementById("countdown-status");
+ if(remaining<=0){
+  ["cd-days","cd-hours","cd-minutes","cd-seconds"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent="00";});
+  if(status)status.textContent=remaining>-86400000?"All the best! UPSC Prelims is today.":"The scheduled Prelims date has passed. Check UPSC for updates.";
+  return;
+ }
+ const units={days:Math.floor(remaining/86400000),hours:Math.floor((remaining%86400000)/3600000),minutes:Math.floor((remaining%3600000)/60000),seconds:Math.floor((remaining%60000)/1000)};
+ Object.entries(units).forEach(([unit,value])=>{const el=document.getElementById("cd-"+unit);if(el)el.textContent=String(value).padStart(2,"0");});
+}
+updatePrelimsCountdown();
+setInterval(updatePrelimsCountdown,1000);
 
 /* SIDEBAR VISUAL SELECTION */
 document.querySelectorAll(".nav-item").forEach(item=>{
