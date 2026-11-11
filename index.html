@@ -736,13 +736,23 @@ function formatQuestionMarkup(raw){
  if(tail){ending=tail[0].trim().replace(/\s+/g," ");content=content.slice(0,tail.index).trim();}
  const romanRe=/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g;
  const roman=[...content.matchAll(romanRe)];
- let intro="",items=[];
+ let intro="",items=[],secondaryPrompt="",secondaryItems=[];
  if(roman.length>=2){
    const first=roman[0].index+(roman[0][1]||"").length;
    intro=content.slice(0,first).trim();
    const body=content.slice(first);
    const parts=[...body.matchAll(/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g)];
-   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"" ).length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+   const last=items.length-1;
+   const promptRe=/\s+(Which of the following (?:information|evidence|statements|options)[^?]{0,180}\?)\s*/i;
+   const prompt=items[last]?.text.match(promptRe);
+   if(prompt){
+     secondaryPrompt=prompt[1].trim();
+     const rest=items[last].text.slice(prompt.index+prompt[0].length).trim();
+     items[last].text=items[last].text.slice(0,prompt.index).trim();
+     const chunks=rest.split(/(?<=[.!?])\s+(?=[A-Z0-9“‘"'])/).map(x=>x.trim()).filter(Boolean);
+     secondaryItems=chunks.map((text,i)=>({label:String(i+1),text:text.replace(/^\s*(?:\d+|[a-j]|[ivx]+)[.)]\s*/i,"").trim()}));
+   }
  }else{
    const colon=content.match(/^(?:Consider|Examine|Study|Read|Given)\s+.{4,180}?:\s*/i);
    let body=content;
@@ -757,26 +767,11 @@ function formatQuestionMarkup(raw){
    }
  }
  if(items.length===0)return '<div class="formatted-question"><div class="question-main">'+escapeHtml(source)+'</div></div>';
+ const renderItems=list=>'<div class="statement-list">'+list.map(x=>'<div class="statement-item"><b class="statement-label">'+escapeHtml(x.label)+'.</b><span>'+escapeHtml(x.text)+'</span></div>').join("")+'</div>';
  return '<div class="formatted-question">'+(intro?'<div class="question-main">'+escapeHtml(intro)+'</div>':'')+
-   '<div class="statement-list">'+items.map(x=>'<div class="statement-item"><b class="statement-label">'+escapeHtml(x.label)+'.</b><span>'+escapeHtml(x.text)+'</span></div>').join("")+'</div>'+
+   renderItems(items)+(secondaryPrompt?'<div class="question-instruction">'+escapeHtml(secondaryPrompt)+'</div>'+renderItems(secondaryItems):'')+
    (ending?'<div class="question-instruction">'+escapeHtml(ending)+'</div>':'')+'</div>';
-}function renderEmpty(searchTerm){
- setFeedStatus("NO RESULTS");
-
- $("pyq-question").innerHTML=formatQuestionMarkup(searchTerm
-  ?"No questions match this search."
-  :"No questions are currently available.");
-
- $("pyq-options").innerHTML='<p class="muted-note">Try another search or select Reload Questions.</p>';
-
- setText("pyq-exam","PYQ RADAR");
- setText("pyq-year","—");
- setText("pyq-subject","All Subjects");
- setText("question-note","No question is currently loaded.");
-}
-
-/* DISPLAY QUESTION */
-async function renderQuestion(){
+}async function renderQuestion(){
  const q=questionRows[currentIndex];
  if(!q) return;
 
