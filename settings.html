@@ -13,6 +13,11 @@
 <div class="setting"><div><strong>Answer option text size</strong><small>Controls answer option text where supported.</small></div><select id="optionSize"><option value="small">Small</option><option value="normal">Normal</option><option value="large">Large</option></select></div>
 <div class="preview"><b>Live preview</b><p id="previewText">The Constitution of India establishes a parliamentary system of government.</p></div>
 </section>
+<section class="card"><h3><i class="fa-solid fa-hourglass-half" style="color:#83baff;margin-right:8px"></i>Personal target countdown</h3><p class="desc">Choose your own exam or study goal date. The dashboard countdown will update to match your target and sync with your account.</p>
+<div class="setting"><div><strong>Target name</strong><small>For example, UPSC CSE 2029 or OPSC 2028.</small></div><input id="targetCountdownLabel" type="text" maxlength="50" placeholder="My 2029 target" style="background:#0b1732;color:white;border:1px solid #405b8a;border-radius:8px;padding:10px;min-width:220px;font:inherit;font-size:11px"></div>
+<div class="setting"><div><strong>Target date</strong><small>Select the exact date you want the dashboard to count down to.</small></div><input id="targetCountdownDate" type="date" min="2026-11-11" style="background:#0b1732;color:white;border:1px solid #405b8a;border-radius:8px;padding:10px;font:inherit;font-size:11px"></div>
+<div class="preview"><b>Dashboard preview</b><p id="targetCountdownPreview">UPSC CSE 2027 Prelims · 23 May 2027</p></div>
+</section>
 <section class="card"><h3><i class="fa-solid fa-clipboard-check" style="color:#83baff;margin-right:8px"></i>Test preferences</h3><p class="desc">Choose how you want mock-test submission to behave.</p>
 <div class="setting"><div><strong>Confirm before submitting a test</strong><small>Show a confirmation prompt before submitting a mock test. Recommended to avoid accidental submission.</small></div><label class="switch"><input type="checkbox" id="confirmSubmit"><span class="track"></span></label></div>
 </section>
@@ -23,15 +28,18 @@
 </main><footer>© 2026 PYQ Radar · Designed &amp; Developed by <strong style="color:#fff;font-weight:800;text-shadow:0 0 9px rgba(90,145,255,.35);letter-spacing:.25px">Satya Jigyansu</strong></footer></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 const db=window.supabase.createClient("https://fzepobjbcehirerwtnsz.supabase.co","sb_publishable_-YWaBjxp8PQhlCLifoz5aA_jEND3YIW");const $=id=>document.getElementById(id);
-const defaults={question_size:"normal",option_size:"normal",confirm_submit:true,reduce_motion:false};let user=null;
+const defaults={question_size:"normal",option_size:"normal",confirm_submit:true,reduce_motion:false,target_countdown_label:"UPSC CSE 2027 Prelims",target_countdown_date:"2027-05-23"};let user=null;
 function readLocal(){try{return {...defaults,...JSON.parse(localStorage.getItem("pyqRadarSettings")||"{}")}}catch{return {...defaults}}}
-function values(){return {question_size:$("questionSize").value,option_size:$("optionSize").value,confirm_submit:$("confirmSubmit").checked,reduce_motion:$("reduceMotion").checked}}
+function values(){return {question_size:$("questionSize").value,option_size:$("optionSize").value,confirm_submit:$("confirmSubmit").checked,reduce_motion:$("reduceMotion").checked,target_countdown_label:$("targetCountdownLabel").value.trim()||"My target",target_countdown_date:$("targetCountdownDate").value||defaults.target_countdown_date}}
 function applyPreview(){const s=$("questionSize").value; $("previewText").style.fontSize=({small:"11px",normal:"12px",large:"15px"})[s]}
-function setForm(s){$("questionSize").value=s.question_size;$("optionSize").value=s.option_size;$("confirmSubmit").checked=!!s.confirm_submit;$("reduceMotion").checked=!!s.reduce_motion;applyPreview()}
+function applyTargetPreview(){const label=$("targetCountdownLabel").value.trim()||"My target";const raw=$("targetCountdownDate").value;const date=raw?new Date(raw+"T00:00:00"):null;$("targetCountdownPreview").textContent=label+" · "+(date&&!Number.isNaN(date.getTime())?date.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"}):"Choose a target date")}
+function setForm(s){$("questionSize").value=s.question_size;$("optionSize").value=s.option_size;$("confirmSubmit").checked=!!s.confirm_submit;$("reduceMotion").checked=!!s.reduce_motion;$("targetCountdownLabel").value=s.target_countdown_label||defaults.target_countdown_label;$("targetCountdownDate").value=s.target_countdown_date||defaults.target_countdown_date;applyPreview();applyTargetPreview()}
 function applySettings(s){localStorage.setItem("pyqRadarSettings",JSON.stringify(s));document.documentElement.dataset.reduceMotion=s.reduce_motion?"true":"false"}
 function status(t,err=false){$("status").textContent=t;$("status").style.color=err?"#ffaaaa":"#9fe6c9"}
 async function init(){const {data:{user:u},error}=await db.auth.getUser();$("loading").style.display="none";if(error||!u){$("signedOut").style.display="block";return}user=u;$("settings").style.display="block";const s={...defaults,...readLocal(),...(u.user_metadata?.pyq_radar_settings||{})};setForm(s);applySettings(s)}
 $("questionSize").addEventListener("change",applyPreview);
+$("targetCountdownLabel").addEventListener("input",applyTargetPreview);
+$("targetCountdownDate").addEventListener("change",applyTargetPreview);
 $("save").addEventListener("click",async()=>{const s=values();$("save").disabled=true;status("Saving settings…");try{const {error}=await db.auth.updateUser({data:{pyq_radar_settings:s}});if(error)throw error;applySettings(s);status("Settings saved to your account and this browser.");}catch(e){status("Could not sync to account: "+e.message,true)}finally{$("save").disabled=false}});
 $("reset").addEventListener("click",()=>{setForm(defaults);applySettings(defaults);status("Defaults restored on this browser. Press Save settings to sync them to your account.")});
 init().catch(e=>{$("loading").textContent="Could not load settings: "+e.message});
