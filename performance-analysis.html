@@ -10,6 +10,9 @@
 .trend-bars{display:flex;align-items:flex-end;gap:12px;min-height:190px;padding:16px 8px 4px;overflow-x:auto}.trend-item{min-width:46px;flex:1;text-align:center}.trend-bar-wrap{height:135px;display:flex;align-items:flex-end;justify-content:center}.trend-bar{width:26px;min-height:4px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#72e1d0,#5d9cff 58%,#a78bfa);box-shadow:0 0 13px #6597ff35}.trend-item small{display:block;color:var(--muted);font-size:10px;margin-top:8px}.trend-item b{font-size:11px}.subject-row{display:grid;grid-template-columns:minmax(100px,1fr) 2fr 55px;gap:12px;align-items:center;margin:13px 0;font-size:12px}.subject-track{height:10px;background:#0b1430;border-radius:10px;overflow:hidden}.subject-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#62d9c2,#65a9ff,#a78bfa)}.history-row{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:13px 3px;border-bottom:1px solid var(--line);font-size:12px}.history-row:last-child{border:0}.history-row small{color:var(--muted)}.pill{border-radius:20px;padding:5px 9px;background:#8b7cff20;color:#c9c1ff;font-size:10px}</style><style>/* PYQ Radar: global no-underline override */
 a, a:link, a:visited, a:hover, a:focus, a:active, a * { text-decoration: none !important; text-decoration-line: none !important; }
 u, ins { text-decoration: none !important; text-decoration-line: none !important; }
+
+/* Keep sidebar navigation links clean: no underlines in any state */
+.sidebar a.nav-item,.sidebar a.nav-item:link,.sidebar a.nav-item:visited,.sidebar a.nav-item:hover,.sidebar a.nav-item:focus,.sidebar a.nav-item:active{text-decoration:none!important}
 </style>
 </head><body><div class="app">
 <aside class="sidebar"><div class="logo"><div class="logo-icon"><i class="fa-solid fa-bullseye"></i></div><div><h2>PYQ Radar</h2><p>Every Question Has a Direction.</p></div></div>
