@@ -182,7 +182,7 @@ function formatQuestionMarkup(raw){
    intro=content.slice(0,first).trim();
    const body=content.slice(first);
    const parts=[...body.matchAll(/(^|\s)(VIII|VII|VI|IV|IX|III|II|I|V|X)\.\s+/g)];
-   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"" ).length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
+   items=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
    const last=items.length-1;
    const promptRe=/\s+(Which of the following (?:information|evidence|statements|options)[^?]{0,180}\?)\s*/i;
    const prompt=items[last]?.text.match(promptRe);
@@ -211,7 +211,20 @@ function formatQuestionMarkup(raw){
  return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+
    renderItems(items)+(secondaryPrompt?'<div class="question-instruction">'+safe(secondaryPrompt)+'</div>'+renderItems(secondaryItems):'')+
    (ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
-}async function loadQuestions(){
+}
+
+function questionCard(q,index){
+ const subject=q.subjects?.name||"Subject not assigned";
+ const topic=q.topics?.name||"Topic not assigned";
+ const verified=q.is_verified===true;
+ return '<article class="question-card" data-id="'+q.id+'">'+
+  '<div class="q-meta"><span class="tag">'+safe(q.year||"Year N/A")+'</span><span class="tag">'+safe(q.paper||"Prelims")+'</span><span class="tag">'+safe(subject)+'</span><span class="tag">'+safe(topic)+'</span><span class="tag '+(verified?"verified":"")+'">'+(verified?"Verified":"Under review")+'</span></div>'+
+  '<div class="q-text"><b>Q'+(page*PAGE_SIZE+index+1)+'.</b> '+formatQuestionMarkup(q.question_text)+'</div>'+
+  '<div class="q-actions"><button class="primary-btn practice-btn" data-id="'+q.id+'"><i class="fa-solid fa-pen-to-square"></i> Practise Question</button><button class="bookmark-btn '+(bookmarkIds.has(q.id)?"saved":"")+'" data-id="'+q.id+'">'+(bookmarkIds.has(q.id)?"★ Saved":"☆ Bookmark")+'</button></div>'+
+  '<div class="practice-area" id="practice-'+q.id+'"><div class="loading">Loading options…</div></div>'+
+ '</article>';
+}
+async function loadQuestions(){
  el("question-list").innerHTML='<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading questions…</div>';
  el("prev-page").disabled=true;el("next-page").disabled=true;
  try{
