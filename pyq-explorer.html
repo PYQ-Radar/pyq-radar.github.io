@@ -166,14 +166,14 @@ function buildQuery(){
 }
 function formatQuestionMarkup(raw){
  const source=String(raw||"Question text missing.").trim();
- const marker=/(^|\\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\\.\\s+/g;
+ const marker=/(^|\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\.\s+/g;
  const matches=[...source.matchAll(marker)];
  if(matches.length<2)return '<div class="formatted-question"><div class="question-main">'+safe(source)+'</div></div>';
  const first=matches[0].index+(matches[0][1]||"").length;
  const intro=source.slice(0,first).trim(),body=source.slice(first);
- const parts=[...body.matchAll(/(^|\\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\\.\\s+/g)];
+ const parts=[...body.matchAll(/(^|\s)(I{1,3}|IV|V|VI|VII|VIII|IX|X)\.\s+/g)];
  const statements=parts.map((m,i)=>({label:m[2],text:body.slice(m.index+m[0].length-(m[1]||"").length,i+1<parts.length?parts[i+1].index:body.length).trim()}));
- const tail=/\\s+(Which of the statements|Which of the following|Which one of the following|How many of the above|How many statements|Select the correct|Choose the correct|Which of the above|What is the correct|Which pair|Which pairs|Which option)/i;
+ const tail=/\s+(Which of the statements|Which of the following|Which one of the following|How many of the above|How many statements|Select the correct|Choose the correct|Which of the above|What is the correct|Which pair|Which pairs|Which option)/i;
  let ending="";const last=statements.length-1;const hit=statements[last].text.match(tail);
  if(hit&&hit.index>0){ending=statements[last].text.slice(hit.index).trim();statements[last].text=statements[last].text.slice(0,hit.index).trim();}
  return '<div class="formatted-question">'+(intro?'<div class="question-main">'+safe(intro)+'</div>':'')+'<div class="statement-list">'+statements.map(x=>'<div class="statement-item"><b class="statement-label">'+safe(x.label)+'.</b><span>'+safe(x.text)+'</span></div>').join("")+'</div>'+(ending?'<div class="question-instruction">'+safe(ending)+'</div>':'')+'</div>';
